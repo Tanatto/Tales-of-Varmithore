@@ -1,0 +1,27 @@
+package app.mathnek.talesofvarmithore.entity;
+
+import app.mathnek.talesofvarmithore.TalesofVarmithore;
+import app.mathnek.talesofvarmithore.entity.wilkor.WilkorEntity;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
+
+public class ToVEntityTypes {
+    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES =
+            DeferredRegister.create(ForgeRegistries.ENTITIES, TalesofVarmithore.MOD_ID);
+
+    public static final RegistryObject<EntityType<WilkorEntity>> WILKOR =
+            ENTITY_TYPES.register("wilkor",
+            () -> EntityType.Builder.of(WilkorEntity::new, MobCategory.CREATURE)
+                    .sized(0.8f, 2.4f)
+                    .build(new ResourceLocation(TalesofVarmithore.MOD_ID, "wilkor").toString()));
+
+
+    public static void register(IEventBus eventBus) {
+        ENTITY_TYPES.register(eventBus);
+    }
+}

@@ -1,0 +1,20 @@
+{
+  "wilkor_ambient": {
+    "subtitle": "sounds.tov.wilkor_ambient",
+    "sounds": [
+      "tov:wilkor_ambient"
+    ]
+  },
+  "wilkor_hurt": {
+    "subtitle": "tov.wilkor_hurt",
+    "sounds": [
+      "tov:wilkor_hurt"
+    ]
+  },
+  "wilkor_death": {
+    "subtitle": "tov.wilkor_death",
+    "sounds": [
+      "tov:wilkor_death"
+    ]
+  }
+}
