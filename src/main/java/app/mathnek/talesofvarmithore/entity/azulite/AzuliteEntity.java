@@ -1,40 +1,35 @@
 package app.mathnek.talesofvarmithore.entity.azulite;
 
 import app.mathnek.talesofvarmithore.entity.ToVEntityTypes;
-import app.mathnek.talesofvarmithore.entity.wilkor.WilkorEntity;
-import net.minecraft.Util;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.animal.*;
-import net.minecraft.world.entity.animal.horse.SkeletonHorse;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.Skeleton;
-import net.minecraft.world.entity.monster.Stray;
-import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.levelgen.RandomSource;
+import net.minecraft.world.level.biome.Biome;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.Animation;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
@@ -98,10 +93,42 @@ public class AzuliteEntity extends Animal implements IAnimatable {
         return PlayState.CONTINUE;
     }
 
+
+    //#TODO make custom biometag that include all biomes, Placeholder tags used
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
-        this.entityData.set(TYPE, this.random.nextInt(1,9));
+        Holder<Biome> holder = pLevel.getBiome(this.blockPosition());
+        if (holder.is(BiomeTags.HAS_IGLOO)) {
+            this.setVariant(AzuliteVariants.SNOW);
+        }
+        if (holder.is(BiomeTags.HAS_DESERT_PYRAMID)) {
+            this.setVariant(AzuliteVariants.SAND);
+        }
+        if (holder.is(BiomeTags.IS_HILL)) {
+            this.setVariant(AzuliteVariants.HILLS);
+        }
+        if (holder.is(BiomeTags.IS_JUNGLE)) {
+            this.setVariant(AzuliteVariants.JUNGLE);
+        }
+        if (holder.is(BiomeTags.IS_OCEAN)) {
+            this.setVariant(AzuliteVariants.OCEAN);
+        }
+        if (holder.is(BiomeTags.IS_NETHER)) {
+            this.setVariant(AzuliteVariants.NETHER);
+        }
+        if (holder.is(BiomeTags.HAS_END_CITY)) {
+            this.setVariant(AzuliteVariants.END);
+        }
+        if (holder.is(BiomeTags.HAS_VILLAGE_SAVANNA)) {
+            this.setVariant(AzuliteVariants.SAVANNA);
+        }
+
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+    }
+
+
+    public void setVariant(AzuliteVariants variant) {
+        this.entityData.set(TYPE, variant.getId() & 255);
     }
 
     @Override
