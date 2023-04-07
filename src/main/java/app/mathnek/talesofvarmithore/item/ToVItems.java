@@ -17,6 +17,9 @@ public class ToVItems {
             () -> new ForgeSpawnEggItem(ToVEntityTypes.WILKOR,0x948e8d, 0x3b3635,
                     new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB)));
 
+    public static final RegistryObject<Item> AZULITE_SPAWN_EGG = ITEMS.register("azulite_spawn_egg",
+            () -> new ForgeSpawnEggItem(ToVEntityTypes.WILKOR,0x948e8d, 0x3b3635,
+                    new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB)));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
