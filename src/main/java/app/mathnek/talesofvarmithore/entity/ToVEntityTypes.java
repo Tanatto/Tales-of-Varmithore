@@ -1,6 +1,7 @@
 package app.mathnek.talesofvarmithore.entity;
 
 import app.mathnek.talesofvarmithore.TalesofVarmithore;
+import app.mathnek.talesofvarmithore.entity.azulite.AzuliteEntity;
 import app.mathnek.talesofvarmithore.entity.wilkor.WilkorEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -19,6 +20,12 @@ public class ToVEntityTypes {
             () -> EntityType.Builder.of(WilkorEntity::new, MobCategory.CREATURE)
                     .sized(0.8f, 2.4f)
                     .build(new ResourceLocation(TalesofVarmithore.MOD_ID, "wilkor").toString()));
+
+    public static final RegistryObject<EntityType<AzuliteEntity>> AZULITE =
+            ENTITY_TYPES.register("azulite",
+                    () -> EntityType.Builder.of(AzuliteEntity::new, MobCategory.CREATURE)
+                            .sized(0.8f, 1.0f)
+                            .build(new ResourceLocation(TalesofVarmithore.MOD_ID, "azulite").toString()));
 
 
     public static void register(IEventBus eventBus) {
