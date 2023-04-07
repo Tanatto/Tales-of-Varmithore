@@ -19,25 +19,6 @@ public enum AzuliteVariants {
         SAVANNA(3),
         HILLS(1);
 
-
-        public static final TagKey<Biome> IS_DEEP_OCEAN = create("is_deep_ocean");
-        public static final TagKey<Biome> IS_OCEAN = create("is_ocean");
-        public static final TagKey<Biome> IS_BEACH = create("is_beach");
-        public static final TagKey<Biome> IS_RIVER = create("is_river");
-        public static final TagKey<Biome> IS_MOUNTAIN = create("is_mountain");
-        public static final TagKey<Biome> IS_BADLANDS = create("is_badlands");
-        public static final TagKey<Biome> IS_HILL = create("is_hill");
-        public static final TagKey<Biome> IS_TAIGA = create("is_taiga");
-        public static final TagKey<Biome> IS_JUNGLE = create("is_jungle");
-        public static final TagKey<Biome> IS_FOREST = create("is_forest");
-        public static final TagKey<Biome> IS_NETHER = create("is_nether");
-
-
-
-        private static TagKey<Biome> create(String pName) {
-                return TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(pName));
-        }
-
         private static final AzuliteVariants[] BY_ID = Arrays.stream(values()).sorted(Comparator.
                 comparingInt(AzuliteVariants::getId)).toArray(AzuliteVariants[]::new);
         private final int id;
