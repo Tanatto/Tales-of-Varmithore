@@ -102,8 +102,12 @@ public class WilkorEntity extends TamableAnimal implements IAnimatable {
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (event.isMoving()) {
+        if (event.isMoving() && !this.isTame()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("wilkor.walk", true));
+            return PlayState.CONTINUE;
+        }
+        if (event.isMoving() && this.isTame()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("wilkor.run", true));
             return PlayState.CONTINUE;
         }
         if (this.isSitting()) {
