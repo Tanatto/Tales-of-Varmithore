@@ -3,7 +3,9 @@ package app.mathnek.talesofvarmithore.data.model;
 import app.mathnek.talesofvarmithore.TalesofVarmithore;
 import app.mathnek.talesofvarmithore.item.ToVItems;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -23,12 +25,37 @@ public class ItemModelGenerator extends ItemModelProvider {
 		getBuilder(item.toString())
 				.parent(new ModelFile.UncheckedModelFile("minecraft:item/template_spawn_egg"));
 	}
+	private ItemModelBuilder simpleItem(Item item) {
+		return withExistingParent(item.getRegistryName().getPath(),
+				new ResourceLocation("item/generated")).texture("layer0",
+				new ResourceLocation(TalesofVarmithore.MOD_ID,"item/" + item.getRegistryName().getPath()));
+	}
 
+	private ItemModelBuilder handheldItem(Item item) {
+		return withExistingParent(item.getRegistryName().getPath(),
+				new ResourceLocation("item/handheld")).texture("layer0",
+				new ResourceLocation(TalesofVarmithore.MOD_ID,"item/" + item.getRegistryName().getPath()));
+	}
 
 	@Override
 	protected void registerModels() {
 		spawnEgg(ToVItems.AZULITE_SPAWN_EGG.get());
 		spawnEgg(ToVItems.WILKOR_SPAWN_EGG.get());
-
+		simpleItem(ToVItems.LAVACORE_INGOT.get());
+		simpleItem(ToVItems.OBSAIDON_SHARD.get());
+		simpleItem(ToVItems.OBSAIDON_CRYSTAL.get());
+		simpleItem(ToVItems.OBSAIDON_HELMET.get());
+		simpleItem(ToVItems.OBSAIDON_CHESTPLATE.get());
+		simpleItem(ToVItems.OBSAIDON_LEGGINGS.get());
+		simpleItem(ToVItems.OBSAIDON_BOOTS.get());
+		simpleItem(ToVItems.LAVACORE_HELMET.get());
+		simpleItem(ToVItems.LAVACORE_CHESTPLATE.get());
+		simpleItem(ToVItems.LAVACORE_LEGGINGS.get());
+		simpleItem(ToVItems.LAVACORE_BOOTS.get());
+		handheldItem(ToVItems.LAVACORE_AXE.get());
+		handheldItem(ToVItems.LAVACORE_PICKAXE.get());
+		handheldItem(ToVItems.LAVACORE_HOE.get());
+		handheldItem(ToVItems.LAVACORE_SHOVEL.get());
+		handheldItem(ToVItems.LAVACORE_SWORD.get());
 	}
 }

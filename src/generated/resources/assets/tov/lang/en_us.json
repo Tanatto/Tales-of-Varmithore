@@ -1,5 +1,21 @@
 {
   "item.tov.azulite_spawn_egg": "Azulite",
+  "item.tov.lavacore_axe": "Lavacore Axe",
+  "item.tov.lavacore_boots": "Lavacore Boots",
+  "item.tov.lavacore_chestplate": "Lavacore Chestplate",
+  "item.tov.lavacore_helmet": "Lavacore Helment",
+  "item.tov.lavacore_hoe": "Lavacore Hoe",
+  "item.tov.lavacore_ingot": "Lavacore Ingot",
+  "item.tov.lavacore_leggings": "Lavacore Leggings",
+  "item.tov.lavacore_pickaxe": "Lavacore Pickaxe",
+  "item.tov.lavacore_shovel": "Lavacore Shovel",
+  "item.tov.lavacore_sword": "Lavacore Sword",
+  "item.tov.obsaidon_boots": "Obsaidon Boots",
+  "item.tov.obsaidon_chestplate": "Obsaidon Chestplate",
+  "item.tov.obsaidon_crystal": "Obsaidon Crystal",
+  "item.tov.obsaidon_helmet": "Obsaidon Helment",
+  "item.tov.obsaidon_leggings": "Obsaidon Leggings",
+  "item.tov.obsaidon_shard": "Obsaidon Shard",
   "item.tov.wilkor_spawn_egg": "Wilkor",
   "itemGroup.tov_tab": "Tales of Varmithore"
 }
