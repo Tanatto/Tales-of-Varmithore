@@ -1,10 +1,12 @@
 package app.mathnek.talesofvarmithore.data.model;
 
 import app.mathnek.talesofvarmithore.TalesofVarmithore;
+import app.mathnek.talesofvarmithore.block.ToVBlocks;
 import app.mathnek.talesofvarmithore.item.ToVItems;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
@@ -37,6 +39,11 @@ public class ItemModelGenerator extends ItemModelProvider {
 				new ResourceLocation(TalesofVarmithore.MOD_ID,"item/" + item.getRegistryName().getPath()));
 	}
 
+	private void blockItem(Block item) {
+		getBuilder(item.asItem().toString())
+				.parent(new ModelFile.UncheckedModelFile(TalesofVarmithore.MOD_ID + ":block/" + item.asItem()));
+	}
+
 	@Override
 	protected void registerModels() {
 		spawnEgg(ToVItems.AZULITE_SPAWN_EGG.get());
@@ -57,5 +64,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 		handheldItem(ToVItems.LAVACORE_HOE.get());
 		handheldItem(ToVItems.LAVACORE_SHOVEL.get());
 		handheldItem(ToVItems.LAVACORE_SWORD.get());
+		blockItem(ToVBlocks.LAVACORE_ORE.get());
+		blockItem(ToVBlocks.MIRCH_LEAVES.get());
+		blockItem(ToVBlocks.MIRCH_LOG.get());
+		blockItem(ToVBlocks.GRASS_BLOCK.get());
+
 	}
 }

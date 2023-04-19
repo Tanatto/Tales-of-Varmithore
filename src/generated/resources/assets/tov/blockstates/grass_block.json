@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "tov:block/grass_block"
+    }
+  }
+}

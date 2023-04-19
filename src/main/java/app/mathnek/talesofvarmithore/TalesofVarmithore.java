@@ -1,10 +1,13 @@
 package app.mathnek.talesofvarmithore;
 
+import app.mathnek.talesofvarmithore.block.ToVBlocks;
 import app.mathnek.talesofvarmithore.entity.azulite.AzuliteRenderer;
 import app.mathnek.talesofvarmithore.item.ToVItems;
 import app.mathnek.talesofvarmithore.sound.ToVSounds;
 import app.mathnek.talesofvarmithore.entity.ToVEntityTypes;
 import app.mathnek.talesofvarmithore.entity.wilkor.WilkorRenderer;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -27,6 +30,7 @@ public class TalesofVarmithore {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         ToVItems.register(eventBus);
+        ToVBlocks.register(eventBus);
         ToVSounds.register(eventBus);
         ToVEntityTypes.register(eventBus);
 
@@ -41,7 +45,8 @@ public class TalesofVarmithore {
     private void clientSetup(final FMLClientSetupEvent event) {
         EntityRenderers.register(ToVEntityTypes.WILKOR.get(), WilkorRenderer::new);
         EntityRenderers.register(ToVEntityTypes.AZULITE.get(), AzuliteRenderer::new);
-
+        ItemBlockRenderTypes.setRenderLayer(ToVBlocks.PERSILA.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ToVBlocks.UNCIA.get(), RenderType.cutout());
     }
 
     private void setup(final FMLCommonSetupEvent event) {

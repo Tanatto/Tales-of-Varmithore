@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=lower": {
+      "model": "tov:block/persila_bottom"
+    },
+    "half=upper": {
+      "model": "tov:block/persila_top"
+    }
+  }
+}

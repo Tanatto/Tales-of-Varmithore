@@ -1,6 +1,7 @@
 package app.mathnek.talesofvarmithore.data.lang;
 
 import app.mathnek.talesofvarmithore.TalesofVarmithore;
+import app.mathnek.talesofvarmithore.block.ToVBlocks;
 import app.mathnek.talesofvarmithore.item.ToVItems;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.LanguageProvider;
@@ -19,6 +20,12 @@ public class LanguageGenerator extends LanguageProvider {
 	}
 
 	private void addBlocks() {
+		addBlock(ToVBlocks.LAVACORE_ORE,"Lavacore Ore");
+		addBlock(ToVBlocks.MIRCH_LEAVES,"Mirch Leaves");
+		addBlock(ToVBlocks.MIRCH_LOG,"Mirch Log");
+		addBlock(ToVBlocks.GRASS_BLOCK,"Grass Block");
+		addBlock(ToVBlocks.PERSILA,"Persila Flower");
+		addBlock(ToVBlocks.UNCIA,"Uncia Flower");
 
 	}
 

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=lower": {
+      "model": "tov:block/uncia_bottom"
+    },
+    "half=upper": {
+      "model": "tov:block/uncia_top"
+    }
+  }
+}

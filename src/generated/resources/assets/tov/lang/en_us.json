@@ -1,4 +1,10 @@
 {
+  "block.tov.grass_block": "Grass Block",
+  "block.tov.lavacore_ore": "Lavacore Ore",
+  "block.tov.mirch_leaves": "Mirch Leaves",
+  "block.tov.mirch_log": "Mirch Log",
+  "block.tov.persila": "Persila Flower",
+  "block.tov.uncia": "Uncia Flower",
   "item.tov.azulite_spawn_egg": "Azulite",
   "item.tov.lavacore_axe": "Lavacore Axe",
   "item.tov.lavacore_boots": "Lavacore Boots",
