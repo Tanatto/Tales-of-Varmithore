@@ -45,8 +45,11 @@ public class TalesofVarmithore {
     private void clientSetup(final FMLClientSetupEvent event) {
         EntityRenderers.register(ToVEntityTypes.WILKOR.get(), WilkorRenderer::new);
         EntityRenderers.register(ToVEntityTypes.AZULITE.get(), AzuliteRenderer::new);
+
+
         ItemBlockRenderTypes.setRenderLayer(ToVBlocks.PERSILA.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(ToVBlocks.UNCIA.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ToVBlocks.HARD_GLASS.get(), RenderType.cutout());
     }
 
     private void setup(final FMLCommonSetupEvent event) {

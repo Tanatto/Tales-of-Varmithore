@@ -3,7 +3,7 @@ package app.mathnek.talesofvarmithore.item;
 import app.mathnek.talesofvarmithore.TalesofVarmithore;
 import app.mathnek.talesofvarmithore.entity.ToVEntityTypes;
 import app.mathnek.talesofvarmithore.item.equipment.ToVArmorMaterials;
-import app.mathnek.talesofvarmithore.item.equipment.TovTiers;
+import app.mathnek.talesofvarmithore.item.equipment.ToVTiers;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.*;
 import net.minecraftforge.common.ForgeSpawnEggItem;
@@ -32,20 +32,35 @@ public class ToVItems {
     public static final RegistryObject<Item> LAVACORE_INGOT = ITEMS.register("lavacore_ingot",
             () -> new Item(new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB).fireResistant()));
 
+    public static final RegistryObject<Item> OBSAIDON_AXE = ITEMS.register("obsaidon_axe",
+            () -> new AxeItem(ToVTiers.OBSAIDON, 5.0F, -3.0F, (new Item.Properties()).tab(ToVCreativeModeTab.TOV_TAB).fireResistant()));
+
+    public static final RegistryObject<Item> OBSAIDON_SWORD = ITEMS.register("obsaidon_sword",
+            () -> new SwordItem(ToVTiers.OBSAIDON, 3, -2.4F, (new Item.Properties()).tab(ToVCreativeModeTab.TOV_TAB).fireResistant()));
+
+    public static final RegistryObject<Item> OBSAIDON_HOE = ITEMS.register("obsaidon_hoe",
+            () -> new HoeItem(ToVTiers.OBSAIDON, -3, 0.0F, (new Item.Properties()).tab(ToVCreativeModeTab.TOV_TAB).fireResistant()));
+
+    public static final RegistryObject<Item> OBSAIDON_SHOVEL= ITEMS.register("obsaidon_shovel",
+            () ->new ShovelItem(ToVTiers.OBSAIDON, 1.5F, -3.0F, (new Item.Properties()).tab(ToVCreativeModeTab.TOV_TAB).fireResistant()));
+
+    public static final RegistryObject<Item> OBSAIDON_PICKAXE = ITEMS.register("obsaidon_pickaxe",
+            () -> new PickaxeItem(ToVTiers.OBSAIDON, 1, -2.8F, (new Item.Properties()).tab(ToVCreativeModeTab.TOV_TAB).fireResistant()));
+
     public static final RegistryObject<Item> LAVACORE_AXE = ITEMS.register("lavacore_axe",
-            () -> new AxeItem(TovTiers.LAVACORE, 5.0F, -3.0F, (new Item.Properties()).tab(ToVCreativeModeTab.TOV_TAB).fireResistant()));
+            () -> new AxeItem(ToVTiers.LAVACORE, 5.0F, -3.0F, (new Item.Properties()).tab(ToVCreativeModeTab.TOV_TAB).fireResistant()));
 
     public static final RegistryObject<Item> LAVACORE_SWORD = ITEMS.register("lavacore_sword",
-            () -> new SwordItem(TovTiers.LAVACORE, 3, -2.4F, (new Item.Properties()).tab(ToVCreativeModeTab.TOV_TAB).fireResistant()));
+            () -> new SwordItem(ToVTiers.LAVACORE, 3, -2.4F, (new Item.Properties()).tab(ToVCreativeModeTab.TOV_TAB).fireResistant()));
 
     public static final RegistryObject<Item> LAVACORE_HOE = ITEMS.register("lavacore_hoe",
-            () -> new HoeItem(TovTiers.LAVACORE, -3, 0.0F, (new Item.Properties()).tab(ToVCreativeModeTab.TOV_TAB).fireResistant()));
+            () -> new HoeItem(ToVTiers.LAVACORE, -3, 0.0F, (new Item.Properties()).tab(ToVCreativeModeTab.TOV_TAB).fireResistant()));
 
     public static final RegistryObject<Item> LAVACORE_SHOVEL= ITEMS.register("lavacore_shovel",
-            () ->new ShovelItem(TovTiers.LAVACORE, 1.5F, -3.0F, (new Item.Properties()).tab(ToVCreativeModeTab.TOV_TAB).fireResistant()));
+            () ->new ShovelItem(ToVTiers.LAVACORE, 1.5F, -3.0F, (new Item.Properties()).tab(ToVCreativeModeTab.TOV_TAB).fireResistant()));
 
     public static final RegistryObject<Item> LAVACORE_PICKAXE = ITEMS.register("lavacore_pickaxe",
-            () -> new PickaxeItem(TovTiers.LAVACORE, 1, -2.8F, (new Item.Properties()).tab(ToVCreativeModeTab.TOV_TAB).fireResistant()));
+            () -> new PickaxeItem(ToVTiers.LAVACORE, 1, -2.8F, (new Item.Properties()).tab(ToVCreativeModeTab.TOV_TAB).fireResistant()));
     public static final RegistryObject<Item> LAVACORE_HELMET = ITEMS.register("lavacore_helmet",
             () -> new ArmorItem(ToVArmorMaterials.LAVACORE, EquipmentSlot.HEAD, (new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB).fireResistant())));
     public static final RegistryObject<Item> LAVACORE_CHESTPLATE = ITEMS.register("lavacore_chestplate",

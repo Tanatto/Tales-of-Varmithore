@@ -16,6 +16,9 @@ public class BlocksStateProvider extends BlockStateProvider {
     protected void registerStatesAndModels() {
         simpleBlock(ToVBlocks.LAVACORE_ORE.get());
         simpleBlock(ToVBlocks.MIRCH_LEAVES.get());
+        simpleBlock(ToVBlocks.MAGMA_BRICK.get());
+        simpleBlock(ToVBlocks.HARD_GLASS.get());
+
         logBlock(ToVBlocks.MIRCH_LOG.get());
         simpleBlock(ToVBlocks.GRASS_BLOCK.get(), models().getExistingFile(
                 new ResourceLocation(TalesofVarmithore.MOD_ID, "block/grass_block")));

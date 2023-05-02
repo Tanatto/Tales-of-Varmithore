@@ -3,22 +3,15 @@ package app.mathnek.talesofvarmithore.block;
 import app.mathnek.talesofvarmithore.TalesofVarmithore;
 import app.mathnek.talesofvarmithore.item.ToVCreativeModeTab;
 import app.mathnek.talesofvarmithore.item.ToVItems;
-import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.*;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import javax.annotation.Nullable;
-import java.util.List;
 import java.util.function.Supplier;
 
 public class ToVBlocks {
@@ -34,9 +27,15 @@ public class ToVBlocks {
     public static final RegistryObject<RotatedPillarBlock> MIRCH_LOG = registerBlock("mirch_log",
             () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.BIRCH_LOG)),ToVCreativeModeTab.TOV_TAB);
 
+    public static final RegistryObject<Block> MAGMA_BRICK = registerBlock("magma_brick",
+            () -> new Block(BlockBehaviour.Properties.of(Material.STONE).strength(8.0F, 3.0F)),ToVCreativeModeTab.TOV_TAB);
+
+    public static final RegistryObject<GlassBlock> HARD_GLASS = registerBlock("hard_glass",
+            () -> new GlassBlock(BlockBehaviour.Properties.copy(Blocks.GLASS).strength(1.0F, 50.0F)),ToVCreativeModeTab.TOV_TAB);
 
     public static final RegistryObject<GrassBlock> GRASS_BLOCK = registerBlock("grass_block",
             () -> new GrassBlock(BlockBehaviour.Properties.copy(Blocks.GRASS_BLOCK)),ToVCreativeModeTab.TOV_TAB);
+
     public static final RegistryObject<Block> PERSILA = registerBlock("persila",
             () -> new TallFlowerBlock(BlockBehaviour.Properties.copy(Blocks.ROSE_BUSH)),ToVCreativeModeTab.TOV_TAB);
     public static final RegistryObject<Block> UNCIA = registerBlock("uncia",
@@ -44,13 +43,11 @@ public class ToVBlocks {
     private static <T extends Block> RegistryObject<T> registerBlockWithoutBlockItem(String name, Supplier<T> block) {
         return BLOCKS.register(name, block);
     }
-
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name, toReturn, tab);
         return toReturn;
     }
-
     private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block,
                                                                             CreativeModeTab tab) {
         return ToVItems.ITEMS.register(name, () -> new BlockItem(block.get(),

@@ -2,20 +2,18 @@ package app.mathnek.talesofvarmithore.item.equipment;
 
 
 import app.mathnek.talesofvarmithore.item.ToVItems;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.util.LazyLoadedValue;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.function.Supplier;
 
-public enum TovTiers implements Tier {
+public enum ToVTiers implements Tier {
 
     LAVACORE(3, 1800, 8.5F, 3.5F, 12, () -> {
         return Ingredient.of(ToVItems.LAVACORE_INGOT.get());
     }),
-    OBSAIDON(3, 2450, 8.0F, 3.0F, 10, () -> {
+    OBSAIDON(3, 2450, 9.2F, 3.0F, 10, () -> {
         return Ingredient.of(ToVItems.OBSAIDON_CRYSTAL.get());
     });
 
@@ -27,7 +25,7 @@ public enum TovTiers implements Tier {
     private final int enchantmentValue;
     private final LazyLoadedValue<Ingredient> repairIngredient;
 
-    private TovTiers(int pLevel, int pUses, float pSpeed, float pDamage, int pEnchantmentValue, Supplier<Ingredient> pRepairIngredient) {
+    private ToVTiers(int pLevel, int pUses, float pSpeed, float pDamage, int pEnchantmentValue, Supplier<Ingredient> pRepairIngredient) {
         this.level = pLevel;
         this.uses = pUses;
         this.speed = pSpeed;

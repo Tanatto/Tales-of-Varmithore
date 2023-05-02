@@ -14,8 +14,8 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class ItemModelGenerator extends ItemModelProvider {
 
-	public ItemModelGenerator(DataGenerator output, ExistingFileHelper existingFileHelper) {
-		super(output, TalesofVarmithore.MOD_ID, existingFileHelper);
+	public ItemModelGenerator(DataGenerator gen, ExistingFileHelper existingFileHelper) {
+		super(gen, TalesofVarmithore.MOD_ID, existingFileHelper);
 	}
 
 	/**
@@ -55,6 +55,11 @@ public class ItemModelGenerator extends ItemModelProvider {
 		simpleItem(ToVItems.OBSAIDON_CHESTPLATE.get());
 		simpleItem(ToVItems.OBSAIDON_LEGGINGS.get());
 		simpleItem(ToVItems.OBSAIDON_BOOTS.get());
+		handheldItem(ToVItems.OBSAIDON_AXE.get());
+		handheldItem(ToVItems.OBSAIDON_PICKAXE.get());
+		handheldItem(ToVItems.OBSAIDON_HOE.get());
+		handheldItem(ToVItems.OBSAIDON_SHOVEL.get());
+		handheldItem(ToVItems.OBSAIDON_SWORD.get());
 		simpleItem(ToVItems.LAVACORE_HELMET.get());
 		simpleItem(ToVItems.LAVACORE_CHESTPLATE.get());
 		simpleItem(ToVItems.LAVACORE_LEGGINGS.get());
@@ -68,6 +73,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		blockItem(ToVBlocks.MIRCH_LEAVES.get());
 		blockItem(ToVBlocks.MIRCH_LOG.get());
 		blockItem(ToVBlocks.GRASS_BLOCK.get());
+		blockItem(ToVBlocks.MAGMA_BRICK.get());
+		blockItem(ToVBlocks.HARD_GLASS.get());
 
 	}
 }

@@ -8,8 +8,8 @@ import net.minecraftforge.common.data.LanguageProvider;
 
 public class LanguageGenerator extends LanguageProvider {
 
-	public LanguageGenerator(DataGenerator output) {
-		super(output, TalesofVarmithore.MOD_ID, "en_us");
+	public LanguageGenerator(DataGenerator gen) {
+		super(gen, TalesofVarmithore.MOD_ID, "en_us");
 	}
 
 	@Override
@@ -24,6 +24,8 @@ public class LanguageGenerator extends LanguageProvider {
 		addBlock(ToVBlocks.MIRCH_LEAVES,"Mirch Leaves");
 		addBlock(ToVBlocks.MIRCH_LOG,"Mirch Log");
 		addBlock(ToVBlocks.GRASS_BLOCK,"Grass Block");
+		addBlock(ToVBlocks.HARD_GLASS,"Hard Glass");
+		addBlock(ToVBlocks.MAGMA_BRICK,"Magma Brick");
 		addBlock(ToVBlocks.PERSILA,"Persila Flower");
 		addBlock(ToVBlocks.UNCIA,"Uncia Flower");
 
@@ -40,14 +42,19 @@ public class LanguageGenerator extends LanguageProvider {
 		addItem(ToVItems.LAVACORE_SWORD,"Lavacore Sword");
 		addItem(ToVItems.LAVACORE_HOE,"Lavacore Hoe");
 		addItem(ToVItems.LAVACORE_SHOVEL,"Lavacore Shovel");
-		addItem(ToVItems.LAVACORE_HELMET,"Lavacore Helment");
+		addItem(ToVItems.LAVACORE_HELMET,"Lavacore Helmet");
 		addItem(ToVItems.LAVACORE_CHESTPLATE,"Lavacore Chestplate");
 		addItem(ToVItems.LAVACORE_LEGGINGS,"Lavacore Leggings");
 		addItem(ToVItems.LAVACORE_BOOTS,"Lavacore Boots");
-		addItem(ToVItems.OBSAIDON_HELMET,"Obsaidon Helment");
+		addItem(ToVItems.OBSAIDON_HELMET,"Obsaidon Helmet");
 		addItem(ToVItems.OBSAIDON_CHESTPLATE,"Obsaidon Chestplate");
 		addItem(ToVItems.OBSAIDON_LEGGINGS,"Obsaidon Leggings");
 		addItem(ToVItems.OBSAIDON_BOOTS,"Obsaidon Boots");
+		addItem(ToVItems.OBSAIDON_PICKAXE,"Obsaidon Pickaxe");
+		addItem(ToVItems.OBSAIDON_AXE,"Obsaidon Axe");
+		addItem(ToVItems.OBSAIDON_SWORD,"Obsaidon Sword");
+		addItem(ToVItems.OBSAIDON_HOE,"Obsaidon Hoe");
+		addItem(ToVItems.OBSAIDON_SHOVEL,"Obsaidon Shovel");
 
 
 

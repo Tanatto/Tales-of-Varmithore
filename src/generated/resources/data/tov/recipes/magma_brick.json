@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " M ",
+    "BSB",
+    " M "
+  ],
+  "key": {
+    "M": {
+      "item": "minecraft:magma_block"
+    },
+    "B": {
+      "item": "minecraft:black_dye"
+    },
+    "S": {
+      "item": "minecraft:stone_bricks"
+    }
+  },
+  "result": {
+    "item": "tov:magma_brick"
+  }
+}
