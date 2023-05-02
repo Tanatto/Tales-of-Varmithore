@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tov:obsaidon_pickaxe"
+    ]
+  },
+  "criteria": {
+    "has_obsaidon_shard": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tov:obsaidon_crystal"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tov:obsaidon_pickaxe"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_obsaidon_shard",
+      "has_the_recipe"
+    ]
+  ]
+}

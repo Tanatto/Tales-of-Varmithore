@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X X",
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tov:lavacore_ingot"
+    }
+  },
+  "result": {
+    "item": "tov:lavacore_chestplate"
+  }
+}

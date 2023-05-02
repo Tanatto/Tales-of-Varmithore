@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    "X#",
+    " #"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:stick"
+    },
+    "X": {
+      "item": "tov:obsaidon_crystal"
+    }
+  },
+  "result": {
+    "item": "tov:obsaidon_axe"
+  }
+}
