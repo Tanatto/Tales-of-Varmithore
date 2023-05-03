@@ -2,6 +2,7 @@ package app.mathnek.talesofvarmithore;
 
 import app.mathnek.talesofvarmithore.block.ToVBlocks;
 import app.mathnek.talesofvarmithore.entity.azulite.AzuliteRenderer;
+import app.mathnek.talesofvarmithore.entity.rockdrake.RockDrakeRenderer;
 import app.mathnek.talesofvarmithore.item.ToVItems;
 import app.mathnek.talesofvarmithore.sound.ToVSounds;
 import app.mathnek.talesofvarmithore.entity.ToVEntityTypes;
@@ -45,6 +46,7 @@ public class TalesofVarmithore {
     private void clientSetup(final FMLClientSetupEvent event) {
         EntityRenderers.register(ToVEntityTypes.WILKOR.get(), WilkorRenderer::new);
         EntityRenderers.register(ToVEntityTypes.AZULITE.get(), AzuliteRenderer::new);
+        EntityRenderers.register(ToVEntityTypes.ROCKDRAKE.get(), RockDrakeRenderer::new);
 
 
         ItemBlockRenderTypes.setRenderLayer(ToVBlocks.PERSILA.get(), RenderType.cutout());

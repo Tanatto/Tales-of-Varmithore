@@ -21,9 +21,12 @@ public class ToVItems {
                     new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB)));
 
     public static final RegistryObject<Item> AZULITE_SPAWN_EGG = ITEMS.register("azulite_spawn_egg",
-            () -> new ForgeSpawnEggItem(ToVEntityTypes.AZULITE,0x948e8d, 0x3b3635,
+            () -> new ForgeSpawnEggItem(ToVEntityTypes.AZULITE,0x166884, 0x3b3635,
                     new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB)));
 
+    public static final RegistryObject<Item> ROCKDRAKE_SPAWN_EGG = ITEMS.register("rockdrake_spawn_egg",
+            () -> new ForgeSpawnEggItem(ToVEntityTypes.ROCKDRAKE,0x166884, 0xE5802C,
+                    new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB)));
     public static final RegistryObject<Item> OBSAIDON_SHARD = ITEMS.register("obsaidon_shard",
             () -> new Item(new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB)));
 

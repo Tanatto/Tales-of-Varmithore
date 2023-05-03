@@ -34,6 +34,7 @@ public class LanguageGenerator extends LanguageProvider {
 	private void addItems() {
 		addItem(ToVItems.WILKOR_SPAWN_EGG,"Wilkor");
 		addItem(ToVItems.AZULITE_SPAWN_EGG,"Azulite");
+		addItem(ToVItems.ROCKDRAKE_SPAWN_EGG,"Rock Drake");
 		addItem(ToVItems.OBSAIDON_SHARD,"Obsaidon Shard");
 		addItem(ToVItems.OBSAIDON_CRYSTAL,"Obsaidon Crystal");
 		addItem(ToVItems.LAVACORE_INGOT,"Lavacore Ingot");
