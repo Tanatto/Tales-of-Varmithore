@@ -30,5 +30,11 @@
   "item.tov.obsaidon_shovel": "Obsaidon Shovel",
   "item.tov.obsaidon_sword": "Obsaidon Sword",
   "item.tov.wilkor_spawn_egg": "Wilkor",
-  "itemGroup.tov_tab": "Tales of Varmithore"
+  "item.tov.rockdrake_spawn_egg": "RockDrake",
+  "item.tov.rockdrake_egg": "RockDrake Egg",
+  "itemGroup.tov_tab": "Tales of Varmithore",
+  "key.category.tov": "Tales of Varmithore",
+  "key.tov.bite": "Bite",
+  "egg.warm.toHatch": "Egg is okay and incubating",
+  "egg.cold.toHatch": "Egg is cold and failing to incubate"
 }

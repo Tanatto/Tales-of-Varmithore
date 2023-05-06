@@ -4,13 +4,17 @@ import app.mathnek.talesofvarmithore.TalesofVarmithore;
 import app.mathnek.talesofvarmithore.entity.ToVEntityTypes;
 import app.mathnek.talesofvarmithore.item.equipment.ToVArmorMaterials;
 import app.mathnek.talesofvarmithore.item.equipment.ToVTiers;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.*;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+
+import java.util.function.Supplier;
 
 public class ToVItems {
     public static final DeferredRegister<Item> ITEMS =
@@ -23,6 +27,14 @@ public class ToVItems {
     public static final RegistryObject<Item> AZULITE_SPAWN_EGG = ITEMS.register("azulite_spawn_egg",
             () -> new ForgeSpawnEggItem(ToVEntityTypes.AZULITE,0x948e8d, 0x3b3635,
                     new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB)));
+
+    public static final RegistryObject<DragonSpawnEggItem> ROCKDRAKE_SPAWN_EGG = ITEMS.register("rockdrake_spawn_egg",
+            () -> new DragonSpawnEggItem(ToVEntityTypes.ROCKDRAKE, 0x425d57, 0xc5591b,
+                    new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB).stacksTo(64)));
+
+    public static final RegistryObject<DragonEggItem> ROCKDRAKE_EGG = ITEMS.register("rockdrake_egg",
+            () -> new DragonEggItem(new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB).stacksTo(4),
+                    ToVEntityTypes.ROCKDRAKE_EGG));
 
     public static final RegistryObject<Item> OBSAIDON_SHARD = ITEMS.register("obsaidon_shard",
             () -> new Item(new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB)));
@@ -77,6 +89,7 @@ public class ToVItems {
             () -> new ArmorItem(ToVArmorMaterials.OBSAIDON, EquipmentSlot.LEGS, (new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB))));
     public static final RegistryObject<Item> OBSAIDON_BOOTS = ITEMS.register("obsaidon_boots",
             () -> new ArmorItem(ToVArmorMaterials.OBSAIDON, EquipmentSlot.FEET, (new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB))));
+
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

@@ -1,8 +1,5 @@
 package app.mathnek.talesofvarmithore.entity.azulite;
 
-import app.mathnek.talesofvarmithore.TalesofVarmithore;
-import app.mathnek.talesofvarmithore.entity.wilkor.WilkorEntity;
-import app.mathnek.talesofvarmithore.entity.wilkor.WilkorModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -15,6 +12,13 @@ public class AzuliteRenderer extends GeoEntityRenderer<AzuliteEntity> {
     public AzuliteRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new AzuliteModel());
         this.shadowRadius = 1f;
+    }
+
+    @Override
+    public RenderType getRenderType(AzuliteEntity animatable, float partialTicks, PoseStack stack,
+                                    MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn,
+                                    ResourceLocation textureLocation) {
+        return RenderType.entityCutoutNoCull(getTextureLocation(animatable));
     }
 
 }

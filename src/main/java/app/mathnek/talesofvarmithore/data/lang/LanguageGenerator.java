@@ -34,6 +34,8 @@ public class LanguageGenerator extends LanguageProvider {
 	private void addItems() {
 		addItem(ToVItems.WILKOR_SPAWN_EGG,"Wilkor");
 		addItem(ToVItems.AZULITE_SPAWN_EGG,"Azulite");
+		addItem(ToVItems.ROCKDRAKE_SPAWN_EGG,"RockDrake");
+		addItem(ToVItems.ROCKDRAKE_EGG,"RockDrake Egg");
 		addItem(ToVItems.OBSAIDON_SHARD,"Obsaidon Shard");
 		addItem(ToVItems.OBSAIDON_CRYSTAL,"Obsaidon Crystal");
 		addItem(ToVItems.LAVACORE_INGOT,"Lavacore Ingot");
@@ -62,6 +64,8 @@ public class LanguageGenerator extends LanguageProvider {
 
 	private void addMisc() {
 		add("itemGroup.tov_tab","Tales of Varmithore");
+		add("key.tov.bite","Bite");
+		add("key.category.tov","Tales of Varmithore");
 	}
 
 }
