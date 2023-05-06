@@ -4,7 +4,7 @@
 b3d1e28e0a55f1b08a01910863f702ea1aa0ac3f assets/tov/blockstates/magma_brick.json
 65b75320c6facce91d7f18311a6606dc3f478449 assets/tov/blockstates/mirch_leaves.json
 aa71b81e224aa3c89b88c201081ede2e46decf8a assets/tov/blockstates/mirch_log.json
-b74cea661f41e14fa2f6314cfd0f5c6b93f61635 assets/tov/lang/en_us.json
+089a70b70fab818fe0a802313d3d021390454871 assets/tov/lang/en_us.json
 040f63f8047be9da6bd3531a0c4c5a4785213c32 assets/tov/models/block/hard_glass.json
 e818173b137ff166281ccdf7ac394eb46c65e4ed assets/tov/models/block/lavacore_ore.json
 577f13e52d53608502daf1a97542231132646b3c assets/tov/models/block/magma_brick.json
@@ -39,6 +39,7 @@ f8b116af08f55e117d3dd544c5694990e54c6168 assets/tov/models/item/obsaidon_pickaxe
 2e7fc269db7817b42958101d7eda9d94489f336c assets/tov/models/item/obsaidon_shard.json
 332f356efcd90d0b7cc862493990cd88b1a76d53 assets/tov/models/item/obsaidon_shovel.json
 fd00d497eedec11299562c3b5d0720baf825475d assets/tov/models/item/obsaidon_sword.json
+98167609bf3898587f7565736a6fc24a7966cacd assets/tov/models/item/rockdrake_spawn_egg.json
 98167609bf3898587f7565736a6fc24a7966cacd assets/tov/models/item/wilkor_spawn_egg.json
 e5967e05882d68a14da8fd9d2588c2400c00b170 data/tov/advancements/recipes/tov_tab/hard_glass.json
 4846c96467e075ddc9461000031871daa1f5a6f8 data/tov/advancements/recipes/tov_tab/lavacore_axe.json
