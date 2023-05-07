@@ -3,6 +3,7 @@ package app.mathnek.talesofvarmithore.entity.rockdrake;
 import app.mathnek.talesofvarmithore.entity.ToVEntityTypes;
 import app.mathnek.talesofvarmithore.entity.azulite.AzuliteEntity;
 import app.mathnek.talesofvarmithore.entity.wilkor.WilkorEntity;
+import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -40,8 +41,10 @@ import java.util.List;
 public class RockDrakeEntity extends TamableAnimal implements IAnimatable, Saddleable {
 
     private AnimationFactory factory = new AnimationFactory(this);
-    private static final EntityDataAccessor<Boolean> SITTING =
+    protected static final EntityDataAccessor<Boolean> SITTING =
             SynchedEntityData.defineId(RockDrakeEntity.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Integer> COMMANDS =
+            SynchedEntityData.defineId(RockDrakeEntity.class, EntityDataSerializers.INT);
 
     protected static final EntityDataAccessor<Integer> VARIANTS =
             SynchedEntityData.defineId(RockDrakeEntity.class, EntityDataSerializers.INT);
@@ -100,9 +103,10 @@ public class RockDrakeEntity extends TamableAnimal implements IAnimatable, Saddl
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        setSitting(tag.getBoolean("isSitting"));
+        setIsSitting(tag.getBoolean("isSitting"));
         setVariant(tag.getInt("variant"));
         setSaddled(tag.getBoolean("Saddled"));
+        this.setCommands(tag.getInt("commands"));
     }
 
     @Override
@@ -111,6 +115,7 @@ public class RockDrakeEntity extends TamableAnimal implements IAnimatable, Saddl
         tag.putBoolean("isSitting", this.isSitting());
         tag.putInt("variant", this.getVariant());
         tag.putBoolean("Saddled", this.isSaddled());
+        tag.putInt("commands", this.getCommand());
     }
 
     @Override
@@ -119,19 +124,64 @@ public class RockDrakeEntity extends TamableAnimal implements IAnimatable, Saddl
         this.entityData.define(SITTING, false);
         this.entityData.define(VARIANTS, 0);
         this.entityData.define(SADDLED, false);
+        this.entityData.define(COMMANDS, 0);
     }
 
     public boolean shouldStopMovingIndependently() {
         return this.isSitting() && !this.isVehicle();
     }
 
-    public void setSitting(boolean sitting) {
-        this.entityData.set(SITTING, sitting);
-        this.setOrderedToSit(sitting);
+    public int getCommand() {
+        return (Integer)this.entityData.get(COMMANDS);
+    }
+
+    public void setCommands(int commands) {
+        this.entityData.set(COMMANDS, commands);
+    }
+
+    public void modifyCommand(int limit, Player player) {
+        if (this.getCommand() >= limit) {
+            this.setCommands(0);
+        } else {
+            this.setCommands(this.getCommand() + 1);
+        }
+
+        /*String wandering = "command.bdd.wander";
+        String sitting = "command.bdd.sit";
+        String following = "command.bdd.follow";
+        switch (this.getCommand()) {
+            case 0:
+            default:
+                player.displayClientMessage(new TranslatableComponent(wandering, new Object[]{Integer.toString(this.getCommand())}), true);
+                break;
+            case 1:
+                player.displayClientMessage(new TranslatableComponent(sitting, new Object[]{Integer.toString(this.getCommand())}), true);
+                break;
+            case 2:
+                player.displayClientMessage(new TranslatableComponent(following, new Object[]{Integer.toString(this.getCommand())}), true);
+                break;
+        }*/
+
+    }
+
+    public boolean isWandering() {
+        return (Integer)this.entityData.get(COMMANDS) == 0;
     }
 
     public boolean isSitting() {
-        return this.entityData.get(SITTING);
+        return (Integer)this.entityData.get(COMMANDS) == 1;
+    }
+
+    public void setIsWandering(boolean wandering) {
+        if (wandering) {
+            this.entityData.set(COMMANDS, 0);
+        }
+    }
+
+    public void setIsSitting(boolean sitting) {
+        if (sitting) {
+            this.entityData.set(COMMANDS, 1);
+        }
     }
 
     public int getVariant() {
@@ -167,8 +217,13 @@ public class RockDrakeEntity extends TamableAnimal implements IAnimatable, Saddl
         ItemStack itemstack = player.getItemInHand(hand);
         Item item = itemstack.getItem();
 
-        if(isTame() && !this.level.isClientSide && item == Items.STICK) {
-            setSitting(!isSitting());
+        /*if(isTame() && !this.level.isClientSide && item == Items.STICK) {
+            setIsSitting(!isSitting());
+            return InteractionResult.SUCCESS;
+        }*/
+
+        if (item == Items.STICK && this.isOwnedBy(player)) {
+            this.modifyCommand(2, player);
             return InteractionResult.SUCCESS;
         }
 
@@ -182,6 +237,7 @@ public class RockDrakeEntity extends TamableAnimal implements IAnimatable, Saddl
             rideInteract(player, hand, itemstack);
             return InteractionResult.sidedSuccess(this.level.isClientSide);
         }
+
 
         if (!isBaby() && item == Items.COOKIE) {
             if (this.random.nextInt(7) == 0 && !ForgeEventFactory.onAnimalTame(this, player)) {
@@ -266,6 +322,19 @@ public class RockDrakeEntity extends TamableAnimal implements IAnimatable, Saddl
             this.getNavigation().stop();
             this.getNavigation().timeoutPath();
             this.setRot(this.getYRot(), this.getXRot());
+        }
+
+        if (this.isSitting()) {
+            this.setOrderedToSit(true);
+        }
+
+        if (!this.isSitting()) {
+            this.setOrderedToSit(false);
+        }
+
+        String s = ChatFormatting.stripFormatting(this.getName().getString());
+        if (s.equals("Bluedude") || s.equals("bluedude")) {
+            this.setVariant(14);
         }
     }
 
