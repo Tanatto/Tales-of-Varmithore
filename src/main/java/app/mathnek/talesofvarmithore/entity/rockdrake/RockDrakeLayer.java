@@ -12,7 +12,7 @@ import software.bernie.geckolib3.renderers.geo.IGeoRenderer;
 public class RockDrakeLayer extends GeoLayerRenderer<RockDrakeEntity> {
 
     private static final ResourceLocation LAYER = new ResourceLocation(TalesofVarmithore.MOD_ID, "textures/entity/rockdrake/equipment.png");
-    private static final ResourceLocation MODEL = new ResourceLocation(TalesofVarmithore.MOD_ID, "geo/rockdrake_egg.geo.json");
+    private static final ResourceLocation MODEL = new ResourceLocation(TalesofVarmithore.MOD_ID, "geo/rockdrake.geo.json");
 
 
     public RockDrakeLayer(IGeoRenderer<?> entityRendererIn) {

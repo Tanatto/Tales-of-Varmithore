@@ -32,10 +32,7 @@
   "item.tov.rockdrake_spawn_egg": "Rock Drake",
   "item.tov.wilkor_spawn_egg": "Wilkor",
   "item.tov.rockdrake_spawn_egg": "RockDrake",
-  "item.tov.rockdrake_egg": "RockDrake Egg",
   "itemGroup.tov_tab": "Tales of Varmithore",
   "key.category.tov": "Tales of Varmithore",
-  "key.tov.bite": "Bite",
-  "egg.warm.toHatch": "Egg is okay and incubating",
-  "egg.cold.toHatch": "Egg is cold and failing to incubate"
+  "key.tov.bite": "Bite"
 }

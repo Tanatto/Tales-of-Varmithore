@@ -4,11 +4,11 @@ license="MIT"
 
 [[mods]]
 modId="tov"
-version="1.0"
+version="0.1"
 displayName="Tales of Varmithore"
 logoFile="tov.png"
-credits="Kundzio, Ghanou Craft, Arsian, FeatherStorm208"
-authors="Ghanou Craft"
+credits="Kundzio, Ghanou Craft, Arsian, FeatherStorm208, NaniTheDuck, Ceadrisc, Happysg, Bluedude, It's Cat"
+authors="Ghanou Craft, Kundzio"
 description='''Tales of Varmithore.. A fantasy themed mod that will bring so much new content to your world!
 '''
 [[dependencies.tov]]

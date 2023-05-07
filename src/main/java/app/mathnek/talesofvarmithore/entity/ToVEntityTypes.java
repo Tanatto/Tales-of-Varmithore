@@ -2,11 +2,9 @@ package app.mathnek.talesofvarmithore.entity;
 
 import app.mathnek.talesofvarmithore.TalesofVarmithore;
 import app.mathnek.talesofvarmithore.entity.azulite.AzuliteEntity;
-import app.mathnek.talesofvarmithore.entity.eggs.rockdrake.RockDrakeEgg;
 import app.mathnek.talesofvarmithore.entity.rockdrake.RockDrakeEntity;
 import app.mathnek.talesofvarmithore.entity.wilkor.WilkorEntity;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -38,11 +36,17 @@ public class ToVEntityTypes {
                             .sized(0.8f, 2.0f)
                             .build(new ResourceLocation(TalesofVarmithore.MOD_ID, "rockdrake").toString()));
 
-    public static final RegistryObject<EntityType<RockDrakeEgg>> ROCKDRAKE_EGG =
+    /*public static final RegistryObject<EntityType<EntityRockDrake>> ROCKDRAKE =
+            ENTITY_TYPES.register("rockdrake",
+                    () -> EntityType.Builder.of(EntityRockDrake::new, MobCategory.CREATURE)
+                            .sized(0.8f, 2.0f)
+                            .build(new ResourceLocation(TalesofVarmithore.MOD_ID, "rockdrake").toString()));*/
+
+    /*public static final RegistryObject<EntityType<RockDrakeEgg>> ROCKDRAKE_EGG =
             ENTITY_TYPES.register("rockdrake_egg",
                     () -> EntityType.Builder.of(RockDrakeEgg::new, MobCategory.MISC)
                     .sized(0.5F, 0.5F)
-                    .build((new ResourceLocation(TalesofVarmithore.MOD_ID, "rockdrake_egg")).toString()));
+                    .build((new ResourceLocation(TalesofVarmithore.MOD_ID, "rockdrake_egg")).toString()));*/
 
 
     public static void register(IEventBus eventBus) {

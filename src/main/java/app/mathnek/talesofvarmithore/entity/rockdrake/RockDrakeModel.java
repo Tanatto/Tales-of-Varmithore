@@ -8,7 +8,7 @@ public class RockDrakeModel extends AnimatedGeoModel<RockDrakeEntity> {
 
     @Override
     public ResourceLocation getModelLocation(RockDrakeEntity object) {
-        return new ResourceLocation(TalesofVarmithore.MOD_ID, "geo/rockdrake_egg.geo.json");
+        return new ResourceLocation(TalesofVarmithore.MOD_ID, "geo/rockdrake.geo.json");
     }
 
     @Override
