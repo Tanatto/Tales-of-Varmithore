@@ -4,6 +4,7 @@ import app.mathnek.talesofvarmithore.entity.ToVEntityTypes;
 import app.mathnek.talesofvarmithore.entity.ai.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -19,10 +20,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FollowParentGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.SaddleItem;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
@@ -37,6 +35,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 
 public class RockDrakeEntity extends TamableAnimal implements IAnimatable, Saddleable {
 
@@ -69,6 +68,7 @@ public class RockDrakeEntity extends TamableAnimal implements IAnimatable, Saddl
         this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 0.7D));
         this.goalSelector.addGoal(7, new ToVLookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(7, new ToVRandomLookAroundGoal(this));
+        this.goalSelector.addGoal(6, new ToVWaterAvoidingRandomStrollGoal(this, 0.7, 1.0000001E-5F));
     }
 
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @javax.annotation.Nullable SpawnGroupData pSpawnData, @javax.annotation.Nullable CompoundTag pDataTag) {
@@ -145,9 +145,8 @@ public class RockDrakeEntity extends TamableAnimal implements IAnimatable, Saddl
             this.setCommands(this.getCommand() + 1);
         }
 
-        /*String wandering = "command.bdd.wander";
-        String sitting = "command.bdd.sit";
-        String following = "command.bdd.follow";
+        String wandering = "command.tov.wander";
+        String sitting = "command.tov.sit";
         switch (this.getCommand()) {
             case 0:
             default:
@@ -156,10 +155,7 @@ public class RockDrakeEntity extends TamableAnimal implements IAnimatable, Saddl
             case 1:
                 player.displayClientMessage(new TranslatableComponent(sitting, new Object[]{Integer.toString(this.getCommand())}), true);
                 break;
-            case 2:
-                player.displayClientMessage(new TranslatableComponent(following, new Object[]{Integer.toString(this.getCommand())}), true);
-                break;
-        }*/
+        }
 
     }
 
@@ -238,19 +234,50 @@ public class RockDrakeEntity extends TamableAnimal implements IAnimatable, Saddl
         }
 
 
-        if (!isBaby() && item == Items.COOKIE) {
+        if (isBaby() && itemstack.isEmpty()) {
             if (this.random.nextInt(7) == 0 && !ForgeEventFactory.onAnimalTame(this, player)) {
                 this.tame(player);
                 this.navigation.stop();
                 this.setTarget((LivingEntity) null);
                 this.level.broadcastEntityEvent(this, (byte) 7);
-                if (!player.getAbilities().instabuild && !player.getLevel().isClientSide()) {
+                /*if (!player.getAbilities().instabuild && !player.getLevel().isClientSide()) {
                     itemstack.shrink(1);
-                }
+                }*/
             }
         }
 
         return super.mobInteract(player, hand);
+    }
+
+    public InteractionResult checkAndHandleImportantInteractions(Player pPlayer, InteractionHand pHand) {
+        ItemStack itemstack = pPlayer.getItemInHand(pHand);
+        if (itemstack.is(Items.LEAD) && this.canBeLeashed(pPlayer)) {
+            this.setLeashedTo(pPlayer, true);
+            itemstack.shrink(1);
+            return InteractionResult.sidedSuccess(this.level.isClientSide);
+        } else {
+            if (itemstack.is(Items.NAME_TAG) && isOwnedBy(pPlayer)) {
+                InteractionResult interactionresult = itemstack.interactLivingEntity(pPlayer, this, pHand);
+                if (interactionresult.consumesAction()) {
+                    return interactionresult;
+                }
+            }
+
+            if (itemstack.getItem() instanceof SpawnEggItem) {
+                if (this.level instanceof ServerLevel) {
+                    SpawnEggItem spawneggitem = (SpawnEggItem) itemstack.getItem();
+                    Optional<Mob> optional = spawneggitem.spawnOffspringFromSpawnEgg(pPlayer, this, (EntityType<? extends Mob>) this.getType(), (ServerLevel) this.level, this.position(), itemstack);
+                    optional.ifPresent((p_21476_) -> {
+                        this.onOffspringSpawnedFromEgg(pPlayer, p_21476_);
+                    });
+                    return optional.isPresent() ? InteractionResult.SUCCESS : InteractionResult.PASS;
+                } else {
+                    return InteractionResult.CONSUME;
+                }
+            } else {
+                return InteractionResult.PASS;
+            }
+        }
     }
 
     protected void doPlayerRide(Player pPlayer) {

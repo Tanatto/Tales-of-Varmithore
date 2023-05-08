@@ -4,6 +4,7 @@ import app.mathnek.talesofvarmithore.block.ToVBlocks;
 import app.mathnek.talesofvarmithore.entity.ToVEntityTypes;
 import app.mathnek.talesofvarmithore.entity.azulite.AzuliteRenderer;
 import app.mathnek.talesofvarmithore.entity.rockdrake.RockDrakeRenderer;
+import app.mathnek.talesofvarmithore.entity.rockdrake.egg.RockDrakeEggRenderer;
 import app.mathnek.talesofvarmithore.entity.wilkor.WilkorRenderer;
 import app.mathnek.talesofvarmithore.item.ToVItems;
 import app.mathnek.talesofvarmithore.sound.ToVSounds;
@@ -49,7 +50,7 @@ public class TalesofVarmithore {
         EntityRenderers.register(ToVEntityTypes.AZULITE.get(), AzuliteRenderer::new);
         EntityRenderers.register(ToVEntityTypes.ROCKDRAKE.get(), RockDrakeRenderer::new);
 
-        //EntityRenderers.register(ToVEntityTypes.ROCKDRAKE_EGG.get(), RockDrakeEggRenderer::new);
+        EntityRenderers.register(ToVEntityTypes.ROCKDRAKE_EGG.get(), RockDrakeEggRenderer::new);
 
         ItemBlockRenderTypes.setRenderLayer(ToVBlocks.PERSILA.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(ToVBlocks.UNCIA.get(), RenderType.cutout());

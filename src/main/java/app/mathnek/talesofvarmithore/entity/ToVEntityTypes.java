@@ -3,6 +3,7 @@ package app.mathnek.talesofvarmithore.entity;
 import app.mathnek.talesofvarmithore.TalesofVarmithore;
 import app.mathnek.talesofvarmithore.entity.azulite.AzuliteEntity;
 import app.mathnek.talesofvarmithore.entity.rockdrake.RockDrakeEntity;
+import app.mathnek.talesofvarmithore.entity.rockdrake.egg.RockDrakeEgg;
 import app.mathnek.talesofvarmithore.entity.wilkor.WilkorEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -36,11 +37,10 @@ public class ToVEntityTypes {
                             .sized(0.8f, 2.0f)
                             .build(new ResourceLocation(TalesofVarmithore.MOD_ID, "rockdrake").toString()));
 
-    /*public static final RegistryObject<EntityType<EntityRockDrake>> ROCKDRAKE =
-            ENTITY_TYPES.register("rockdrake",
-                    () -> EntityType.Builder.of(EntityRockDrake::new, MobCategory.CREATURE)
-                            .sized(0.8f, 2.0f)
-                            .build(new ResourceLocation(TalesofVarmithore.MOD_ID, "rockdrake").toString()));*/
+    public static final RegistryObject<EntityType<RockDrakeEgg>> ROCKDRAKE_EGG = ENTITY_TYPES.register("rockdrake_egg",
+            () -> EntityType.Builder.of(RockDrakeEgg::new, MobCategory.MISC).sized(PIXEL * 7, PIXEL * 9)
+                    .build(new ResourceLocation(TalesofVarmithore.MOD_ID, "rockdrake_egg").toString()));
+
 
     /*public static final RegistryObject<EntityType<RockDrakeEgg>> ROCKDRAKE_EGG =
             ENTITY_TYPES.register("rockdrake_egg",

@@ -1,5 +1,6 @@
 package app.mathnek.talesofvarmithore.entity.rockdrake;
 
+import app.mathnek.talesofvarmithore.entity.DragonEggBase;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -7,6 +8,8 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
+
+import javax.annotation.Nullable;
 
 public class RockDrakeRenderer extends GeoEntityRenderer<RockDrakeEntity> {
     public RockDrakeRenderer(EntityRendererProvider.Context renderManager) {
@@ -24,6 +27,7 @@ public class RockDrakeRenderer extends GeoEntityRenderer<RockDrakeEntity> {
         } else {
             //stack.scale(1F, 1F, 1F);
         }
-        return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn, textureLocation);
+        //return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn, textureLocation);
+        return RenderType.entityCutoutNoCull(textureLocation);
     }
 }

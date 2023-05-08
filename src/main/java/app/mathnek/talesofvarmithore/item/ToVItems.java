@@ -28,13 +28,13 @@ public class ToVItems {
             () -> new ForgeSpawnEggItem(ToVEntityTypes.AZULITE,0x948e8d, 0x3b3635,
                     new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB)));
 
-    /*public static final RegistryObject<DragonSpawnEggItem> ROCKDRAKE_SPAWN_EGG = ITEMS.register("rockdrake_spawn_egg",
+    public static final RegistryObject<DragonSpawnEggItem> ROCKDRAKE_SPAWN_EGG = ITEMS.register("rockdrake_spawn_egg",
             () -> new DragonSpawnEggItem(ToVEntityTypes.ROCKDRAKE, 0x425d57, 0xc5591b,
-                    new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB).stacksTo(64)));*/
+                    new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB).stacksTo(64)));
 
-    /*public static final RegistryObject<DragonEggItem> ROCKDRAKE_EGG = ITEMS.register("rockdrake_egg",
+    public static final RegistryObject<DragonEggItem> ROCKDRAKE_EGG = ITEMS.register("rockdrake_egg",
             () -> new DragonEggItem(new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB).stacksTo(4),
-                    ToVEntityTypes.ROCKDRAKE_EGG));*/
+                    ToVEntityTypes.ROCKDRAKE_EGG));
 
     public static final RegistryObject<Item> OBSAIDON_SHARD = ITEMS.register("obsaidon_shard",
             () -> new Item(new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB)));
