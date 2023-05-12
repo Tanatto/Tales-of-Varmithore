@@ -16,6 +16,7 @@ public class BlocksStateProvider extends BlockStateProvider {
     protected void registerStatesAndModels() {
         simpleBlock(ToVBlocks.LAVACORE_ORE.get());
         simpleBlock(ToVBlocks.MIRCH_LEAVES.get());
+        simpleBlock(ToVBlocks.MIRCH_PLANKS.get());
         simpleBlock(ToVBlocks.MAGMA_BRICK.get());
         simpleBlock(ToVBlocks.HARD_GLASS.get());
 

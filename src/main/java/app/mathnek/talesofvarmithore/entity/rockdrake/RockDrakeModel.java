@@ -42,6 +42,8 @@ public class RockDrakeModel extends AnimatedGeoModel<RockDrakeEntity> {
             case 13:
                 return new ResourceLocation(TalesofVarmithore.MOD_ID, "textures/entity/rockdrake/wholered.png");
             case 14:
+                return new ResourceLocation(TalesofVarmithore.MOD_ID, "textures/entity/rockdrake/drake_ice.png");
+            case 15:
                 return new ResourceLocation(TalesofVarmithore.MOD_ID, "textures/entity/rockdrake/drake_bluedude.png");
         }
     }

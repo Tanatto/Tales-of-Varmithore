@@ -2,16 +2,17 @@ package app.mathnek.talesofvarmithore.entity.ai;
 
 import java.util.EnumSet;
 
+import app.mathnek.talesofvarmithore.entity.BaseEntityClass;
 import app.mathnek.talesofvarmithore.entity.rockdrake.RockDrakeEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 
 public class ToVRandomLookAroundGoal extends Goal {
-   private final RockDrakeEntity dragon;
+   private final BaseEntityClass dragon;
    private double relX;
    private double relZ;
    private int lookTime;
 
-   public ToVRandomLookAroundGoal(RockDrakeEntity pMob) {
+   public ToVRandomLookAroundGoal(BaseEntityClass pMob) {
       this.dragon = pMob;
       this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
    }

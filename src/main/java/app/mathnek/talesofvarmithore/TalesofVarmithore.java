@@ -7,11 +7,16 @@ import app.mathnek.talesofvarmithore.entity.rockdrake.RockDrakeRenderer;
 import app.mathnek.talesofvarmithore.entity.rockdrake.egg.RockDrakeEggRenderer;
 import app.mathnek.talesofvarmithore.entity.wilkor.WilkorRenderer;
 import app.mathnek.talesofvarmithore.item.ToVItems;
+import app.mathnek.talesofvarmithore.network.ControlNetwork;
 import app.mathnek.talesofvarmithore.sound.ToVSounds;
 import app.mathnek.talesofvarmithore.util.ToVKeybinds;
+import app.mathnek.talesofvarmithore.world.ToVStructures;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -27,7 +32,7 @@ import software.bernie.geckolib3.GeckoLib;
 public class TalesofVarmithore {
     public static final String MOD_ID = "tov";
 
-    private static final Logger LOGGER = LogManager.getLogger();
+    public static final Logger LOGGER = LogManager.getLogger();
 
     public TalesofVarmithore() {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -36,6 +41,7 @@ public class TalesofVarmithore {
         ToVBlocks.register(eventBus);
         ToVSounds.register(eventBus);
         ToVEntityTypes.register(eventBus);
+        ToVStructures.register(eventBus);
 
         eventBus.addListener(this::setup);
         eventBus.addListener(this::clientSetup);
@@ -60,13 +66,13 @@ public class TalesofVarmithore {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
-        //ControlNetwork.init();
+        ControlNetwork.init();
         event.enqueueWork(() -> {
         });
 
-        /*SpawnPlacements.register(ToVEntityTypes.ROCKDRAKE.get(),
+        SpawnPlacements.register(ToVEntityTypes.ROCKDRAKE.get(),
                 SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                Animal::checkAnimalSpawnRules);*/
+                Animal::checkAnimalSpawnRules);
     }
 }

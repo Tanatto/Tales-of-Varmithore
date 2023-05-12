@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " X ",
+    "X#X",
+    "   "
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:lead"
+    },
+    "X": {
+      "item": "tov:feather_tipped"
+    }
+  },
+  "result": {
+    "item": "tov:feather_tipped_bunch"
+  }
+}

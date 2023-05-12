@@ -1,7 +1,12 @@
 package app.mathnek.talesofvarmithore.entity.wilkor;
 
+import app.mathnek.talesofvarmithore.entity.BaseEntityClass;
 import app.mathnek.talesofvarmithore.entity.ToVEntityTypes;
+import app.mathnek.talesofvarmithore.entity.ai.ToVHurtByTargetGoal;
+import app.mathnek.talesofvarmithore.entity.ai.ToVMeleeAttackGoal;
+import app.mathnek.talesofvarmithore.entity.ai.WilkorResetUniversalAngerTargetGoal;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -9,21 +14,22 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.BiomeTags;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.util.TimeUtil;
+import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.*;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.animal.horse.SkeletonHorse;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.monster.Stray;
 import net.minecraft.world.entity.npc.Villager;
@@ -32,8 +38,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.scores.Team;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.ForgeEventFactory;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -44,39 +54,69 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class WilkorEntity extends TamableAnimal implements IAnimatable {
-    private AnimationFactory factory = new AnimationFactory(this);
+import java.util.UUID;
 
-    private static final EntityDataAccessor<Boolean> SITTING =
-            SynchedEntityData.defineId(WilkorEntity.class, EntityDataSerializers.BOOLEAN);
+public class WilkorEntity extends BaseEntityClass implements IAnimatable {
+    private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME =
+            SynchedEntityData.defineId(WilkorEntity.class, EntityDataSerializers.INT);
 
-    public WilkorEntity(EntityType<? extends TamableAnimal> entityType, Level level) {
+    private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
+    @javax.annotation.Nullable
+    private UUID persistentAngerTarget;
+
+    public WilkorEntity(EntityType<? extends BaseEntityClass> entityType, Level level) {
         super(entityType, level);
     }
 
     public static AttributeSupplier setAttributes() {
         return TamableAnimal.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 70.0D)
+                .add(Attributes.MAX_HEALTH, 45.0D)
                 .add(Attributes.ATTACK_DAMAGE, 5.0f)
                 .add(Attributes.ATTACK_SPEED, 5.0f)
                 .add(Attributes.MOVEMENT_SPEED, 0.3f).build();
     }
 
+    @Override
+    public int getMaxAmountOfVariants() {
+        return 6;
+    }
+
+    private int getTypeForBiome(ServerLevelAccessor pLevel) {
+        Holder<Biome> biome = pLevel.getBiome(new BlockPos(this.position()));
+        if (biome.is(BiomeTags.HAS_RUINED_PORTAL_DESERT) || biome.is(BiomeTags.HAS_DESERT_PYRAMID)) {
+            return 4;
+        }
+        if (biome.is(BiomeTags.HAS_RUINED_PORTAL_DESERT) || biome.is(BiomeTags.HAS_DESERT_PYRAMID)) {
+            return 5;
+        }
+
+        return 0;
+    }
+
+    @javax.annotation.Nullable
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @javax.annotation.Nullable SpawnGroupData pSpawnData, @javax.annotation.Nullable CompoundTag pDataTag) {
+        pSpawnData = super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+        if (pReason == MobSpawnType.SPAWN_EGG) {
+            this.setVariant(this.getRandom().nextInt(getMaxAmountOfVariants()));
+        } else {
+            this.setVariant(getTypeForBiome(pLevel));
+        }
+        return pSpawnData;
+    }
+
+    @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
-        this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false));
-        this.goalSelector.addGoal(2, new FollowParentGoal(this, 1.0D));
-        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
 
         this.targetSelector.addGoal(2, (new OwnerHurtByTargetGoal(this)));
         this.targetSelector.addGoal(2, (new OwnerHurtTargetGoal(this)));
-        this.targetSelector.addGoal(2, (new HurtByTargetGoal(this)).setAlertOthers());
+        this.targetSelector.addGoal(8, new WilkorResetUniversalAngerTargetGoal<>(this, true));
+        this.targetSelector.addGoal(8, new ToVMeleeAttackGoal(this, 1.0D, false));
+        this.targetSelector.addGoal(8, new ToVHurtByTargetGoal(this).setAlertOthers());
 
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Sheep.class, true));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Ocelot.class, true));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Cow.class, true));
@@ -87,7 +127,6 @@ public class WilkorEntity extends TamableAnimal implements IAnimatable {
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Skeleton.class, true));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, SkeletonHorse.class, true));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Stray.class, true));
-
     }
 
     @Nullable
@@ -102,20 +141,23 @@ public class WilkorEntity extends TamableAnimal implements IAnimatable {
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (event.isMoving() && !this.isTame()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("wilkor.walk", true));
+        if (event.isMoving()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("direwolf.walk", true));
             return PlayState.CONTINUE;
         }
-        if (event.isMoving() && this.isTame()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("wilkor.run", true));
+        if (event.isMoving() && this.isVehicle()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("direwolf.run", true));
             return PlayState.CONTINUE;
         }
-        if (this.isSitting()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("wilkor.sit", true));
+        if (this.isEntitySitting()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("direwolf.sit", true));
             return PlayState.CONTINUE;
         }
-
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("wilkor.idle", true));
+        if (this.isEntitySleeping()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("direwolf.sleep", true));
+            return PlayState.CONTINUE;
+        }
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("direwolf.idle", true));
         return PlayState.CONTINUE;
     }
 
@@ -130,71 +172,57 @@ public class WilkorEntity extends TamableAnimal implements IAnimatable {
         ItemStack itemstack = player.getItemInHand(hand);
         Item item = itemstack.getItem();
 
-        Item itemForTaming = Items.BONE;
+        Item itemForTaming = Items.BEEF;
 
-        if (item == itemForTaming && !isTame()) {
-            if (this.level.isClientSide) {
-                return InteractionResult.CONSUME;
-            } else {
-                if (!player.getAbilities().instabuild) {
-                    itemstack.shrink(1);
-                }
-
-                if (!ForgeEventFactory.onAnimalTame(this, player)) {
-                    if (!this.level.isClientSide) {
-                        super.tame(player);
-                        this.navigation.recomputePath();
-                        this.setTarget(null);
-                        this.level.broadcastEntityEvent(this, (byte)7);
-                        setSitting(true);
-                    }
-                }
-
+        if (!isTame()/* && isBaby()*/ && !isCommandItem(itemstack)) {
+            if (!level.isClientSide() && item == itemForTaming && !isTame()) {
+                itemstack.shrink(1);
+                tamedFor(player, getRandom().nextInt(5) == 0);
                 return InteractionResult.SUCCESS;
             }
-        }
 
-        if(isTame() && !this.level.isClientSide && item == Items.STICK) {
-            setSitting(!isSitting());
-            return InteractionResult.SUCCESS;
-        }
-
-        if(isFood(itemstack) && this.isTame()) {
-            return super.mobInteract(player, hand);
-        }
-
-        if (itemstack.getItem() == itemForTaming) {
             return InteractionResult.PASS;
         }
 
         return super.mobInteract(player, hand);
     }
 
-    @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        setSitting(tag.getBoolean("isSitting"));
+    public void tamedFor(Player player, boolean successful) {
+        if (successful) {
+            setTame(true);
+            navigation.stop();
+            setTarget(null);
+            setOwnerUUID(player.getUUID());
+            level.broadcastEntityEvent(this, (byte) 7);
+        }
+        else {
+            level.broadcastEntityEvent(this, (byte) 6);
+        }
     }
 
-    @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putBoolean("isSitting", this.isSitting());
+    public boolean isTamedFor(Player player) {
+        return isTame() && isOwnedBy(player);
     }
 
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(SITTING, false);
+    public int getRemainingPersistentAngerTime() {
+        return this.entityData.get(DATA_REMAINING_ANGER_TIME);
     }
 
-    public void setSitting(boolean sitting) {
-        this.entityData.set(SITTING, sitting);
-        this.setOrderedToSit(sitting);
+    public void setRemainingPersistentAngerTime(int pTime) {
+        this.entityData.set(DATA_REMAINING_ANGER_TIME, pTime);
     }
 
-    public boolean isSitting() {
-        return this.entityData.get(SITTING);
+    public void startPersistentAngerTimer() {
+        this.setRemainingPersistentAngerTime(PERSISTENT_ANGER_TIME.sample(this.random));
+    }
+
+    @javax.annotation.Nullable
+    public UUID getPersistentAngerTarget() {
+        return this.persistentAngerTarget;
+    }
+
+    public void setPersistentAngerTarget(@javax.annotation.Nullable UUID pTarget) {
+        this.persistentAngerTarget = pTarget;
     }
 
     @Override
@@ -210,19 +238,19 @@ public class WilkorEntity extends TamableAnimal implements IAnimatable {
     public void setTame(boolean tamed) {
         super.setTame(tamed);
         if (tamed) {
-            getAttribute(Attributes.MAX_HEALTH).setBaseValue(80.0D);
+            getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0D);
             getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(6D);
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue((double)0.4f);
         } else {
-            getAttribute(Attributes.MAX_HEALTH).setBaseValue(70.0D);
+            getAttribute(Attributes.MAX_HEALTH).setBaseValue(45.0D);
             getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(5D);
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue((double)0.3f);
         }
     }
 
     @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public boolean isNocturnal() {
+        return true;
     }
 
     protected void playStepSound(BlockPos pos, BlockState blockIn) {
@@ -244,5 +272,4 @@ public class WilkorEntity extends TamableAnimal implements IAnimatable {
     protected float getSoundVolume() {
         return 0.2F;
     }
-
 }

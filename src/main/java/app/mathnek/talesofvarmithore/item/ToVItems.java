@@ -39,6 +39,18 @@ public class ToVItems {
     public static final RegistryObject<Item> OBSAIDON_SHARD = ITEMS.register("obsaidon_shard",
             () -> new Item(new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB)));
 
+    public static final RegistryObject<Item> FEATHER_TIPPED = ITEMS.register("feather_tipped",
+            () -> new Item(new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB)));
+
+    public static final RegistryObject<Item> FEATHER_TIPPED_BUNCH = ITEMS.register("feather_tipped_bunch",
+            () -> new Item(new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB)));
+
+    public static final RegistryObject<Item> ROCKDRAKE_MEAT = ITEMS.register("rockdrake_meat",
+            () -> new Item(new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB).food(ToVFood.ROCKDRAKE_MEAT).stacksTo(64)));
+
+    public static final RegistryObject<Item> ROCKDRAKE_MEAT_COOKED = ITEMS.register("rockdrake_meat_cooked",
+            () -> new Item(new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB).food(ToVFood.ROCKDRAKE_MEAT_COOKED).stacksTo(64)));
+
     public static final RegistryObject<Item> OBSAIDON_CRYSTAL = ITEMS.register("obsaidon_crystal",
             () -> new Item(new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB)));
     public static final RegistryObject<Item> LAVACORE_INGOT = ITEMS.register("lavacore_ingot",

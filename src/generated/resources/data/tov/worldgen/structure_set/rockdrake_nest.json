@@ -1,0 +1,17 @@
+{
+  "structures": [
+    {
+      "structure": "tov:rockdrake_nest",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 4576246752,
+
+    "spacing": 30,
+
+    "separation": 15,
+
+    "type": "minecraft:random_spread"
+  }
+}

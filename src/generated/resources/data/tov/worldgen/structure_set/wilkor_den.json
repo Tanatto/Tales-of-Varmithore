@@ -1,0 +1,17 @@
+{
+  "structures": [
+    {
+      "structure": "tov:wilkor_den",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 4576246782,
+
+    "spacing": 30,
+
+    "separation": 15,
+
+    "type": "minecraft:random_spread"
+  }
+}

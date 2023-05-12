@@ -1,58 +1,69 @@
 package app.mathnek.talesofvarmithore.entity.rockdrake;
 
+import app.mathnek.talesofvarmithore.entity.BaseEntityClass;
 import app.mathnek.talesofvarmithore.entity.ToVEntityTypes;
-import app.mathnek.talesofvarmithore.entity.ai.*;
+import app.mathnek.talesofvarmithore.network.ControlMessageBite;
+import app.mathnek.talesofvarmithore.network.ControlMessageMovingForBite;
+import app.mathnek.talesofvarmithore.network.ControlNetwork;
+import app.mathnek.talesofvarmithore.util.MathB;
+import app.mathnek.talesofvarmithore.util.ToVKeybinds;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientboundAddMobPacket;
+import net.minecraft.network.syncher.*;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BiomeTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.FollowParentGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
+import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-public class RockDrakeEntity extends TamableAnimal implements IAnimatable, Saddleable {
+public class RockDrakeEntity extends BaseEntityClass {
 
-    private AnimationFactory factory = new AnimationFactory(this);
-    protected static final EntityDataAccessor<Boolean> SITTING =
-            SynchedEntityData.defineId(RockDrakeEntity.class, EntityDataSerializers.BOOLEAN);
-    protected static final EntityDataAccessor<Integer> COMMANDS =
-            SynchedEntityData.defineId(RockDrakeEntity.class, EntityDataSerializers.INT);
+    EntityPart[] subParts;
+    EntityPart rockdrakeBiteOffset;
 
-    protected static final EntityDataAccessor<Integer> VARIANTS =
-            SynchedEntityData.defineId(RockDrakeEntity.class, EntityDataSerializers.INT);
-
-    private static final EntityDataAccessor<Boolean> SADDLED =
+    private static final EntityDataAccessor<Boolean> BITING_DAMAGE =
             SynchedEntityData.defineId(RockDrakeEntity.class, EntityDataSerializers.BOOLEAN);
 
-    public RockDrakeEntity(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) {
+    protected static final EntityDataAccessor<Boolean> BITING =
+            SynchedEntityData.defineId(RockDrakeEntity.class, EntityDataSerializers.BOOLEAN);
+
+    public RockDrakeEntity(EntityType<? extends BaseEntityClass> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
+        this.rockdrakeBiteOffset = new EntityPart(this, "rockdrakeBiteOffset", 1.5F, 1.5F);
+        this.subParts = new EntityPart[]{this.rockdrakeBiteOffset};
     }
 
     public static AttributeSupplier setAttributes() {
@@ -63,25 +74,16 @@ public class RockDrakeEntity extends TamableAnimal implements IAnimatable, Saddl
                 .add(Attributes.MOVEMENT_SPEED, 0.3f).build();
     }
 
-    protected void registerGoals() {
-        this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.0D));
-        this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 0.7D));
-        this.goalSelector.addGoal(7, new ToVLookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(7, new ToVRandomLookAroundGoal(this));
-        this.goalSelector.addGoal(6, new ToVWaterAvoidingRandomStrollGoal(this, 0.7, 1.0000001E-5F));
-    }
-
-    public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @javax.annotation.Nullable SpawnGroupData pSpawnData, @javax.annotation.Nullable CompoundTag pDataTag) {
-        pSpawnData = super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
-        this.setVariant(this.random.nextInt(this.getMaxAmountOfVariants()));
-        return pSpawnData;
-    }
-
+    @Override
     public int getMaxAmountOfVariants() {
-        return 13;
+        return 14;
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+        if (this.isBaby()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("baby", true));
+            return PlayState.CONTINUE;
+        }
         if (event.isMoving()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.walk", true));
             return PlayState.CONTINUE;
@@ -90,8 +92,16 @@ public class RockDrakeEntity extends TamableAnimal implements IAnimatable, Saddl
             event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.run", true));
             return PlayState.CONTINUE;
         }
-        if (this.isSitting()) {
+        if (this.isEntitySitting()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.sit", true));
+            return PlayState.CONTINUE;
+        }
+        if (this.isEntitySleeping()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.sleep", true));
+            return PlayState.CONTINUE;
+        }
+        if (event.isMoving() && this.isInWater()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.swim", true));
             return PlayState.CONTINUE;
         }
 
@@ -99,286 +109,175 @@ public class RockDrakeEntity extends TamableAnimal implements IAnimatable, Saddl
         return PlayState.CONTINUE;
     }
 
-    @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        setIsSitting(tag.getBoolean("isSitting"));
-        setVariant(tag.getInt("variant"));
-        setSaddled(tag.getBoolean("Saddled"));
-        this.setCommands(tag.getInt("commands"));
-    }
 
-    @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putBoolean("isSitting", this.isSitting());
-        tag.putInt("variant", this.getVariant());
-        tag.putBoolean("Saddled", this.isSaddled());
-        tag.putInt("commands", this.getCommand());
-    }
-
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(SITTING, false);
-        this.entityData.define(VARIANTS, 0);
-        this.entityData.define(SADDLED, false);
-        this.entityData.define(COMMANDS, 0);
-    }
-
-    public boolean shouldStopMovingIndependently() {
-        return this.isSitting() && !this.isVehicle();
-    }
-
-    public int getCommand() {
-        return (Integer)this.entityData.get(COMMANDS);
-    }
-
-    public void setCommands(int commands) {
-        this.entityData.set(COMMANDS, commands);
-    }
-
-    public void modifyCommand(int limit, Player player) {
-        if (this.getCommand() >= limit) {
-            this.setCommands(0);
-        } else {
-            this.setCommands(this.getCommand() + 1);
+    private <E extends IAnimatable> PlayState attackController(AnimationEvent<E> event) {
+        if (IsBiting()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.bite", true));
+            return PlayState.CONTINUE;
         }
-
-        String wandering = "command.tov.wander";
-        String sitting = "command.tov.sit";
-        switch (this.getCommand()) {
-            case 0:
-            default:
-                player.displayClientMessage(new TranslatableComponent(wandering, new Object[]{Integer.toString(this.getCommand())}), true);
-                break;
-            case 1:
-                player.displayClientMessage(new TranslatableComponent(sitting, new Object[]{Integer.toString(this.getCommand())}), true);
-                break;
-        }
-
-    }
-
-    public boolean isWandering() {
-        return (Integer)this.entityData.get(COMMANDS) == 0;
-    }
-
-    public boolean isSitting() {
-        return (Integer)this.entityData.get(COMMANDS) == 1;
-    }
-
-    public void setIsWandering(boolean wandering) {
-        if (wandering) {
-            this.entityData.set(COMMANDS, 0);
-        }
-    }
-
-    public void setIsSitting(boolean sitting) {
-        if (sitting) {
-            this.entityData.set(COMMANDS, 1);
-        }
-    }
-
-    public int getVariant() {
-        return (Integer)this.entityData.get(VARIANTS);
-    }
-
-    public void setVariant(int pType) {
-        this.entityData.set(VARIANTS, pType);
-    }
-
-
-    public boolean isSaddled() {
-        return entityData.get(SADDLED);
-    }
-
-    @Override
-    public boolean isSaddleable() {
-        return isAlive() && !isBaby() && isTame();
-    }
-
-    @Override
-    public void equipSaddle(@Nullable SoundSource source) {
-        setSaddled(true);
-        level.playSound(null, getX(), getY(), getZ(), SoundEvents.HORSE_SADDLE, getSoundSource(), 1, 1);
-    }
-
-    public void setSaddled(boolean saddled) {
-        entityData.set(SADDLED, saddled);
+        return PlayState.CONTINUE;
     }
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         Item item = itemstack.getItem();
+        Item itemForTaming = Items.BEEF;
 
-        /*if(isTame() && !this.level.isClientSide && item == Items.STICK) {
-            setIsSitting(!isSitting());
-            return InteractionResult.SUCCESS;
-        }*/
-
-        if (item == Items.STICK && this.isOwnedBy(player)) {
-            this.modifyCommand(2, player);
-            return InteractionResult.SUCCESS;
-        }
-
-        if (isTame() && isSaddleable() && !isSaddled() && itemstack.getItem() instanceof SaddleItem) {
-            itemstack.shrink(1);
-            equipSaddle(getSoundSource());
-            return InteractionResult.SUCCESS;
-        }
-
-        if (isTame() && isSaddled()) {
-            rideInteract(player, hand, itemstack);
-            return InteractionResult.sidedSuccess(this.level.isClientSide);
-        }
-
-
-        if (isBaby() && itemstack.isEmpty()) {
-            if (this.random.nextInt(7) == 0 && !ForgeEventFactory.onAnimalTame(this, player)) {
-                this.tame(player);
-                this.navigation.stop();
-                this.setTarget((LivingEntity) null);
+        if (!isTame()/* && isBaby()*/ && !isCommandItem(itemstack)) {
+            if (!level.isClientSide() && item == itemForTaming && !isTame() && !ForgeEventFactory.onAnimalTame(this, player)) {
+                itemstack.shrink(1);
+                tamedFor(player, getRandom().nextInt(5) == 0);
                 this.level.broadcastEntityEvent(this, (byte) 7);
-                /*if (!player.getAbilities().instabuild && !player.getLevel().isClientSide()) {
-                    itemstack.shrink(1);
-                }*/
+                return InteractionResult.SUCCESS;
             }
+
+            return InteractionResult.PASS;
         }
 
         return super.mobInteract(player, hand);
     }
 
-    public InteractionResult checkAndHandleImportantInteractions(Player pPlayer, InteractionHand pHand) {
-        ItemStack itemstack = pPlayer.getItemInHand(pHand);
-        if (itemstack.is(Items.LEAD) && this.canBeLeashed(pPlayer)) {
-            this.setLeashedTo(pPlayer, true);
-            itemstack.shrink(1);
-            return InteractionResult.sidedSuccess(this.level.isClientSide);
+    public void tamedFor(Player player, boolean successful) {
+        if (successful) {
+            setTame(true);
+            navigation.stop();
+            setTarget(null);
+            setOwnerUUID(player.getUUID());
+            level.broadcastEntityEvent(this, (byte) 7);
+        }
+        else {
+            level.broadcastEntityEvent(this, (byte) 6);
+        }
+    }
+
+    public boolean isTamedFor(Player player) {
+        return isTame() && isOwnedBy(player);
+    }
+
+    @Nullable
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
+        pSpawnData = super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+        if (pReason == MobSpawnType.SPAWN_EGG) {
+            this.setVariant(this.getRandom().nextInt(getMaxAmountOfVariants()));
         } else {
-            if (itemstack.is(Items.NAME_TAG) && isOwnedBy(pPlayer)) {
-                InteractionResult interactionresult = itemstack.interactLivingEntity(pPlayer, this, pHand);
-                if (interactionresult.consumesAction()) {
-                    return interactionresult;
-                }
-            }
-
-            if (itemstack.getItem() instanceof SpawnEggItem) {
-                if (this.level instanceof ServerLevel) {
-                    SpawnEggItem spawneggitem = (SpawnEggItem) itemstack.getItem();
-                    Optional<Mob> optional = spawneggitem.spawnOffspringFromSpawnEgg(pPlayer, this, (EntityType<? extends Mob>) this.getType(), (ServerLevel) this.level, this.position(), itemstack);
-                    optional.ifPresent((p_21476_) -> {
-                        this.onOffspringSpawnedFromEgg(pPlayer, p_21476_);
-                    });
-                    return optional.isPresent() ? InteractionResult.SUCCESS : InteractionResult.PASS;
-                } else {
-                    return InteractionResult.CONSUME;
-                }
-            } else {
-                return InteractionResult.PASS;
-            }
+            this.setVariant(getTypeForBiome(pLevel));
         }
-    }
-
-    protected void doPlayerRide(Player pPlayer) {
-        if (canBeMounted()) {
-            if (!this.level.isClientSide) {
-                if (isTame()) {
-                    pPlayer.setYRot(this.getYRot());
-                    pPlayer.setXRot(this.getXRot());
-                }
-                if (!isSaddled() && !pPlayer.isCreative() && isTame()) {
-                }
-                pPlayer.startRiding(this);
-            }
-            if (getTarget() != null)
-                setTarget(null);
-        }
-    }
-
-    public boolean canBeMounted() {
-        return true;
-    }
-
-    protected void rideInteract(Player pPlayer, InteractionHand pHand, ItemStack itemstack) {
-        if (isTame()) {
-            if (pPlayer == this.getOwner()) {
-                this.doPlayerRide(pPlayer);
-            } else if (pPlayer != getOwner() && getControllingPassenger() == this.getOwner()) {
-                this.doPlayerRide(pPlayer);
-            }
-        }
-    }
-
-    public void travel(Vec3 pTravelVector) {
-        if (this.isAlive()) {
-            if (this.isVehicle() && this.canBeControlledByRider() && this.isSaddled()) {
-                LivingEntity livingentity = (LivingEntity)this.getControllingPassenger();
-                this.setYRot(livingentity.getYRot());
-                this.yRotO = this.getYRot();
-                this.setXRot(livingentity.getXRot() * 0.5F);
-                this.setRot(this.getYRot(), this.getXRot());
-                this.yBodyRot = this.getYRot();
-                this.yHeadRot = this.yBodyRot;
-                float f = livingentity.xxa * 0.5F;
-                float f1 = livingentity.zza;
-
-                this.flyingSpeed = this.getSpeed() * 0.1F;
-                if (this.isControlledByLocalInstance()) {
-                    this.setSpeed((float)this.getAttributeValue(Attributes.MOVEMENT_SPEED));
-                    super.travel(new Vec3((double)f, pTravelVector.y, (double)f1));
-                } else if (livingentity instanceof Player) {
-                    this.setDeltaMovement(Vec3.ZERO);
-                }
-
-                this.calculateEntityAnimation(this, false);
-                this.tryCheckInsideBlocks();
-            } else {
-                this.flyingSpeed = 0.02F;
-                super.travel(pTravelVector);
-            }
-        }
+        return pSpawnData;
     }
 
     @Override
     public void tick() {
         super.tick();
 
-        if (this.shouldStopMovingIndependently()) {
-            this.getNavigation().stop();
-            this.getNavigation().timeoutPath();
-            this.setRot(this.getYRot(), this.getXRot());
-        }
-
-        if (this.isSitting()) {
-            this.setOrderedToSit(true);
-        }
-
-        if (!this.isSitting()) {
-            this.setOrderedToSit(false);
-        }
-
         String s = ChatFormatting.stripFormatting(this.getName().getString());
         if (s.equals("Bluedude") || s.equals("bluedude")) {
-            this.setVariant(14);
+            this.setVariant(15);
+        }
+
+        if (level.isClientSide()) {
+            ControlNetwork.INSTANCE.sendToServer(new ControlMessageBite(IsBitingDamageTrue(), this.getId()));
+        }
+
+        if (level.isClientSide()) {
+            updateClientControls();
+        }
+
+        if (IsBiting()) {
+            this.setXRot(0);
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public void updateClientControls() {
+        if (ToVKeybinds.BITE.isDown()) {
+            ControlNetwork.INSTANCE.sendToServer(new ControlMessageBite(true, getId()));
+        } else {
+            ControlNetwork.INSTANCE.sendToServer(new ControlMessageBite(false, getId()));
         }
     }
 
     @Override
-    public boolean canBeControlledByRider() {
-        return getControllingPassenger() instanceof LivingEntity driver && isOwnedBy(driver);
+    public PartEntity<?>[] getParts() {
+        return this.subParts;
     }
 
     @Override
-    public Entity getControllingPassenger() {
-        List<Entity> list = getPassengers();
-        return list.isEmpty()? null : list.get(0);
+    public void recreateFromPacket(@NotNull ClientboundAddMobPacket mobPacket) {
+        super.recreateFromPacket(mobPacket);
+        PartEntity<?>[] stingerPart = this.getParts();
+
+        for (int i = 0; i < stingerPart.length; ++i) {
+            stingerPart[i].setId(i + mobPacket.getId());
+        }
+
     }
 
-    public void setRidingPlayer(Player player) {
-        player.setYRot(getYRot());
-        player.setXRot(getXRot());
-        player.startRiding(this);
+    @Override
+    public @NotNull Packet<?> getAddEntityPacket() {
+        return new ClientboundAddMobPacket(this);
+    }
+
+    private void tickPart(EntityPart pPart, double pOffsetX, double pOffsetY, double pOffsetZ) {
+        Vec3 lastPos = new Vec3(pPart.getX(), pPart.getY(), pPart.getZ());
+        pPart.setPos(this.getX() + pOffsetX, this.getY() + pOffsetY, this.getZ() + pOffsetZ);
+
+        pPart.xo = lastPos.x;
+        pPart.yo = lastPos.y;
+        pPart.zo = lastPos.z;
+        pPart.xOld = lastPos.x;
+        pPart.yOld = lastPos.y;
+        pPart.zOld = lastPos.z;
+
+    }
+
+    @Override
+    public boolean isMultipartEntity() {
+        return !isBaby();
+    }
+
+    @Override
+    public void aiStep() {
+        super.aiStep();
+        float yRotRadians = MathB.toRadians(this.getYRot());
+        float sinY = Mth.sin(yRotRadians);
+        float cosY = Mth.cos(yRotRadians);
+
+        this.tickPart(this.rockdrakeBiteOffset, 3 * -sinY * 1, IsBiting() ? 0.4D : 2D, 3 * cosY * 1);
+        Vec3 vec3 = this.getDeltaMovement();
+        boolean isMoving = vec3.x > 0 || vec3.y > 0 || vec3.z > 0;
+        if (getControllingPassenger() instanceof Player player) {
+            if (IsBiting() && IsBitingDamageTrue()) {
+                //this.knockBack(this.level.getEntities(this, this.rockdrakeBiteOffset.getBoundingBox().inflate(0.3D, 0.3D, 0.3D).move(0.0D, -0.3D, 0.0D), EntitySelector.NO_CREATIVE_OR_SPECTATOR));
+
+                if (!level.isClientSide()) {
+                    this.hurt(this.level.getEntities(this, this.rockdrakeBiteOffset.getBoundingBox().inflate(1.0D), EntitySelector.NO_CREATIVE_OR_SPECTATOR));
+                }
+            }
+        }
+    }
+
+    private void hurt(List<Entity> pEntities) {
+        for (Entity entity : pEntities) {
+            if (entity instanceof LivingEntity) {
+                entity.hurt(DamageSource.mobAttack(this), 8.0F);
+                this.doEnchantDamageEffects(this, entity);
+            }
+        }
+    }
+
+    @Override
+    public boolean doHurtTarget(@NotNull Entity pEntity) {
+        return super.doHurtTarget(pEntity);
+    }
+
+    private int getTypeForBiome(ServerLevelAccessor pLevel) {
+        Holder<Biome> biome = pLevel.getBiome(new BlockPos(this.position()));
+        if (biome.is(BiomeTags.HAS_IGLOO)) {
+            return 14;
+        }
+
+        return 0;
     }
 
     @Nullable
@@ -391,13 +290,44 @@ public class RockDrakeEntity extends TamableAnimal implements IAnimatable, Saddl
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController(this, "controller",
                 0, this::predicate));
-        /*data.addAnimationController(new AnimationController(this, "attack_Controller",
-                0, this::attackController));*/
+        data.addAnimationController(new AnimationController(this, "attack_Controller",
+                0, this::attackController));
     }
 
     @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(BITING_DAMAGE, false);
+        this.entityData.define(BITING, false);
     }
 
+    @Override
+    public void readAdditionalSaveData(CompoundTag pCompound) {
+        super.readAdditionalSaveData(pCompound);
+        this.setIsBitingDamageTrue(pCompound.getBoolean("biting_damage"));
+        this.setIsBiting(pCompound.getBoolean("biting"));
+    }
+
+    @Override
+    public void addAdditionalSaveData(@NotNull CompoundTag pCompound) {
+        super.addAdditionalSaveData(pCompound);
+        pCompound.putBoolean("biting_damage", this.IsBitingDamageTrue());
+        pCompound.putBoolean("biting", this.IsBiting());
+    }
+
+    public boolean IsBitingDamageTrue() {
+        return this.entityData.get(BITING_DAMAGE);
+    }
+
+    public void setIsBitingDamageTrue(boolean ram) {
+        this.entityData.set(BITING_DAMAGE, ram);
+    }
+
+    public boolean IsBiting() {
+        return this.entityData.get(BITING);
+    }
+
+    public void setIsBiting(boolean ability_pressed) {
+        this.entityData.set(BITING, ability_pressed);
+    }
 }

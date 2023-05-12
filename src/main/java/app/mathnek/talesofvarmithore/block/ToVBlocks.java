@@ -27,6 +27,9 @@ public class ToVBlocks {
     public static final RegistryObject<RotatedPillarBlock> MIRCH_LOG = registerBlock("mirch_log",
             () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.BIRCH_LOG)),ToVCreativeModeTab.TOV_TAB);
 
+    public static final RegistryObject<RotatedPillarBlock> MIRCH_PLANKS = registerBlock("mirch_planks",
+            () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.BIRCH_LOG)),ToVCreativeModeTab.TOV_TAB);
+
     public static final RegistryObject<Block> MAGMA_BRICK = registerBlock("magma_brick",
             () -> new Block(BlockBehaviour.Properties.of(Material.STONE).strength(8.0F, 3.0F)),ToVCreativeModeTab.TOV_TAB);
 

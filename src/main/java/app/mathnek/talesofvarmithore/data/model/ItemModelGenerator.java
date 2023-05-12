@@ -51,6 +51,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 		spawnEgg(ToVItems.ROCKDRAKE_SPAWN_EGG.get());
 		simpleItem(ToVItems.LAVACORE_INGOT.get());
 		simpleItem(ToVItems.OBSAIDON_SHARD.get());
+		simpleItem(ToVItems.FEATHER_TIPPED.get());
+		simpleItem(ToVItems.FEATHER_TIPPED_BUNCH.get());
+		simpleItem(ToVItems.ROCKDRAKE_MEAT.get());
+		simpleItem(ToVItems.ROCKDRAKE_MEAT_COOKED.get());
 		simpleItem(ToVItems.OBSAIDON_CRYSTAL.get());
 		simpleItem(ToVItems.OBSAIDON_HELMET.get());
 		simpleItem(ToVItems.OBSAIDON_CHESTPLATE.get());
@@ -73,6 +77,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		blockItem(ToVBlocks.LAVACORE_ORE.get());
 		blockItem(ToVBlocks.MIRCH_LEAVES.get());
 		blockItem(ToVBlocks.MIRCH_LOG.get());
+		blockItem(ToVBlocks.MIRCH_PLANKS.get());
 		blockItem(ToVBlocks.GRASS_BLOCK.get());
 		blockItem(ToVBlocks.MAGMA_BRICK.get());
 		blockItem(ToVBlocks.HARD_GLASS.get());

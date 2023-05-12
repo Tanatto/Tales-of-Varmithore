@@ -23,6 +23,7 @@ public class LanguageGenerator extends LanguageProvider {
 		addBlock(ToVBlocks.LAVACORE_ORE,"Lavacore Ore");
 		addBlock(ToVBlocks.MIRCH_LEAVES,"Mirch Leaves");
 		addBlock(ToVBlocks.MIRCH_LOG,"Mirch Log");
+		addBlock(ToVBlocks.MIRCH_PLANKS,"Mirch Planks");
 		addBlock(ToVBlocks.GRASS_BLOCK,"Grass Block");
 		addBlock(ToVBlocks.HARD_GLASS,"Hard Glass");
 		addBlock(ToVBlocks.MAGMA_BRICK,"Magma Brick");
@@ -37,6 +38,10 @@ public class LanguageGenerator extends LanguageProvider {
 		addItem(ToVItems.ROCKDRAKE_SPAWN_EGG,"RockDrake");
 		addItem(ToVItems.ROCKDRAKE_EGG,"RockDrake Egg");
 		addItem(ToVItems.OBSAIDON_SHARD,"Obsaidon Shard");
+		addItem(ToVItems.FEATHER_TIPPED,"RockDrake Feather Tipped");
+		addItem(ToVItems.FEATHER_TIPPED_BUNCH,"RockDrake Feather Tipped Bunched");
+		addItem(ToVItems.ROCKDRAKE_MEAT,"RockDrake Meat");
+		addItem(ToVItems.ROCKDRAKE_MEAT_COOKED,"RockDrake Meat Cooked");
 		addItem(ToVItems.OBSAIDON_CRYSTAL,"Obsaidon Crystal");
 		addItem(ToVItems.LAVACORE_INGOT,"Lavacore Ingot");
 		addItem(ToVItems.LAVACORE_PICKAXE,"Lavacore Pickaxe");

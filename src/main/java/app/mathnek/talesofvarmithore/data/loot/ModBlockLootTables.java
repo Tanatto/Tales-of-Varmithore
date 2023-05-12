@@ -17,6 +17,7 @@ public class ModBlockLootTables extends BlockLoot {
         this.dropSelf(ToVBlocks.UNCIA.get());
         this.dropSelf(ToVBlocks.PERSILA.get());
         this.dropSelf(ToVBlocks.MIRCH_LOG.get());
+        this.dropSelf(ToVBlocks.MIRCH_PLANKS.get());
         this.dropSelf(ToVBlocks.MIRCH_LEAVES.get());
     }
 

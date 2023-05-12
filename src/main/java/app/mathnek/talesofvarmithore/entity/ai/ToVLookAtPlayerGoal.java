@@ -3,6 +3,7 @@ package app.mathnek.talesofvarmithore.entity.ai;
 import java.util.EnumSet;
 import javax.annotation.Nullable;
 
+import app.mathnek.talesofvarmithore.entity.BaseEntityClass;
 import app.mathnek.talesofvarmithore.entity.rockdrake.RockDrakeEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
@@ -12,7 +13,7 @@ import net.minecraft.world.entity.player.Player;
 
 public class ToVLookAtPlayerGoal extends Goal {
    public static final float DEFAULT_PROBABILITY = 0.02F;
-   protected final RockDrakeEntity dragon;
+   protected final BaseEntityClass dragon;
    @Nullable
    protected Entity lookAt;
    protected final float lookDistance;
@@ -22,15 +23,15 @@ public class ToVLookAtPlayerGoal extends Goal {
    protected final Class lookAtType;
    protected final TargetingConditions lookAtContext;
 
-   public ToVLookAtPlayerGoal(RockDrakeEntity pMob, Class pLookAtType, float pLookDistance) {
+   public ToVLookAtPlayerGoal(BaseEntityClass pMob, Class pLookAtType, float pLookDistance) {
       this(pMob, pLookAtType, pLookDistance, 0.02F);
    }
 
-   public ToVLookAtPlayerGoal(RockDrakeEntity pMob, Class pLookAtType, float pLookDistance, float pProbability) {
+   public ToVLookAtPlayerGoal(BaseEntityClass pMob, Class pLookAtType, float pLookDistance, float pProbability) {
       this(pMob, pLookAtType, pLookDistance, pProbability, false);
    }
 
-   public ToVLookAtPlayerGoal(RockDrakeEntity pMob, Class pLookAtType, float pLookDistance, float pProbability, boolean pOnlyHorizontal) {
+   public ToVLookAtPlayerGoal(BaseEntityClass pMob, Class pLookAtType, float pLookDistance, float pProbability, boolean pOnlyHorizontal) {
       this.dragon = pMob;
       this.lookAtType = pLookAtType;
       this.lookDistance = pLookDistance;

@@ -6,17 +6,29 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:feather"
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:cooked_beef"
+          "name": "tov:feather_tipped"
         }
       ],
       "conditions": [
         {
           "condition": "minecraft:random_chance_with_looting",
           "chance": 0.2,
+          "looting_multiplier": 0.075
+        }
+      ]
+    },
+    {
+      "rolls": 3,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tov:rockdrake_meat"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance_with_looting",
+          "chance": 0.85,
           "looting_multiplier": 0.075
         }
       ]

@@ -22,7 +22,7 @@ public class ToVEntityTypes {
     public static final RegistryObject<EntityType<WilkorEntity>> WILKOR =
             ENTITY_TYPES.register("wilkor",
             () -> EntityType.Builder.of(WilkorEntity::new, MobCategory.CREATURE)
-                    .sized(0.8f, 2.4f)
+                    .sized(1.3f, 2.4f)
                     .build(new ResourceLocation(TalesofVarmithore.MOD_ID, "wilkor").toString()));
 
     public static final RegistryObject<EntityType<AzuliteEntity>> AZULITE =
@@ -34,19 +34,12 @@ public class ToVEntityTypes {
     public static final RegistryObject<EntityType<RockDrakeEntity>> ROCKDRAKE =
             ENTITY_TYPES.register("rockdrake",
                     () -> EntityType.Builder.of(RockDrakeEntity::new, MobCategory.CREATURE)
-                            .sized(0.8f, 2.0f)
+                            .sized(1.3f, 2.4f)
                             .build(new ResourceLocation(TalesofVarmithore.MOD_ID, "rockdrake").toString()));
 
     public static final RegistryObject<EntityType<RockDrakeEgg>> ROCKDRAKE_EGG = ENTITY_TYPES.register("rockdrake_egg",
             () -> EntityType.Builder.of(RockDrakeEgg::new, MobCategory.MISC).sized(PIXEL * 7, PIXEL * 9)
                     .build(new ResourceLocation(TalesofVarmithore.MOD_ID, "rockdrake_egg").toString()));
-
-
-    /*public static final RegistryObject<EntityType<RockDrakeEgg>> ROCKDRAKE_EGG =
-            ENTITY_TYPES.register("rockdrake_egg",
-                    () -> EntityType.Builder.of(RockDrakeEgg::new, MobCategory.MISC)
-                    .sized(0.5F, 0.5F)
-                    .build((new ResourceLocation(TalesofVarmithore.MOD_ID, "rockdrake_egg")).toString()));*/
 
 
     public static void register(IEventBus eventBus) {
