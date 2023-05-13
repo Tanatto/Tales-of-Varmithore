@@ -28,6 +28,10 @@ public class ToVItems {
             () -> new ForgeSpawnEggItem(ToVEntityTypes.AZULITE,0x948e8d, 0x3b3635,
                     new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB)));
 
+    public static final RegistryObject<Item> PUPFISH_SPAWN_EGG = ITEMS.register("pupfish_spawn_egg",
+            () -> new ForgeSpawnEggItem(ToVEntityTypes.PUPFISH,0xff62e4, 0xdfdfdf,
+                    new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB)));
+
     public static final RegistryObject<DragonSpawnEggItem> ROCKDRAKE_SPAWN_EGG = ITEMS.register("rockdrake_spawn_egg",
             () -> new DragonSpawnEggItem(ToVEntityTypes.ROCKDRAKE, 0x425d57, 0xc5591b,
                     new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB).stacksTo(64)));

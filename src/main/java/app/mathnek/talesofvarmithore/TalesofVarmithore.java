@@ -3,6 +3,7 @@ package app.mathnek.talesofvarmithore;
 import app.mathnek.talesofvarmithore.block.ToVBlocks;
 import app.mathnek.talesofvarmithore.entity.ToVEntityTypes;
 import app.mathnek.talesofvarmithore.entity.azulite.AzuliteRenderer;
+import app.mathnek.talesofvarmithore.entity.pupfish.PupfishRenderer;
 import app.mathnek.talesofvarmithore.entity.rockdrake.RockDrakeRenderer;
 import app.mathnek.talesofvarmithore.entity.rockdrake.egg.RockDrakeEggRenderer;
 import app.mathnek.talesofvarmithore.entity.wilkor.WilkorRenderer;
@@ -55,6 +56,7 @@ public class TalesofVarmithore {
         EntityRenderers.register(ToVEntityTypes.WILKOR.get(), WilkorRenderer::new);
         EntityRenderers.register(ToVEntityTypes.AZULITE.get(), AzuliteRenderer::new);
         EntityRenderers.register(ToVEntityTypes.ROCKDRAKE.get(), RockDrakeRenderer::new);
+        EntityRenderers.register(ToVEntityTypes.PUPFISH.get(), PupfishRenderer::new);
 
         EntityRenderers.register(ToVEntityTypes.ROCKDRAKE_EGG.get(), RockDrakeEggRenderer::new);
 
@@ -72,6 +74,11 @@ public class TalesofVarmithore {
 
         SpawnPlacements.register(ToVEntityTypes.ROCKDRAKE.get(),
                 SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Animal::checkAnimalSpawnRules);
+
+        SpawnPlacements.register(ToVEntityTypes.PUPFISH.get(),
+                SpawnPlacements.Type.IN_WATER,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 Animal::checkAnimalSpawnRules);
     }

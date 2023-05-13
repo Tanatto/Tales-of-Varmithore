@@ -15,6 +15,9 @@ public class ModEntityGeneration {
     public static void onEntitySpawn(final BiomeLoadingEvent event) {
         addEntityToSpecificBiomes(event, ToVEntityTypes.ROCKDRAKE.get(),
                 6, 2, 4, Biomes.LUSH_CAVES);
+
+        addEntityToSpecificBiomes(event, ToVEntityTypes.ROCKDRAKE.get(),
+                6, 2, 4, Biomes.COLD_OCEAN);
     }
 
     private static void addEntityToAllBiomesExceptThese(BiomeLoadingEvent event, EntityType<?> type,

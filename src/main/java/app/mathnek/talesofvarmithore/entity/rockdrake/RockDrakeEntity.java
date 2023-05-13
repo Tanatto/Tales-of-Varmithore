@@ -81,6 +81,27 @@ public class RockDrakeEntity extends BaseEntityClass {
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.isBaby()) {
+            if (event.isMoving()) {
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.walk", true));
+                return PlayState.CONTINUE;
+            }
+            if (event.isMoving() && this.isVehicle()) {
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.run", true));
+                return PlayState.CONTINUE;
+            }
+            if (this.isEntitySitting()) {
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.sit", true));
+                return PlayState.CONTINUE;
+            }
+            if (this.isEntitySleeping()) {
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.sleep", true));
+                return PlayState.CONTINUE;
+            }
+            if (event.isMoving() && this.isInWater()) {
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.swim", true));
+                return PlayState.CONTINUE;
+            }
+
             event.getController().setAnimation(new AnimationBuilder().addAnimation("baby", true));
             return PlayState.CONTINUE;
         }
@@ -124,7 +145,7 @@ public class RockDrakeEntity extends BaseEntityClass {
         Item item = itemstack.getItem();
         Item itemForTaming = Items.BEEF;
 
-        if (!isTame()/* && isBaby()*/ && !isCommandItem(itemstack)) {
+        if (!isTame() && isBaby() && !isCommandItem(itemstack)) {
             if (!level.isClientSide() && item == itemForTaming && !isTame() && !ForgeEventFactory.onAnimalTame(this, player)) {
                 itemstack.shrink(1);
                 tamedFor(player, getRandom().nextInt(5) == 0);

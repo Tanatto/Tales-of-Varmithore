@@ -37,6 +37,7 @@ public class LanguageGenerator extends LanguageProvider {
 		addItem(ToVItems.AZULITE_SPAWN_EGG,"Azulite");
 		addItem(ToVItems.ROCKDRAKE_SPAWN_EGG,"RockDrake");
 		addItem(ToVItems.ROCKDRAKE_EGG,"RockDrake Egg");
+		addItem(ToVItems.PUPFISH_SPAWN_EGG,"Pupfish");
 		addItem(ToVItems.OBSAIDON_SHARD,"Obsaidon Shard");
 		addItem(ToVItems.FEATHER_TIPPED,"RockDrake Feather Tipped");
 		addItem(ToVItems.FEATHER_TIPPED_BUNCH,"RockDrake Feather Tipped Bunched");

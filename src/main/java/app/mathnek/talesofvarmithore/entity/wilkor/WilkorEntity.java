@@ -174,7 +174,7 @@ public class WilkorEntity extends BaseEntityClass implements IAnimatable {
 
         Item itemForTaming = Items.BEEF;
 
-        if (!isTame()/* && isBaby()*/ && !isCommandItem(itemstack)) {
+        if (!isTame() && isBaby() && !isCommandItem(itemstack)) {
             if (!level.isClientSide() && item == itemForTaming && !isTame()) {
                 itemstack.shrink(1);
                 tamedFor(player, getRandom().nextInt(5) == 0);

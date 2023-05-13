@@ -49,6 +49,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		spawnEgg(ToVItems.AZULITE_SPAWN_EGG.get());
 		spawnEgg(ToVItems.WILKOR_SPAWN_EGG.get());
 		spawnEgg(ToVItems.ROCKDRAKE_SPAWN_EGG.get());
+		spawnEgg(ToVItems.PUPFISH_SPAWN_EGG.get());
 		simpleItem(ToVItems.LAVACORE_INGOT.get());
 		simpleItem(ToVItems.OBSAIDON_SHARD.get());
 		simpleItem(ToVItems.FEATHER_TIPPED.get());

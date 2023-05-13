@@ -2,6 +2,7 @@ package app.mathnek.talesofvarmithore.entity;
 
 import app.mathnek.talesofvarmithore.TalesofVarmithore;
 import app.mathnek.talesofvarmithore.entity.azulite.AzuliteEntity;
+import app.mathnek.talesofvarmithore.entity.pupfish.PupfishEntity;
 import app.mathnek.talesofvarmithore.entity.rockdrake.RockDrakeEntity;
 import app.mathnek.talesofvarmithore.entity.rockdrake.egg.RockDrakeEgg;
 import app.mathnek.talesofvarmithore.entity.wilkor.WilkorEntity;
@@ -36,6 +37,12 @@ public class ToVEntityTypes {
                     () -> EntityType.Builder.of(RockDrakeEntity::new, MobCategory.CREATURE)
                             .sized(1.3f, 2.4f)
                             .build(new ResourceLocation(TalesofVarmithore.MOD_ID, "rockdrake").toString()));
+
+    public static final RegistryObject<EntityType<PupfishEntity>> PUPFISH =
+            ENTITY_TYPES.register("pupfish",
+                    () -> EntityType.Builder.of(PupfishEntity::new, MobCategory.CREATURE)
+                            .sized(0.7f, 0.7f)
+                            .build(new ResourceLocation(TalesofVarmithore.MOD_ID, "pupfish").toString()));
 
     public static final RegistryObject<EntityType<RockDrakeEgg>> ROCKDRAKE_EGG = ENTITY_TYPES.register("rockdrake_egg",
             () -> EntityType.Builder.of(RockDrakeEgg::new, MobCategory.MISC).sized(PIXEL * 7, PIXEL * 9)
