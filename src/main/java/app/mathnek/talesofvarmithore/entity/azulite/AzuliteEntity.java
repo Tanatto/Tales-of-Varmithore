@@ -1,5 +1,6 @@
 package app.mathnek.talesofvarmithore.entity.azulite;
 
+import app.mathnek.talesofvarmithore.entity.BaseEntityClass;
 import app.mathnek.talesofvarmithore.entity.ToVEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -41,8 +42,7 @@ public class AzuliteEntity extends Animal implements IAnimatable {
 
     private AnimationFactory factory = new AnimationFactory(this);
 
-
-    private static final EntityDataAccessor<Integer> TYPE =
+    protected static final EntityDataAccessor<Integer> VARIANTS =
             SynchedEntityData.defineId(AzuliteEntity.class, EntityDataSerializers.INT);
 
     public AzuliteEntity(EntityType<? extends Animal> p_27557_, Level p_27558_) {
@@ -100,7 +100,8 @@ public class AzuliteEntity extends Animal implements IAnimatable {
     //#TODO make custom biometag that include all biomes, Placeholder tags used
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
-        Holder<Biome> holder = pLevel.getBiome(this.blockPosition());
+        //Todo: Add back once I know which variant is which
+        /*Holder<Biome> holder = pLevel.getBiome(this.blockPosition());
         if (holder.is(BiomeTags.HAS_IGLOO)) {
             this.setVariant(AzuliteVariants.SNOW);
         }
@@ -124,26 +125,30 @@ public class AzuliteEntity extends Animal implements IAnimatable {
         }
         if (holder.is(BiomeTags.HAS_VILLAGE_SAVANNA)) {
             this.setVariant(AzuliteVariants.SAVANNA);
+        }*/
+        pSpawnData = super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+        if (pReason == MobSpawnType.SPAWN_EGG) {
+            this.setVariant(this.getRandom().nextInt(getMaxAmountOfVariants()));
         }
-
-        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
-    }
-
-
-    public void setVariant(AzuliteVariants variant) {
-        this.entityData.set(TYPE, variant.getId() & 255);
+        return pSpawnData;
     }
 
     @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController(this, "controller",
-                0, this::predicate));
+                -5, this::predicate));
     }
 
+    public int getVariant() {
+        return (Integer)this.entityData.get(VARIANTS);
+    }
 
-    public int getVariantType()
-    {
-        return this.entityData.get(TYPE);
+    public void setVariant(int pType) {
+        this.entityData.set(VARIANTS, pType);
+    }
+
+    public int getMaxAmountOfVariants() {
+        return 8;
     }
 
     @Override
@@ -161,19 +166,19 @@ public class AzuliteEntity extends Animal implements IAnimatable {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        this.entityData.set(TYPE, tag.getInt("type"));
+        setVariant(tag.getInt("variant"));
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.putInt("type", this.entityData.get(TYPE));
+        tag.putInt("variant", this.getVariant());
     }
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(TYPE, 1);
+        this.entityData.define(VARIANTS, 0);
     }
 
 }

@@ -16,9 +16,9 @@ public class ToVEventBusEvents {
 
     @SubscribeEvent
     public static void entityAttributeEvent(EntityAttributeCreationEvent event) {
-        event.put(ToVEntityTypes.WILKOR.get(), WilkorEntity.setAttributes());
+        event.put(ToVEntityTypes.WILKOR.get(), WilkorEntity.setAttributes().build());
         event.put(ToVEntityTypes.AZULITE.get(), AzuliteEntity.setAttributes());
-        event.put(ToVEntityTypes.ROCKDRAKE.get(), RockDrakeEntity.setAttributes());
+        event.put(ToVEntityTypes.ROCKDRAKE.get(), RockDrakeEntity.setAttributes().build());
         event.put(ToVEntityTypes.PUPFISH.get(), PupfishEntity.createAttributes().build());
 
         event.put(ToVEntityTypes.ROCKDRAKE_EGG.get(), RockDrakeEgg.createAttributes().build());

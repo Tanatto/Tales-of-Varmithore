@@ -7,11 +7,15 @@ import app.mathnek.talesofvarmithore.entity.pupfish.PupfishRenderer;
 import app.mathnek.talesofvarmithore.entity.rockdrake.RockDrakeRenderer;
 import app.mathnek.talesofvarmithore.entity.rockdrake.egg.RockDrakeEggRenderer;
 import app.mathnek.talesofvarmithore.entity.wilkor.WilkorRenderer;
+import app.mathnek.talesofvarmithore.gui.EntityInventoryScreen;
+import app.mathnek.talesofvarmithore.gui.ToVContainers;
 import app.mathnek.talesofvarmithore.item.ToVItems;
 import app.mathnek.talesofvarmithore.network.ControlNetwork;
 import app.mathnek.talesofvarmithore.sound.ToVSounds;
 import app.mathnek.talesofvarmithore.util.ToVKeybinds;
 import app.mathnek.talesofvarmithore.world.ToVStructures;
+import app.mathnek.talesofvarmithore.world.gen.ToVPlacesFeatures;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -43,6 +47,7 @@ public class TalesofVarmithore {
         ToVSounds.register(eventBus);
         ToVEntityTypes.register(eventBus);
         ToVStructures.register(eventBus);
+        ToVContainers.register(eventBus);
 
         eventBus.addListener(this::setup);
         eventBus.addListener(this::clientSetup);
@@ -65,6 +70,10 @@ public class TalesofVarmithore {
         ItemBlockRenderTypes.setRenderLayer(ToVBlocks.HARD_GLASS.get(), RenderType.cutout());
 
         ToVKeybinds.init();
+
+        event.enqueueWork(() -> {
+            MenuScreens.register(ToVContainers.ENTITY_INV.get(), EntityInventoryScreen::new);
+        });
     }
 
     private void setup(final FMLCommonSetupEvent event) {

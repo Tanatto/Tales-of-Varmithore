@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smoking",
+  "ingredient": {
+    "item": "tov:rockdrake_meat"
+  },
+  "result": "tov:rockdrake_meat_cooked",
+  "experience": 0.55,
+  "cookingtime": 500
+}

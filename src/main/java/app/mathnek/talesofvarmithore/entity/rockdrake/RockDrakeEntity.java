@@ -1,6 +1,7 @@
 package app.mathnek.talesofvarmithore.entity.rockdrake;
 
 import app.mathnek.talesofvarmithore.entity.BaseEntityClass;
+import app.mathnek.talesofvarmithore.entity.EntitySaddleBase;
 import app.mathnek.talesofvarmithore.entity.ToVEntityTypes;
 import app.mathnek.talesofvarmithore.network.ControlMessageBite;
 import app.mathnek.talesofvarmithore.network.ControlMessageMovingForBite;
@@ -49,7 +50,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-public class RockDrakeEntity extends BaseEntityClass {
+public class RockDrakeEntity extends EntitySaddleBase {
 
     EntityPart[] subParts;
     EntityPart rockdrakeBiteOffset;
@@ -60,18 +61,19 @@ public class RockDrakeEntity extends BaseEntityClass {
     protected static final EntityDataAccessor<Boolean> BITING =
             SynchedEntityData.defineId(RockDrakeEntity.class, EntityDataSerializers.BOOLEAN);
 
-    public RockDrakeEntity(EntityType<? extends BaseEntityClass> pEntityType, Level pLevel) {
+    public RockDrakeEntity(EntityType<? extends EntitySaddleBase> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         this.rockdrakeBiteOffset = new EntityPart(this, "rockdrakeBiteOffset", 1.5F, 1.5F);
         this.subParts = new EntityPart[]{this.rockdrakeBiteOffset};
     }
 
-    public static AttributeSupplier setAttributes() {
+    public static AttributeSupplier.Builder setAttributes() {
         return TamableAnimal.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 80.0D)
                 .add(Attributes.ATTACK_DAMAGE, 12.5f)
                 .add(Attributes.ATTACK_SPEED, 5.0f)
-                .add(Attributes.MOVEMENT_SPEED, 0.3f).build();
+                .add(Attributes.MOVEMENT_SPEED, 0.3f)
+                .add(Attributes.JUMP_STRENGTH, 2);
     }
 
     @Override
@@ -140,16 +142,45 @@ public class RockDrakeEntity extends BaseEntityClass {
     }
 
     @Override
+    protected void rideInteract(Player pPlayer, InteractionHand pHand, ItemStack itemstack) {
+        if (isTame() && isSaddled()) {
+            if (pPlayer == this.getOwner()) {
+                this.doPlayerRide(pPlayer);
+            } else if (pPlayer != getOwner() && getControllingPassenger() == this.getOwner()) {
+                this.doPlayerRide(pPlayer);
+            }
+        }
+    }
+
+    @Override
+    public void positionRider(@NotNull Entity passenger) {
+        Entity riddenByEntity = getControllingPassenger();
+        if (riddenByEntity != null) {
+            Vec3 pos = new Vec3(0, getPassengersRidingOffset() + riddenByEntity.getMyRidingOffset() + 0.4, /*getScale() + */ + 0.55)
+                    .yRot((float) Math.toRadians(-yBodyRot))
+                    .add(position());
+            passenger.setPos(pos.x, pos.y, pos.z);
+
+            // fix rider rotation
+            if (getFirstPassenger() instanceof LivingEntity) {
+                LivingEntity rider = ((LivingEntity) riddenByEntity);
+                rider.xRotO = rider.getXRot();
+                rider.yRotO = rider.getYRot();
+                rider.yBodyRot = yBodyRot;
+            }
+        }
+    }
+
+    /*@Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         Item item = itemstack.getItem();
         Item itemForTaming = Items.BEEF;
 
         if (!isTame() && isBaby() && !isCommandItem(itemstack)) {
-            if (!level.isClientSide() && item == itemForTaming && !isTame() && !ForgeEventFactory.onAnimalTame(this, player)) {
+            if (!level.isClientSide() && item == itemForTaming && !isTame()) {
                 itemstack.shrink(1);
                 tamedFor(player, getRandom().nextInt(5) == 0);
-                this.level.broadcastEntityEvent(this, (byte) 7);
                 return InteractionResult.SUCCESS;
             }
 
@@ -157,24 +188,7 @@ public class RockDrakeEntity extends BaseEntityClass {
         }
 
         return super.mobInteract(player, hand);
-    }
-
-    public void tamedFor(Player player, boolean successful) {
-        if (successful) {
-            setTame(true);
-            navigation.stop();
-            setTarget(null);
-            setOwnerUUID(player.getUUID());
-            level.broadcastEntityEvent(this, (byte) 7);
-        }
-        else {
-            level.broadcastEntityEvent(this, (byte) 6);
-        }
-    }
-
-    public boolean isTamedFor(Player player) {
-        return isTame() && isOwnedBy(player);
-    }
+    }*/
 
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
@@ -231,7 +245,6 @@ public class RockDrakeEntity extends BaseEntityClass {
         for (int i = 0; i < stingerPart.length; ++i) {
             stingerPart[i].setId(i + mobPacket.getId());
         }
-
     }
 
     @Override
@@ -310,9 +323,9 @@ public class RockDrakeEntity extends BaseEntityClass {
     @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController(this, "controller",
-                0, this::predicate));
+                -5, this::predicate));
         data.addAnimationController(new AnimationController(this, "attack_Controller",
-                0, this::attackController));
+                -5, this::attackController));
     }
 
     @Override

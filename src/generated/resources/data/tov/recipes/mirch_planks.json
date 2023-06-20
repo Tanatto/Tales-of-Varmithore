@@ -1,9 +1,8 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "group": "planks",
   "ingredients": [
     {
-      "tag": "tov:mirch_log"
+      "item": "tov:mirch_log"
     }
   ],
   "result": {

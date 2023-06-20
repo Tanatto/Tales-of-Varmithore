@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "tov:lavacore_ore"
+  },
+  "result": "tov:lavacore_ingot",
+  "experience": 0.55,
+  "cookingtime": 350
+}

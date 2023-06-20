@@ -1,5 +1,6 @@
 package app.mathnek.talesofvarmithore.entity.pupfish;
 
+import app.mathnek.talesofvarmithore.block.ToVBlocks;
 import app.mathnek.talesofvarmithore.entity.BaseEntityClass;
 import app.mathnek.talesofvarmithore.entity.ToVEntityTypes;
 import net.minecraft.core.BlockPos;
@@ -105,9 +106,8 @@ public class PupfishEntity extends TamableAnimal implements IAnimatable {
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         Item item = itemstack.getItem();
-        TagKey<Item> itemForTaming = ItemTags.FISHES;
 
-        if (!isTame()) {
+        if (!isTame() && isBaby() && !isCommandItem(itemstack)) {
             if (!level.isClientSide() && itemForTaming(itemstack) && !isTame() && !ForgeEventFactory.onAnimalTame(this, player)) {
                 itemstack.shrink(1);
                 tamedFor(player, getRandom().nextInt(5) == 0);
@@ -116,7 +116,7 @@ public class PupfishEntity extends TamableAnimal implements IAnimatable {
             }
 
             return InteractionResult.PASS;
-        }
+     }
 
         if (isCommandItem(itemstack) && isOwnedBy(player) && this.isTame()) {
             modifyCommand(2, player);
@@ -131,6 +131,10 @@ public class PupfishEntity extends TamableAnimal implements IAnimatable {
     }
 
     public boolean itemForTaming(ItemStack stack) {
+        return stack.is(Item.byBlock(ToVBlocks.PERSILA.get())) && stack.is(Item.byBlock(ToVBlocks.UNCIA.get()));
+    }
+
+    public boolean itemForBreeding(ItemStack stack) {
         return stack.is(ItemTags.FISHES);
     }
 
@@ -392,9 +396,9 @@ public class PupfishEntity extends TamableAnimal implements IAnimatable {
         }
 
         public void tick() {
-            /*if (!this.axolotl.isPlayingDead()) {
+            if (this.axolotl.isAlive()) {
                 super.tick();
-            }*/
+            }
 
         }
     }
@@ -430,9 +434,9 @@ public class PupfishEntity extends TamableAnimal implements IAnimatable {
          * Updates look
          */
         public void tick() {
-            /*if (!Axolotl.this.isPlayingDead()) {
+            if (PupfishEntity.this.isAlive()) {
                 super.tick();
-            }*/
+            }
 
         }
     }

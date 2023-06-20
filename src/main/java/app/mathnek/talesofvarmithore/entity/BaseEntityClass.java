@@ -1,11 +1,8 @@
 package app.mathnek.talesofvarmithore.entity;
 
-import app.mathnek.talesofvarmithore.entity.ai.ToVLookAtPlayerGoal;
-import app.mathnek.talesofvarmithore.entity.ai.ToVRandomLookAroundGoal;
-import app.mathnek.talesofvarmithore.entity.ai.ToVWaterAvoidingRandomStrollGoal;
+import app.mathnek.talesofvarmithore.entity.ai.*;
 import app.mathnek.talesofvarmithore.util.Util;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -20,7 +17,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.BreedGoal;
-import net.minecraft.world.entity.ai.goal.FollowParentGoal;
 import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
@@ -28,6 +24,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
+import net.minecraftforge.event.ForgeEventFactory;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
@@ -63,6 +60,7 @@ public abstract class BaseEntityClass extends TamableAnimal implements IAnimatab
 
     public BaseEntityClass(EntityType<? extends BaseEntityClass> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
+        this.maxUpStep = 1f;
     }
 
     @Override
@@ -101,11 +99,12 @@ public abstract class BaseEntityClass extends TamableAnimal implements IAnimatab
         this.entityData.define(ON_GROUND, false);
     }
 
+    @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.0D));
-        this.goalSelector.addGoal(7, new ToVLookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(4, new ToVFollowParentGoal(this, 1.0D));
+        this.goalSelector.addGoal(7, new ToVAIWatchClosest(this, Player.class, 8.0F));
         this.goalSelector.addGoal(7, new ToVRandomLookAroundGoal(this));
-        this.goalSelector.addGoal(6, new ToVWaterAvoidingRandomStrollGoal(this, 0.7, 1.0000001E-5F));
+        this.goalSelector.addGoal(6, new ToVAIWander(this, 0.7, 20));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
     }
@@ -115,7 +114,7 @@ public abstract class BaseEntityClass extends TamableAnimal implements IAnimatab
     }
 
     public int getCommand() {
-        return (Integer)this.entityData.get(COMMANDS);
+        return this.entityData.get(COMMANDS);
     }
 
     public void setCommands(int commands) {
@@ -234,16 +233,33 @@ public abstract class BaseEntityClass extends TamableAnimal implements IAnimatab
             return InteractionResult.SUCCESS;
         }
 
-        /*if (isTamedFor(player) && isSaddled() && !isBaby()) {
-            if (!level.isClientSide()) {
-                setRidingPlayer(player);
-                navigation.stop();
-                setTarget(null);
+        /*if (!isTame() && isBaby() && !itemForTaming(itemstack)) {
+            if (!level.isClientSide() && itemForTaming(itemstack) && !isTame()) {
+                itemstack.shrink(1);
+                tamedFor(player, getRandom().nextInt(10) == 0);
+                return InteractionResult.SUCCESS;
             }
-            setOrderedToSit(false);
-            setInSittingPose(false);
-            return InteractionResult.SUCCESS;
+
+            return InteractionResult.PASS;
         }*/
+
+        if (!isTame()) {
+            if (isFoodEdibleToDragon(itemstack)) {
+                this.level.playLocalSound(getX(), getY(), getZ(), SoundEvents.DONKEY_EAT, SoundSource.NEUTRAL, 1, getSoundPitch(), true);
+
+                if (isItemStackForTaming(itemstack)) {
+                    if (this.random.nextInt(7) == 0 && !ForgeEventFactory.onAnimalTame(this, player)) {
+                        this.tame(player);
+                        this.navigation.stop();
+                        this.setTarget((LivingEntity) null);
+                        this.level.broadcastEntityEvent(this, (byte) 7);
+                        if (!player.getAbilities().instabuild && !player.getLevel().isClientSide()) {
+                            itemstack.shrink(1);
+                        }
+                    }
+                }
+            }
+        }
 
         if (!isCommandItem(itemstack) && !isFood(itemstack) && !isBaby()) {
             rideInteract(player, hand, itemstack);
@@ -255,7 +271,7 @@ public abstract class BaseEntityClass extends TamableAnimal implements IAnimatab
     }
 
     protected void rideInteract(Player pPlayer, InteractionHand pHand, ItemStack itemstack) {
-        if (isTame() && isSaddled()) {
+        if (isTame()) {
             if (pPlayer == this.getOwner()) {
                 this.doPlayerRide(pPlayer);
             } else if (pPlayer != getOwner() && getControllingPassenger() == this.getOwner()) {
@@ -275,9 +291,7 @@ public abstract class BaseEntityClass extends TamableAnimal implements IAnimatab
                     pPlayer.setYRot(this.getYRot());
                     pPlayer.setXRot(this.getXRot());
                 }
-                if (!isSaddled() && !pPlayer.isCreative() && isTame()) {
-                    pPlayer.displayClientMessage(new TranslatableComponent("bdd.dragonAir.needSaddle"), false);
-                }
+                if (!isSaddled() && !pPlayer.isCreative() && isTame()) {}
                 pPlayer.startRiding(this);
             }
 
@@ -292,6 +306,15 @@ public abstract class BaseEntityClass extends TamableAnimal implements IAnimatab
 
     public boolean isCommandItem(ItemStack stack) {
         return stack.is(Items.STICK);
+    }
+
+    protected boolean isItemStackForTaming(ItemStack stack) {
+        return stack.is(Items.BEEF);
+    }
+
+    public boolean isFoodEdibleToDragon(ItemStack pStack) {
+        Item item = pStack.getItem();
+        return pStack.is(Items.SALMON) || pStack.is(Items.COD) || pStack.is(Items.BEEF) || pStack.is(Items.TROPICAL_FISH) || pStack.is(Items.PUFFERFISH) || this.isItemStackForTaming(pStack) || item.isEdible() && item.getFoodProperties().isMeat() && item.getFoodProperties() != null && !pStack.isEmpty();
     }
 
     public void tamedFor(Player player, boolean successful) {
@@ -384,6 +407,10 @@ public abstract class BaseEntityClass extends TamableAnimal implements IAnimatab
             this.setOrderedToSit(false);
         }
 
+        if (this.isEntitySleeping()) {
+            this.setIsSitting(false);
+        }
+
         if (this.shouldStopMovingIndependently()) {
             this.getNavigation().stop();
             this.getNavigation().timeoutPath();
@@ -471,6 +498,10 @@ public abstract class BaseEntityClass extends TamableAnimal implements IAnimatab
         player.setYRot(getYRot());
         player.setXRot(getXRot());
         player.startRiding(this);
+    }
+
+    public float getSoundPitch() {
+        return this.isBaby() ? 1.4F : 1.0F;
     }
 
     @Override
