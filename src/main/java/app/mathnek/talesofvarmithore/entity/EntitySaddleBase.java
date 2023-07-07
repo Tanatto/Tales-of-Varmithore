@@ -4,7 +4,9 @@ import app.mathnek.talesofvarmithore.gui.EntityContainerMenu;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.syncher.*;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -112,11 +114,11 @@ public abstract class EntitySaddleBase extends EntityGroundBase implements Conta
 
         if (this.hasChest()) {
             ListTag listtag = new ListTag();
-            for(int i = 2; i < this.entityContainer.getContainerSize(); ++i) {
+            for (int i = 2; i < this.entityContainer.getContainerSize(); ++i) {
                 ItemStack itemstack = this.entityContainer.getItem(i);
                 if (!itemstack.isEmpty()) {
                     CompoundTag compoundtag = new CompoundTag();
-                    compoundtag.putByte("Slot", (byte)i);
+                    compoundtag.putByte("Slot", (byte) i);
                     itemstack.save(compoundtag);
                     listtag.add(compoundtag);
                 }
@@ -146,7 +148,7 @@ public abstract class EntitySaddleBase extends EntityGroundBase implements Conta
         if (this.hasChest()) {
             ListTag listtag = pCompound.getList("Items", 10);
 
-            for(int i = 0; i < listtag.size(); ++i) {
+            for (int i = 0; i < listtag.size(); ++i) {
                 CompoundTag compoundtag = listtag.getCompound(i);
                 int j = compoundtag.getByte("Slot") & 255;
                 if (j >= 2 && j < this.entityContainer.getContainerSize()) {

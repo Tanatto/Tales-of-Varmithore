@@ -1,6 +1,6 @@
 package app.mathnek.talesofvarmithore.entity.ai;
 
-import app.mathnek.talesofvarmithore.entity.wilkor.WilkorEntity;
+import app.mathnek.talesofvarmithore.entity.wilkor.EntityWilkor;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -11,9 +11,9 @@ import java.util.EnumSet;
 import java.util.function.Predicate;
 
 public class ToVAITargetNonTamed<T extends LivingEntity> extends NearestAttackableTargetGoal<T> {
-    private final WilkorEntity dragon;
+    private final EntityWilkor dragon;
 
-    public ToVAITargetNonTamed(WilkorEntity entityIn, Class<T> classTarget, boolean checkSight, Predicate<LivingEntity> targetSelector) {
+    public ToVAITargetNonTamed(EntityWilkor entityIn, Class<T> classTarget, boolean checkSight, Predicate<LivingEntity> targetSelector) {
         super(entityIn, classTarget, 5, checkSight, false, targetSelector);
         this.setFlags(EnumSet.of(Flag.TARGET));
         this.dragon = entityIn;

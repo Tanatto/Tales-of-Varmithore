@@ -1,7 +1,6 @@
 package app.mathnek.talesofvarmithore.entity.pupfish;
 
 import app.mathnek.talesofvarmithore.TalesofVarmithore;
-import app.mathnek.talesofvarmithore.entity.rockdrake.RockDrakeEntity;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 

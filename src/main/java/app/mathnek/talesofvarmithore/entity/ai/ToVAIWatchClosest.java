@@ -20,7 +20,7 @@ public class ToVAIWatchClosest extends LookAtPlayerGoal {
             return false;
         }
 
-        if(!this.dragon.shouldStopMovingIndependently()) {
+        if (!this.dragon.shouldStopMovingIndependently()) {
             return true;
         }
         return super.canUse();

@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": {
-    "item": "tov_lavacore_ore"
-  },
-  "result": "tov:lavacore_ingot",
-  "experience": 0.55,
-  "cookingtime": 330
-}

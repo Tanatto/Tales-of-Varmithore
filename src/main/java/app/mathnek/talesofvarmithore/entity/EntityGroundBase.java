@@ -6,8 +6,10 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.PlayerRideableJumping;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -46,7 +48,7 @@ public abstract class EntityGroundBase extends BaseEntityClass implements Player
             if (pJumpPower >= 90) {
                 this.playerJumpPendingScale = 1.0F;
             } else {
-                this.playerJumpPendingScale = 0.4F + 0.4F * (float)pJumpPower / 90.0F;
+                this.playerJumpPendingScale = 0.4F + 0.4F * (float) pJumpPower / 90.0F;
             }
         }
     }
@@ -55,9 +57,11 @@ public abstract class EntityGroundBase extends BaseEntityClass implements Player
         return this.isOnJumpHeight() || !this.isInWater();
     }
 
-    public void handleStartJump(int pJumpPower) {}
+    public void handleStartJump(int pJumpPower) {
+    }
 
-    public void handleStopJump() {}
+    public void handleStopJump() {
+    }
 
     public boolean isOnJumpHeight() {
         BlockPos solidPos = new BlockPos(this.position().x, this.position().y - 6.0, this.position().z);
@@ -97,7 +101,7 @@ public abstract class EntityGroundBase extends BaseEntityClass implements Player
     public void travel(@NotNull Vec3 pTravelVector) {
         if (this.isAlive()) {
             if (this.isVehicle() && this.canBeControlledByRider()) {
-                LivingEntity pilot = (LivingEntity)this.getControllingPassenger();
+                LivingEntity pilot = (LivingEntity) this.getControllingPassenger();
 
                 assert pilot != null;
 
@@ -115,7 +119,7 @@ public abstract class EntityGroundBase extends BaseEntityClass implements Player
                 }
 
                 if (this.playerJumpPendingScale > 0.0F && !this.isJumping() && this.isOnGround()) {
-                    double d0 = this.getCustomJump() * (double)this.playerJumpPendingScale * (double)this.getBlockJumpFactor();
+                    double d0 = this.getCustomJump() * (double) this.playerJumpPendingScale * (double) this.getBlockJumpFactor();
                     double d1 = d0 + this.getJumpBoostPower();
                     Vec3 vec3 = this.getDeltaMovement();
                     this.setDeltaMovement(vec3.x, d1, vec3.z);
@@ -125,7 +129,7 @@ public abstract class EntityGroundBase extends BaseEntityClass implements Player
                     if (f1 > 0.0F) {
                         float f2 = Mth.sin(this.getYRot() * 0.017453292F);
                         float f3 = Mth.cos(this.getYRot() * 0.017453292F);
-                        this.setDeltaMovement(this.getDeltaMovement().add((double)(-1.5F * f2 * this.playerJumpPendingScale), 0.0, (double)(1.5F * f3 * this.playerJumpPendingScale)));
+                        this.setDeltaMovement(this.getDeltaMovement().add((double) (-1.5F * f2 * this.playerJumpPendingScale), 0.0, (double) (1.5F * f3 * this.playerJumpPendingScale)));
                     }
 
                     this.playerJumpPendingScale = 0.0F;
@@ -133,8 +137,8 @@ public abstract class EntityGroundBase extends BaseEntityClass implements Player
 
                 this.flyingSpeed = this.getSpeed() * 0.1F;
                 if (this.isControlledByLocalInstance()) {
-                    this.setSpeed((float)this.getAttributeValue(Attributes.MOVEMENT_SPEED));
-                    super.travel(new Vec3((double)f, pTravelVector.y, (double)f1));
+                    this.setSpeed((float) this.getAttributeValue(Attributes.MOVEMENT_SPEED));
+                    super.travel(new Vec3((double) f, pTravelVector.y, (double) f1));
                 } else if (pilot instanceof Player) {
                     this.setDeltaMovement(Vec3.ZERO);
                 }

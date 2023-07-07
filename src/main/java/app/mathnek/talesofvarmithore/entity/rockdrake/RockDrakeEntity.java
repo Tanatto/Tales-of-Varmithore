@@ -1,11 +1,9 @@
 package app.mathnek.talesofvarmithore.entity.rockdrake;
 
-import app.mathnek.talesofvarmithore.entity.BaseEntityClass;
 import app.mathnek.talesofvarmithore.entity.EntitySaddleBase;
 import app.mathnek.talesofvarmithore.entity.ToVEntityTypes;
-import app.mathnek.talesofvarmithore.network.ControlMessageBite;
-import app.mathnek.talesofvarmithore.network.ControlMessageMovingForBite;
-import app.mathnek.talesofvarmithore.network.ControlNetwork;
+import app.mathnek.talesofvarmithore.messages.ControlMessageBite;
+import app.mathnek.talesofvarmithore.messages.ControlNetwork;
 import app.mathnek.talesofvarmithore.util.MathB;
 import app.mathnek.talesofvarmithore.util.ToVKeybinds;
 import net.minecraft.ChatFormatting;
@@ -14,22 +12,20 @@ import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddMobPacket;
-import net.minecraft.network.syncher.*;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
@@ -37,7 +33,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.entity.PartEntity;
-import net.minecraftforge.event.ForgeEventFactory;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -48,7 +43,6 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Optional;
 
 public class RockDrakeEntity extends EntitySaddleBase {
 
@@ -156,7 +150,7 @@ public class RockDrakeEntity extends EntitySaddleBase {
     public void positionRider(@NotNull Entity passenger) {
         Entity riddenByEntity = getControllingPassenger();
         if (riddenByEntity != null) {
-            Vec3 pos = new Vec3(0, getPassengersRidingOffset() + riddenByEntity.getMyRidingOffset() + 0.4, /*getScale() + */ + 0.55)
+            Vec3 pos = new Vec3(0, getPassengersRidingOffset() + riddenByEntity.getMyRidingOffset() + 0.4, /*getScale() + */ +0.55)
                     .yRot((float) Math.toRadians(-yBodyRot))
                     .add(position());
             passenger.setPos(pos.x, pos.y, pos.z);

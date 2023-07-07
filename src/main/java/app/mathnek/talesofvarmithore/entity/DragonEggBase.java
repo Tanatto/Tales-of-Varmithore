@@ -1,14 +1,13 @@
 package app.mathnek.talesofvarmithore.entity;
 
 import app.mathnek.talesofvarmithore.entity.rockdrake.RockDrakeEntity;
-import app.mathnek.talesofvarmithore.item.DragonEggItem;
-import app.mathnek.talesofvarmithore.item.ToVItems;
+import app.mathnek.talesofvarmithore.items.DragonEggItem;
+import app.mathnek.talesofvarmithore.items.ToVItems;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -196,7 +195,8 @@ public class DragonEggBase extends AgeableMob implements IAnimatable {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {}
+    public void registerControllers(AnimationData data) {
+    }
 
     @Override
     public AnimationFactory getFactory() {
@@ -257,7 +257,7 @@ public class DragonEggBase extends AgeableMob implements IAnimatable {
     public void tick() {
         super.tick();
 
-        if(this.displayProgressTicks > 0)
+        if (this.displayProgressTicks > 0)
             this.displayProgressTicks--;
 
         if (!level.isClientSide() && this.tickCount % 20 == 0) {

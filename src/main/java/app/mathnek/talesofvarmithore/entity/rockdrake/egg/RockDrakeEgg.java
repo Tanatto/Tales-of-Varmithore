@@ -4,8 +4,8 @@ import app.mathnek.talesofvarmithore.TalesofVarmithore;
 import app.mathnek.talesofvarmithore.entity.DragonEggBase;
 import app.mathnek.talesofvarmithore.entity.ToVEntityTypes;
 import app.mathnek.talesofvarmithore.entity.rockdrake.RockDrakeEntity;
-import app.mathnek.talesofvarmithore.item.DragonEggItem;
-import app.mathnek.talesofvarmithore.item.ToVItems;
+import app.mathnek.talesofvarmithore.items.DragonEggItem;
+import app.mathnek.talesofvarmithore.items.ToVItems;
 import app.mathnek.talesofvarmithore.util.Util;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -50,8 +50,7 @@ public class RockDrakeEgg extends DragonEggBase {
     }
 
     @Override
-    public ItemStack getPickResult()
-    {
+    public ItemStack getPickResult() {
         return new ItemStack(ToVItems.ROCKDRAKE_EGG.get());
     }
 }

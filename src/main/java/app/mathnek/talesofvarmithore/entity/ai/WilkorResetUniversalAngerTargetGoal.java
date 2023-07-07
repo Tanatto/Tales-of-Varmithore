@@ -1,6 +1,5 @@
 package app.mathnek.talesofvarmithore.entity.ai;
 
-import app.mathnek.talesofvarmithore.entity.wilkor.WilkorEntity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -12,14 +11,14 @@ import net.minecraft.world.phys.AABB;
 
 import java.util.List;
 
-public class WilkorResetUniversalAngerTargetGoal <WilkorEntity extends Mob & NeutralMob> extends Goal {
+public class WilkorResetUniversalAngerTargetGoal<EntityWilkor extends Mob & NeutralMob> extends Goal {
     private static final int ALERT_RANGE_Y = 10;
-    private final WilkorEntity mob;
+    private final EntityWilkor mob;
     private final boolean alertOthersOfSameType;
     private int lastHurtByPlayerTimestamp;
 
-    public WilkorResetUniversalAngerTargetGoal(app.mathnek.talesofvarmithore.entity.wilkor.WilkorEntity wilkorEntity, boolean pAlertOthersOfSameType) {
-        this.mob = (WilkorEntity) wilkorEntity;
+    public WilkorResetUniversalAngerTargetGoal(app.mathnek.talesofvarmithore.entity.wilkor.EntityWilkor wilkorEntity, boolean pAlertOthersOfSameType) {
+        this.mob = (EntityWilkor) wilkorEntity;
         this.alertOthersOfSameType = pAlertOthersOfSameType;
     }
 
@@ -45,7 +44,7 @@ public class WilkorResetUniversalAngerTargetGoal <WilkorEntity extends Mob & Neu
             this.getNearbyMobsOfSameType().stream().filter((p_26127_) -> {
                 return p_26127_ != this.mob;
             }).map((p_26125_) -> {
-                return (NeutralMob)p_26125_;
+                return (NeutralMob) p_26125_;
             }).forEach(NeutralMob::forgetCurrentTargetAndRefreshUniversalAnger);
         }
 

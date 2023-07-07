@@ -1,7 +1,6 @@
 package app.mathnek.talesofvarmithore.entity.pupfish;
 
-import app.mathnek.talesofvarmithore.block.ToVBlocks;
-import app.mathnek.talesofvarmithore.entity.BaseEntityClass;
+import app.mathnek.talesofvarmithore.blocks.ToVBlocks;
 import app.mathnek.talesofvarmithore.entity.ToVEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -11,7 +10,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -22,16 +20,9 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
 import net.minecraft.world.entity.ai.goal.*;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
-import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.Chicken;
-import net.minecraft.world.entity.animal.Ocelot;
-import net.minecraft.world.entity.animal.Turtle;
-import net.minecraft.world.entity.animal.axolotl.Axolotl;
-import net.minecraft.world.entity.animal.axolotl.AxolotlAi;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -52,8 +43,6 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-
-import java.util.Optional;
 
 public class PupfishEntity extends TamableAnimal implements IAnimatable {
 
@@ -116,7 +105,7 @@ public class PupfishEntity extends TamableAnimal implements IAnimatable {
             }
 
             return InteractionResult.PASS;
-     }
+        }
 
         if (isCommandItem(itemstack) && isOwnedBy(player) && this.isTame()) {
             modifyCommand(2, player);
@@ -169,8 +158,7 @@ public class PupfishEntity extends TamableAnimal implements IAnimatable {
             setTarget(null);
             setOwnerUUID(player.getUUID());
             level.broadcastEntityEvent(this, (byte) 7);
-        }
-        else {
+        } else {
             level.broadcastEntityEvent(this, (byte) 6);
         }
     }
@@ -199,7 +187,7 @@ public class PupfishEntity extends TamableAnimal implements IAnimatable {
     }
 
     public int getCommand() {
-        return (Integer)this.entityData.get(COMMANDS);
+        return (Integer) this.entityData.get(COMMANDS);
     }
 
     public void setCommands(int commands) {
@@ -215,11 +203,11 @@ public class PupfishEntity extends TamableAnimal implements IAnimatable {
     }
 
     public boolean isEntityWandering() {
-        return (Integer)this.entityData.get(COMMANDS) == 0;
+        return (Integer) this.entityData.get(COMMANDS) == 0;
     }
 
     public boolean isEntitySitting() {
-        return (Integer)this.entityData.get(COMMANDS) == 1;
+        return (Integer) this.entityData.get(COMMANDS) == 1;
     }
 
     public void setIsWandering(boolean wandering) {
@@ -235,7 +223,7 @@ public class PupfishEntity extends TamableAnimal implements IAnimatable {
     }
 
     public int getVariant() {
-        return (Integer)this.entityData.get(VARIANTS);
+        return (Integer) this.entityData.get(VARIANTS);
     }
 
     public void setVariant(int pType) {
@@ -332,7 +320,7 @@ public class PupfishEntity extends TamableAnimal implements IAnimatable {
     }
 
     public double getMeleeAttackRangeSqr(LivingEntity pEntity) {
-        return 1.5D + (double)pEntity.getBbWidth() * 2.0D;
+        return 1.5D + (double) pEntity.getBbWidth() * 2.0D;
     }
 
     public boolean canBeLeashed(Player pPlayer) {
@@ -344,7 +332,7 @@ public class PupfishEntity extends TamableAnimal implements IAnimatable {
     }
 
     public boolean doHurtTarget(Entity pEntity) {
-        boolean flag = pEntity.hurt(DamageSource.mobAttack(this), (float)((int)this.getAttributeValue(Attributes.ATTACK_DAMAGE)));
+        boolean flag = pEntity.hurt(DamageSource.mobAttack(this), (float) ((int) this.getAttributeValue(Attributes.ATTACK_DAMAGE)));
         if (flag) {
             this.doEnchantDamageEffects(this, pEntity);
             this.playSound(SoundEvents.AXOLOTL_ATTACK, 1.0F, 1.0F);
@@ -358,7 +346,7 @@ public class PupfishEntity extends TamableAnimal implements IAnimatable {
      */
     public boolean hurt(DamageSource pSource, float pAmount) {
         float f = this.getHealth();
-        if (!this.level.isClientSide && !this.isNoAi() && this.level.random.nextInt(3) == 0 && ((float)this.level.random.nextInt(3) < pAmount || f / this.getMaxHealth() < 0.5F) && pAmount < f && this.isInWater() && (pSource.getEntity() != null || pSource.getDirectEntity() != null)) {
+        if (!this.level.isClientSide && !this.isNoAi() && this.level.random.nextInt(3) == 0 && ((float) this.level.random.nextInt(3) < pAmount || f / this.getMaxHealth() < 0.5F) && pAmount < f && this.isInWater() && (pSource.getEntity() != null || pSource.getDirectEntity() != null)) {
             this.brain.setMemory(MemoryModuleType.PLAY_DEAD_TICKS, 200);
         }
 

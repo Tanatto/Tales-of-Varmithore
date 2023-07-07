@@ -1,6 +1,6 @@
 package app.mathnek.talesofvarmithore.world.gen;
 
-import app.mathnek.talesofvarmithore.block.ToVBlocks;
+import app.mathnek.talesofvarmithore.blocks.ToVBlocks;
 import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.placement.PlacementUtils;

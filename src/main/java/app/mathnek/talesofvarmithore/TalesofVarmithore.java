@@ -1,20 +1,19 @@
 package app.mathnek.talesofvarmithore;
 
-import app.mathnek.talesofvarmithore.block.ToVBlocks;
+import app.mathnek.talesofvarmithore.blocks.ToVBlocks;
 import app.mathnek.talesofvarmithore.entity.ToVEntityTypes;
 import app.mathnek.talesofvarmithore.entity.azulite.AzuliteRenderer;
 import app.mathnek.talesofvarmithore.entity.pupfish.PupfishRenderer;
 import app.mathnek.talesofvarmithore.entity.rockdrake.RockDrakeRenderer;
 import app.mathnek.talesofvarmithore.entity.rockdrake.egg.RockDrakeEggRenderer;
-import app.mathnek.talesofvarmithore.entity.wilkor.WilkorRenderer;
+import app.mathnek.talesofvarmithore.entity.wilkor.RenderWilkor;
 import app.mathnek.talesofvarmithore.gui.EntityInventoryScreen;
 import app.mathnek.talesofvarmithore.gui.ToVContainers;
-import app.mathnek.talesofvarmithore.item.ToVItems;
-import app.mathnek.talesofvarmithore.network.ControlNetwork;
+import app.mathnek.talesofvarmithore.items.ToVItems;
+import app.mathnek.talesofvarmithore.messages.ControlNetwork;
 import app.mathnek.talesofvarmithore.sound.ToVSounds;
 import app.mathnek.talesofvarmithore.util.ToVKeybinds;
 import app.mathnek.talesofvarmithore.world.ToVStructures;
-import app.mathnek.talesofvarmithore.world.gen.ToVPlacesFeatures;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -58,7 +57,7 @@ public class TalesofVarmithore {
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
-        EntityRenderers.register(ToVEntityTypes.WILKOR.get(), WilkorRenderer::new);
+        EntityRenderers.register(ToVEntityTypes.WILKOR.get(), RenderWilkor::new);
         EntityRenderers.register(ToVEntityTypes.AZULITE.get(), AzuliteRenderer::new);
         EntityRenderers.register(ToVEntityTypes.ROCKDRAKE.get(), RockDrakeRenderer::new);
         EntityRenderers.register(ToVEntityTypes.PUPFISH.get(), PupfishRenderer::new);

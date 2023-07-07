@@ -5,7 +5,7 @@ import app.mathnek.talesofvarmithore.entity.azulite.AzuliteEntity;
 import app.mathnek.talesofvarmithore.entity.pupfish.PupfishEntity;
 import app.mathnek.talesofvarmithore.entity.rockdrake.RockDrakeEntity;
 import app.mathnek.talesofvarmithore.entity.rockdrake.egg.RockDrakeEgg;
-import app.mathnek.talesofvarmithore.entity.wilkor.WilkorEntity;
+import app.mathnek.talesofvarmithore.entity.wilkor.EntityWilkor;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -20,11 +20,11 @@ public class ToVEntityTypes {
 
     private static final float PIXEL = 0.0625F;
 
-    public static final RegistryObject<EntityType<WilkorEntity>> WILKOR =
+    public static final RegistryObject<EntityType<EntityWilkor>> WILKOR =
             ENTITY_TYPES.register("wilkor",
-            () -> EntityType.Builder.of(WilkorEntity::new, MobCategory.CREATURE)
-                    .sized(1.3f, 2.4f)
-                    .build(new ResourceLocation(TalesofVarmithore.MOD_ID, "wilkor").toString()));
+                    () -> EntityType.Builder.of(EntityWilkor::new, MobCategory.CREATURE)
+                            .sized(1.3f, 2.4f)
+                            .build(new ResourceLocation(TalesofVarmithore.MOD_ID, "wilkor").toString()));
 
     public static final RegistryObject<EntityType<AzuliteEntity>> AZULITE =
             ENTITY_TYPES.register("azulite",

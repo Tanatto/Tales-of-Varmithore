@@ -2,7 +2,6 @@ package app.mathnek.talesofvarmithore.entity.ai;
 
 import app.mathnek.talesofvarmithore.entity.BaseEntityClass;
 import net.minecraft.world.entity.ai.goal.FollowParentGoal;
-import net.minecraft.world.entity.animal.Animal;
 
 import javax.annotation.Nullable;
 

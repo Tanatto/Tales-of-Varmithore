@@ -1,14 +1,8 @@
 package app.mathnek.talesofvarmithore.entity.azulite;
 
 import app.mathnek.talesofvarmithore.TalesofVarmithore;
-import app.mathnek.talesofvarmithore.entity.ToVBaseGeoModel;
-import app.mathnek.talesofvarmithore.entity.rockdrake.RockDrakeEntity;
-import app.mathnek.talesofvarmithore.entity.wilkor.WilkorEntity;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
-import software.bernie.geckolib3.model.provider.data.EntityModelData;
 
 public class AzuliteModel extends AnimatedGeoModel<AzuliteEntity> {
 
