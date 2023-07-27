@@ -21,7 +21,7 @@ public class TwinTailEgg extends DragonEggBase {
 
     @Override
     public ResourceLocation getTextureLocation(DragonEggBase dragonBase) {
-        return new ResourceLocation(TalesofVarmithore.MOD_ID, "textures/entity/eggs/rockdrake_egg.png");
+        return new ResourceLocation(TalesofVarmithore.MOD_ID, "textures/entity/eggs/twintail_egg.png");
     }
 
     @Override

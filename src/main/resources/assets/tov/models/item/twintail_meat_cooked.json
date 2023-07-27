@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "tov:item/rockdrake_meat_cooked"
+    "layer0": "tov:item/twintail_meat_cooked"
   }
 }

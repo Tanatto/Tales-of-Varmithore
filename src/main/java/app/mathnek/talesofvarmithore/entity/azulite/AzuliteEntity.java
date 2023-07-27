@@ -1,16 +1,14 @@
 package app.mathnek.talesofvarmithore.entity.azulite;
 
 import app.mathnek.talesofvarmithore.entity.ToVEntityTypes;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
@@ -34,17 +32,14 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class AzuliteEntity extends Animal implements IAnimatable {
+    protected static final EntityDataAccessor<Integer> VARIANTS = SynchedEntityData.defineId(AzuliteEntity.class, EntityDataSerializers.INT);
 
     private AnimationFactory factory = new AnimationFactory(this);
-
-    protected static final EntityDataAccessor<Integer> VARIANTS =
-            SynchedEntityData.defineId(AzuliteEntity.class, EntityDataSerializers.INT);
 
     public AzuliteEntity(EntityType<? extends Animal> p_27557_, Level p_27558_) {
         super(p_27557_, p_27558_);
         this.moveControl = new FlyingMoveControl(this, 20, true);
     }
-
 
     public static AttributeSupplier setAttributes() {
         return Monster.createMobAttributes()
@@ -57,13 +52,12 @@ public class AzuliteEntity extends Animal implements IAnimatable {
 
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
+        this.targetSelector.addGoal(2, (new HurtByTargetGoal(this)).setAlertOthers());
         this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(2, new FollowParentGoal(this, 1.0D));
         this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, true));
-
-        this.targetSelector.addGoal(2, (new HurtByTargetGoal(this)).setAlertOthers());
     }
 
     protected @NotNull PathNavigation createNavigation(Level pLevel) {
@@ -133,7 +127,7 @@ public class AzuliteEntity extends Animal implements IAnimatable {
     }
 
     public int getVariant() {
-        return (Integer) this.entityData.get(VARIANTS);
+        return this.entityData.get(VARIANTS);
     }
 
     public void setVariant(int pType) {
@@ -173,5 +167,4 @@ public class AzuliteEntity extends Animal implements IAnimatable {
         super.defineSynchedData();
         this.entityData.define(VARIANTS, 0);
     }
-
 }
