@@ -1,4 +1,4 @@
-package app.mathnek.talesofvarmithore.entity.rockdrake.egg;
+package app.mathnek.talesofvarmithore.entity.twintail.egg;
 
 import app.mathnek.talesofvarmithore.TalesofVarmithore;
 import app.mathnek.talesofvarmithore.entity.DragonEggBase;
@@ -6,11 +6,11 @@ import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
-public class RockDrakeEggModel extends AnimatedGeoModel<DragonEggBase> {
+public class TwinTailEggModel extends AnimatedGeoModel<DragonEggBase> {
 
     @Override
     public ResourceLocation getModelLocation(DragonEggBase entity) {
-        return new ResourceLocation(TalesofVarmithore.MOD_ID, "geo/eggs/rockdrake_egg.geo.json");
+        return new ResourceLocation(TalesofVarmithore.MOD_ID, "geo/eggs/twintail_egg.geo.json");
     }
 
     @Override
@@ -21,7 +21,7 @@ public class RockDrakeEggModel extends AnimatedGeoModel<DragonEggBase> {
 
     @Override
     public ResourceLocation getAnimationFileLocation(DragonEggBase entity) {
-        return new ResourceLocation(TalesofVarmithore.MOD_ID, "animations/eggs/rockdrake_egg.animation.json");
+        return new ResourceLocation(TalesofVarmithore.MOD_ID, "animations/eggs/twintail_egg.animation.json");
     }
 
     @Override

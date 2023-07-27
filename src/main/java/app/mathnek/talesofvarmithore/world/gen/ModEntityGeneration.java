@@ -13,10 +13,10 @@ import java.util.List;
 
 public class ModEntityGeneration {
     public static void onEntitySpawn(final BiomeLoadingEvent event) {
-        addEntityToSpecificBiomes(event, ToVEntityTypes.ROCKDRAKE.get(),
+        addEntityToSpecificBiomes(event, ToVEntityTypes.TWINTAIL.get(),
                 6, 2, 4, Biomes.LUSH_CAVES);
 
-        addEntityToSpecificBiomes(event, ToVEntityTypes.ROCKDRAKE.get(),
+        addEntityToSpecificBiomes(event, ToVEntityTypes.PUPFISH.get(),
                 6, 2, 4, Biomes.COLD_OCEAN);
     }
 

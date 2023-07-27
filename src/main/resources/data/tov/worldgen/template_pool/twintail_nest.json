@@ -1,5 +1,5 @@
 {
-  "name": "tov:rockdrake_nest/start_pool",
+  "name": "tov:twintail_nest/start_pool",
 
   "fallback": "minecraft:empty",
 
@@ -9,7 +9,7 @@
       "weight": 1,
       "element": {
 
-        "location": "tov:rockdrake_nest",
+        "location": "tov:twintail_nest",
 
         "processors": "minecraft:empty",
 

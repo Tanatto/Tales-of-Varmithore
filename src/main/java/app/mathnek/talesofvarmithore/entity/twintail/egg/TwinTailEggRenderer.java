@@ -1,4 +1,4 @@
-package app.mathnek.talesofvarmithore.entity.rockdrake.egg;
+package app.mathnek.talesofvarmithore.entity.twintail.egg;
 
 import app.mathnek.talesofvarmithore.entity.DragonEggBase;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -13,10 +13,10 @@ import software.bernie.geckolib3.renderers.geo.GeoProjectilesRenderer;
 
 import javax.annotation.Nullable;
 
-public class RockDrakeEggRenderer extends GeoProjectilesRenderer<DragonEggBase> {
+public class TwinTailEggRenderer extends GeoProjectilesRenderer<DragonEggBase> {
 
-    public RockDrakeEggRenderer(EntityRendererProvider.Context renderManager) {
-        super(renderManager, new RockDrakeEggModel());
+    public TwinTailEggRenderer(EntityRendererProvider.Context renderManager) {
+        super(renderManager, new TwinTailEggModel());
     }
 
     @Override

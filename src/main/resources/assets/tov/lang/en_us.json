@@ -8,6 +8,7 @@
   "block.tov.mirch_planks": "Mirch Planks",
   "block.tov.persila": "Persila Flower",
   "block.tov.uncia": "Uncia Flower",
+
   "item.tov.azulite_spawn_egg": "Azulite",
   "item.tov.lavacore_axe": "Lavacore Axe",
   "item.tov.lavacore_boots": "Lavacore Boots",
@@ -30,18 +31,23 @@
   "item.tov.obsaidon_shard": "Obsaidon Shard",
   "item.tov.obsaidon_shovel": "Obsaidon Shovel",
   "item.tov.obsaidon_sword": "Obsaidon Sword",
-  "item.tov.rockdrake_spawn_egg": "RockDrake",
+  "item.tov.twintail_spawn_egg": "TwinTail",
   "item.tov.wilkor_spawn_egg": "Wilkor",
   "item.tov.pupfish_spawn_egg": "Pupfish",
-  "item.tov.rockdrake_egg": "RockDrake Egg",
-  "item.tov.feather_tipped": "RockDrake Feather Tipped",
-  "item.tov.rockdrake_meat": "RockDrake Meat",
-  "item.tov.rockdrake_meat_cooked": "RockDrake Meat Cooked",
-  "item.tov.feather_tipped_bunch": "RockDrake Feather Tipped Bunched",
+  "item.tov.twintail_egg": "TwinTail Egg",
+  "item.tov.feather_tipped": "TwinTail Feather Tipped",
+  "item.tov.twintail_meat": "TwinTail Meat",
+  "item.tov.twintail_meat_cooked": "TwinTail Meat Cooked",
+  "item.tov.feather_tipped_bunch": "TwinTail Feather Tipped Bunched",
+
   "itemGroup.tov_tab": "Tales of Varmithore",
   "key.category.tov": "Tales of Varmithore",
   "key.tov.bite": "Bite",
   "egg.warm.toHatch": "Egg is okay and incubating",
   "egg.cold.toHatch": "Egg is cold and failing to incubate",
-  "entity.tov.rockdrake": "RockDrake"
+
+  "entity.tov.twintail": "TwinTail",
+  "entity.tov.wilkor": "Wilkor",
+  "entity.tov.azulite": "Azulite",
+  "entity.tov.pupfish": "Pupfish"
 }

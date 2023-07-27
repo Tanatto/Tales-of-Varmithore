@@ -17,11 +17,11 @@ import org.apache.logging.log4j.Level;
 
 import java.util.Optional;
 
-public class RockDrakeNest extends StructureFeature<JigsawConfiguration> {
+public class TwinTailNest extends StructureFeature<JigsawConfiguration> {
 
-    public RockDrakeNest() {
+    public TwinTailNest() {
         // Create the pieces layout of the structure and give it to the game
-        super(JigsawConfiguration.CODEC, RockDrakeNest::createPiecesGenerator, PostPlacementProcessor.NONE);
+        super(JigsawConfiguration.CODEC, TwinTailNest::createPiecesGenerator, PostPlacementProcessor.NONE);
     }
 
     /**
@@ -63,7 +63,7 @@ public class RockDrakeNest extends StructureFeature<JigsawConfiguration> {
 
         // Check if the spot is valid for our structure. This is just as another method for cleanness.
         // Returning an empty optional tells the game to skip this spot as it will not generate the structure.
-        if (!RockDrakeNest.isFeatureChunk(context)) {
+        if (!TwinTailNest.isFeatureChunk(context)) {
             return Optional.empty();
         }
 
@@ -98,7 +98,7 @@ public class RockDrakeNest extends StructureFeature<JigsawConfiguration> {
         if (structurePiecesGenerator.isPresent()) {
             // I use to debug and quickly find out if the structure is spawning or not and where it is.
             // This is returning the coordinates of the center starting piece.
-            TalesofVarmithore.LOGGER.log(Level.DEBUG, "Dragon Nests at {}", blockpos);
+            TalesofVarmithore.LOGGER.log(Level.DEBUG, "TwinTail Nest at {}", blockpos);
         }
 
         // Return the pieces generator that is now set up so that the game runs it when it needs to create the layout of structure pieces.

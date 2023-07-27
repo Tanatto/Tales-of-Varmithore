@@ -4,8 +4,8 @@ import app.mathnek.talesofvarmithore.TalesofVarmithore;
 import app.mathnek.talesofvarmithore.entity.ToVEntityTypes;
 import app.mathnek.talesofvarmithore.entity.azulite.AzuliteEntity;
 import app.mathnek.talesofvarmithore.entity.pupfish.PupfishEntity;
-import app.mathnek.talesofvarmithore.entity.rockdrake.RockDrakeEntity;
-import app.mathnek.talesofvarmithore.entity.rockdrake.egg.RockDrakeEgg;
+import app.mathnek.talesofvarmithore.entity.twintail.TwinTailEntity;
+import app.mathnek.talesofvarmithore.entity.twintail.egg.TwinTailEgg;
 import app.mathnek.talesofvarmithore.entity.wilkor.EntityWilkor;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -18,9 +18,9 @@ public class ToVEventBusEvents {
     public static void entityAttributeEvent(EntityAttributeCreationEvent event) {
         event.put(ToVEntityTypes.WILKOR.get(), EntityWilkor.setAttributes().build());
         event.put(ToVEntityTypes.AZULITE.get(), AzuliteEntity.setAttributes());
-        event.put(ToVEntityTypes.ROCKDRAKE.get(), RockDrakeEntity.setAttributes().build());
+        event.put(ToVEntityTypes.TWINTAIL.get(), TwinTailEntity.setAttributes().build());
         event.put(ToVEntityTypes.PUPFISH.get(), PupfishEntity.createAttributes().build());
 
-        event.put(ToVEntityTypes.ROCKDRAKE_EGG.get(), RockDrakeEgg.createAttributes().build());
+        event.put(ToVEntityTypes.TWINTAIL_EGG.get(), TwinTailEgg.createAttributes().build());
     }
 }

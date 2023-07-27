@@ -1,6 +1,6 @@
 package app.mathnek.talesofvarmithore.messages;
 
-import app.mathnek.talesofvarmithore.entity.rockdrake.RockDrakeEntity;
+import app.mathnek.talesofvarmithore.entity.twintail.TwinTailEntity;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
@@ -35,7 +35,7 @@ public class ControlMessageMovingForBite {
         context.enqueueWork(() -> {
             ServerPlayer player = context.getSender();
             if (player != null) {
-                if (player.getVehicle() instanceof RockDrakeEntity rockDrake && rockDrake.getOwner() == player) {
+                if (player.getVehicle() instanceof TwinTailEntity rockDrake && rockDrake.getOwner() == player) {
                     rockDrake.setIsBitingDamageTrue(message.canCauseBiteDamage);
                 }
             }

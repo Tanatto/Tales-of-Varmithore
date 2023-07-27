@@ -4,8 +4,8 @@ import app.mathnek.talesofvarmithore.blocks.ToVBlocks;
 import app.mathnek.talesofvarmithore.entity.ToVEntityTypes;
 import app.mathnek.talesofvarmithore.entity.azulite.AzuliteRenderer;
 import app.mathnek.talesofvarmithore.entity.pupfish.PupfishRenderer;
-import app.mathnek.talesofvarmithore.entity.rockdrake.RockDrakeRenderer;
-import app.mathnek.talesofvarmithore.entity.rockdrake.egg.RockDrakeEggRenderer;
+import app.mathnek.talesofvarmithore.entity.twintail.TwinTailRenderer;
+import app.mathnek.talesofvarmithore.entity.twintail.egg.TwinTailEggRenderer;
 import app.mathnek.talesofvarmithore.entity.wilkor.RenderWilkor;
 import app.mathnek.talesofvarmithore.gui.EntityInventoryScreen;
 import app.mathnek.talesofvarmithore.gui.ToVContainers;
@@ -31,7 +31,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import software.bernie.geckolib3.GeckoLib;
 
-// The value here should match an entry in the META-INF/mods.toml file
 @Mod(TalesofVarmithore.MOD_ID)
 public class TalesofVarmithore {
     public static final String MOD_ID = "tov";
@@ -59,10 +58,10 @@ public class TalesofVarmithore {
     private void clientSetup(final FMLClientSetupEvent event) {
         EntityRenderers.register(ToVEntityTypes.WILKOR.get(), RenderWilkor::new);
         EntityRenderers.register(ToVEntityTypes.AZULITE.get(), AzuliteRenderer::new);
-        EntityRenderers.register(ToVEntityTypes.ROCKDRAKE.get(), RockDrakeRenderer::new);
+        EntityRenderers.register(ToVEntityTypes.TWINTAIL.get(), TwinTailRenderer::new);
         EntityRenderers.register(ToVEntityTypes.PUPFISH.get(), PupfishRenderer::new);
 
-        EntityRenderers.register(ToVEntityTypes.ROCKDRAKE_EGG.get(), RockDrakeEggRenderer::new);
+        EntityRenderers.register(ToVEntityTypes.TWINTAIL_EGG.get(), TwinTailEggRenderer::new);
 
         ItemBlockRenderTypes.setRenderLayer(ToVBlocks.PERSILA.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(ToVBlocks.UNCIA.get(), RenderType.cutout());
@@ -80,7 +79,7 @@ public class TalesofVarmithore {
         event.enqueueWork(() -> {
         });
 
-        SpawnPlacements.register(ToVEntityTypes.ROCKDRAKE.get(),
+        SpawnPlacements.register(ToVEntityTypes.TWINTAIL.get(),
                 SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 Animal::checkAnimalSpawnRules);

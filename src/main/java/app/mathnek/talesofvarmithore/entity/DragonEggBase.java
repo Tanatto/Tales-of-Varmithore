@@ -1,6 +1,6 @@
 package app.mathnek.talesofvarmithore.entity;
 
-import app.mathnek.talesofvarmithore.entity.rockdrake.RockDrakeEntity;
+import app.mathnek.talesofvarmithore.entity.twintail.TwinTailEntity;
 import app.mathnek.talesofvarmithore.items.DragonEggItem;
 import app.mathnek.talesofvarmithore.items.ToVItems;
 import com.google.common.collect.ImmutableList;
@@ -44,7 +44,7 @@ public class DragonEggBase extends AgeableMob implements IAnimatable {
     private static final EntityDataAccessor<Integer> DRAGON_VARIANT = SynchedEntityData.defineId(DragonEggBase.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> TICK_HATCH_TIME = SynchedEntityData.defineId(DragonEggBase.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> CAN_HATCH = SynchedEntityData.defineId(DragonEggBase.class, EntityDataSerializers.BOOLEAN);
-    protected RockDrakeEntity dragonResult;
+    protected TwinTailEntity dragonResult;
     public int displayProgressTicks = 0;
 
     AnimationFactory factory = new AnimationFactory(this);
@@ -274,7 +274,7 @@ public class DragonEggBase extends AgeableMob implements IAnimatable {
     }
 
     protected void hatch() {
-        RockDrakeEntity dragonResult = getDragonEggResult();
+        TwinTailEntity dragonResult = getDragonEggResult();
         assert dragonResult != null;
         dragonResult.setAge(-100000);
         dragonResult.moveTo(this.getX(), this.getY(), this.getZ(), 0.0F, 0.0F);
@@ -317,13 +317,13 @@ public class DragonEggBase extends AgeableMob implements IAnimatable {
     }
 
     protected DragonEggItem getItemVersion() {
-        return ToVItems.ROCKDRAKE_EGG.get();
+        return ToVItems.TWINTAIL_EGG.get();
     }
 
 
     // stinger would be the default
-    protected RockDrakeEntity getDragonEggResult() {
-        return ToVEntityTypes.ROCKDRAKE.get().create(this.level);
+    protected TwinTailEntity getDragonEggResult() {
+        return ToVEntityTypes.TWINTAIL.get().create(this.level);
     }
 
     /**

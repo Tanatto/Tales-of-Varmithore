@@ -1,9 +1,9 @@
-package app.mathnek.talesofvarmithore.entity.rockdrake.egg;
+package app.mathnek.talesofvarmithore.entity.twintail.egg;
 
 import app.mathnek.talesofvarmithore.TalesofVarmithore;
 import app.mathnek.talesofvarmithore.entity.DragonEggBase;
 import app.mathnek.talesofvarmithore.entity.ToVEntityTypes;
-import app.mathnek.talesofvarmithore.entity.rockdrake.RockDrakeEntity;
+import app.mathnek.talesofvarmithore.entity.twintail.TwinTailEntity;
 import app.mathnek.talesofvarmithore.items.DragonEggItem;
 import app.mathnek.talesofvarmithore.items.ToVItems;
 import app.mathnek.talesofvarmithore.util.Util;
@@ -14,8 +14,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
-public class RockDrakeEgg extends DragonEggBase {
-    public RockDrakeEgg(EntityType<? extends DragonEggBase> pEntityType, Level pLevel) {
+public class TwinTailEgg extends DragonEggBase {
+    public TwinTailEgg(EntityType<? extends DragonEggBase> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
@@ -30,13 +30,13 @@ public class RockDrakeEgg extends DragonEggBase {
     }
 
     @Override
-    protected RockDrakeEntity getDragonEggResult() {
-        return ToVEntityTypes.ROCKDRAKE.get().create(this.level);
+    protected TwinTailEntity getDragonEggResult() {
+        return ToVEntityTypes.TWINTAIL.get().create(this.level);
     }
 
     @Override
     protected DragonEggItem getItemVersion() {
-        return ToVItems.ROCKDRAKE_EGG.get();
+        return ToVItems.TWINTAIL_EGG.get();
     }
 
     @Override
@@ -51,6 +51,6 @@ public class RockDrakeEgg extends DragonEggBase {
 
     @Override
     public ItemStack getPickResult() {
-        return new ItemStack(ToVItems.ROCKDRAKE_EGG.get());
+        return new ItemStack(ToVItems.TWINTAIL_EGG.get());
     }
 }

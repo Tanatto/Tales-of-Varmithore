@@ -1,4 +1,4 @@
-package app.mathnek.talesofvarmithore.entity.rockdrake;
+package app.mathnek.talesofvarmithore.entity.twintail;
 
 import app.mathnek.talesofvarmithore.entity.EntitySaddleBase;
 import app.mathnek.talesofvarmithore.entity.ToVEntityTypes;
@@ -44,18 +44,18 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class RockDrakeEntity extends EntitySaddleBase {
+public class TwinTailEntity extends EntitySaddleBase {
 
     EntityPart[] subParts;
     EntityPart rockdrakeBiteOffset;
 
     private static final EntityDataAccessor<Boolean> BITING_DAMAGE =
-            SynchedEntityData.defineId(RockDrakeEntity.class, EntityDataSerializers.BOOLEAN);
+            SynchedEntityData.defineId(TwinTailEntity.class, EntityDataSerializers.BOOLEAN);
 
     protected static final EntityDataAccessor<Boolean> BITING =
-            SynchedEntityData.defineId(RockDrakeEntity.class, EntityDataSerializers.BOOLEAN);
+            SynchedEntityData.defineId(TwinTailEntity.class, EntityDataSerializers.BOOLEAN);
 
-    public RockDrakeEntity(EntityType<? extends EntitySaddleBase> pEntityType, Level pLevel) {
+    public TwinTailEntity(EntityType<? extends EntitySaddleBase> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         this.rockdrakeBiteOffset = new EntityPart(this, "rockdrakeBiteOffset", 1.5F, 1.5F);
         this.subParts = new EntityPart[]{this.rockdrakeBiteOffset};
@@ -311,15 +311,13 @@ public class RockDrakeEntity extends EntitySaddleBase {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob mob) {
-        return ToVEntityTypes.ROCKDRAKE.get().create(serverLevel);
+        return ToVEntityTypes.TWINTAIL.get().create(serverLevel);
     }
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "controller",
-                -5, this::predicate));
-        data.addAnimationController(new AnimationController(this, "attack_Controller",
-                -5, this::attackController));
+        data.addAnimationController(new AnimationController(this, "controller", 5, this::predicate));
+        data.addAnimationController(new AnimationController(this, "attack_Controller", 5, this::attackController));
     }
 
     @Override

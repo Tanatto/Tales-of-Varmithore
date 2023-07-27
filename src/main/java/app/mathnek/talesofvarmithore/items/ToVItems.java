@@ -28,17 +28,13 @@ public class ToVItems {
             () -> new ForgeSpawnEggItem(ToVEntityTypes.PUPFISH, 0xff62e4, 0xdfdfdf,
                     new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB)));
 
-    /*public static final RegistryObject<EelSpawnEggItem> ROCKDRAKE_SPAWN_EGG = ITEMS.register("rockdrake_spawn_egg",
-            () -> new EelSpawnEggItem(ToVEntityTypes.ROCKDRAKE, 0x425d57, 0xc5591b,
-                    new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB).stacksTo(64)));*/
-
-    public static final RegistryObject<RESpawnEggItem> ROCKDRAKE_SPAWN_EGG = ITEMS.register("rockdrake_spawn_egg", () ->
-            new RESpawnEggItem(ToVEntityTypes.ROCKDRAKE, 0xffffff, 0xffffff,
+    public static final RegistryObject<RESpawnEggItem> TWINTAIL_SPAWN_EGG = ITEMS.register("twintail_spawn_egg", () ->
+            new RESpawnEggItem(ToVEntityTypes.TWINTAIL, 0xffffff, 0xffffff,
                     new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB).stacksTo(64)));
 
-    public static final RegistryObject<DragonEggItem> ROCKDRAKE_EGG = ITEMS.register("rockdrake_egg",
+    public static final RegistryObject<DragonEggItem> TWINTAIL_EGG = ITEMS.register("twintail_egg",
             () -> new DragonEggItem(new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB).stacksTo(4),
-                    ToVEntityTypes.ROCKDRAKE_EGG));
+                    ToVEntityTypes.TWINTAIL_EGG));
 
     public static final RegistryObject<Item> OBSAIDON_SHARD = ITEMS.register("obsaidon_shard",
             () -> new Item(new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB)));

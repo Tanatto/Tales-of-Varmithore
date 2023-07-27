@@ -1,4 +1,4 @@
-package app.mathnek.talesofvarmithore.entity.rockdrake;
+package app.mathnek.talesofvarmithore.entity.twintail;
 
 import app.mathnek.talesofvarmithore.TalesofVarmithore;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -9,18 +9,18 @@ import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.renderers.geo.GeoLayerRenderer;
 import software.bernie.geckolib3.renderers.geo.IGeoRenderer;
 
-public class RockDrakeLayer extends GeoLayerRenderer<RockDrakeEntity> {
+public class TwinTailLayer extends GeoLayerRenderer<TwinTailEntity> {
 
     private static final ResourceLocation LAYER = new ResourceLocation(TalesofVarmithore.MOD_ID, "textures/entity/rockdrake/equipment.png");
-    private static final ResourceLocation MODEL = new ResourceLocation(TalesofVarmithore.MOD_ID, "geo/rockdrake.geo.json");
+    private static final ResourceLocation MODEL = new ResourceLocation(TalesofVarmithore.MOD_ID, "geo/twintail.geo.json");
 
 
-    public RockDrakeLayer(IGeoRenderer<?> entityRendererIn) {
-        super((IGeoRenderer<RockDrakeEntity>) entityRendererIn);
+    public TwinTailLayer(IGeoRenderer<?> entityRendererIn) {
+        super((IGeoRenderer<TwinTailEntity>) entityRendererIn);
     }
 
     @Override
-    public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, RockDrakeEntity entityLivingBaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, TwinTailEntity entityLivingBaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         RenderType cameo = RenderType.armorCutoutNoCull(LAYER);
         matrixStackIn.pushPose();
         matrixStackIn.scale(1.0f, 1.0f, 1.0f);
