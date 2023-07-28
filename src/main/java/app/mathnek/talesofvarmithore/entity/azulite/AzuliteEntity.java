@@ -85,10 +85,10 @@ public class AzuliteEntity extends Animal implements IAnimatable {
     }
 
 
-    //#TODO make custom biometag that include all biomes, Placeholder tags used
+    //TODO: make custom biometag that include all biomes, Placeholder tags used
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
-        //Todo: Add back once I know which variant is which
+        //TODO: Add back once I know which variant is which
         /*Holder<Biome> holder = pLevel.getBiome(this.blockPosition());
         if (holder.is(BiomeTags.HAS_IGLOO)) {
             this.setVariant(AzuliteVariants.SNOW);

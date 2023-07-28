@@ -7,6 +7,7 @@ import app.mathnek.talesofvarmithore.entity.pupfish.PupfishEntity;
 import app.mathnek.talesofvarmithore.entity.twintail.TwinTailEntity;
 import app.mathnek.talesofvarmithore.entity.twintail.egg.TwinTailEgg;
 import app.mathnek.talesofvarmithore.entity.wilkor.EntityWilkor;
+import app.mathnek.talesofvarmithore.entity.wilkor.NewWilkor;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -16,7 +17,7 @@ public class ToVEventBusEvents {
 
     @SubscribeEvent
     public static void entityAttributeEvent(EntityAttributeCreationEvent event) {
-        event.put(ToVEntityTypes.WILKOR.get(), EntityWilkor.setAttributes().build());
+        event.put(ToVEntityTypes.WILKOR.get(), NewWilkor.setAttributes().build());
         event.put(ToVEntityTypes.AZULITE.get(), AzuliteEntity.setAttributes());
         event.put(ToVEntityTypes.TWINTAIL.get(), TwinTailEntity.setAttributes().build());
         event.put(ToVEntityTypes.PUPFISH.get(), PupfishEntity.createAttributes().build());

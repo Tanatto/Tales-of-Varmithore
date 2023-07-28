@@ -240,7 +240,7 @@ public class PupfishEntity extends TamableAnimal implements IAnimatable {
     }
 
     public int getMaxAmountOfVariants() {
-        return 3;
+        return 10;
     }
 
     @Nullable

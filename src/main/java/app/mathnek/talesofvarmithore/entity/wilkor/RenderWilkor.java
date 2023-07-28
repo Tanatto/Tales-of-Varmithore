@@ -8,14 +8,14 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
-public class RenderWilkor extends GeoEntityRenderer<EntityWilkor> {
+public class RenderWilkor extends GeoEntityRenderer<NewWilkor> {
     public RenderWilkor(EntityRendererProvider.Context renderManager) {
         super(renderManager, new ModelWilkor());
         this.shadowRadius = 1f;
     }
 
     @Override
-    public RenderType getRenderType(EntityWilkor animatable, float partialTicks, PoseStack stack,
+    public RenderType getRenderType(NewWilkor animatable, float partialTicks, PoseStack stack,
                                     MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn,
                                     ResourceLocation textureLocation) {
         if (animatable.isBaby()) {
