@@ -7,6 +7,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -56,17 +57,6 @@ public class NewWilkor extends EntityGroundBase {
                 .add(Attributes.MOVEMENT_SPEED, 0.3f)
                 .add(Attributes.JUMP_STRENGTH, 2);
     }
-
-   /*@Override
-    protected void registerGoals() {
-        this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
-        this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(4, new WilkorFollowParentGoal(this, 1.0D));
-        this.goalSelector.addGoal(6, new WilkorAIWander(this, 0.7, 20));
-        this.goalSelector.addGoal(7, new WilkorAIWatchClosest(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(7, new WilkorRandomLookAroundGoal(this));
-    }*/
 
     public boolean isNocturnal() {
         return true;

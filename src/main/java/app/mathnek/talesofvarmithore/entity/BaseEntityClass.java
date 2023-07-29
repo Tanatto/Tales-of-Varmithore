@@ -20,6 +20,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.BreedGoal;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
@@ -104,12 +105,13 @@ public abstract class BaseEntityClass extends TamableAnimal implements IAnimatab
 
     @Override
     protected void registerGoals() {
+        this.goalSelector.addGoal(1, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
+        this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(4, new ToVFollowParentGoal(this, 1.0D));
+        this.goalSelector.addGoal(6, new ToVAIWander(this, 0.7, 20));
         this.goalSelector.addGoal(7, new ToVAIWatchClosest(this, Player.class, 8.0F));
         this.goalSelector.addGoal(7, new ToVRandomLookAroundGoal(this));
-        this.goalSelector.addGoal(6, new ToVAIWander(this, 0.7, 20));
-        this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
     }
 
     public boolean shouldStopMovingIndependently() {
