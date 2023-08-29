@@ -3,6 +3,7 @@ package app.mathnek.talesofvarmithore;
 import app.mathnek.talesofvarmithore.blocks.ToVBlocks;
 import app.mathnek.talesofvarmithore.entity.ToVEntityTypes;
 import app.mathnek.talesofvarmithore.entity.azulite.AzuliteRenderer;
+import app.mathnek.talesofvarmithore.entity.moth_fae_dragon.MothFaeDragonRender;
 import app.mathnek.talesofvarmithore.entity.pupfish.PupfishRenderer;
 import app.mathnek.talesofvarmithore.entity.twintail.TwinTailRenderer;
 import app.mathnek.talesofvarmithore.entity.twintail.egg.TwinTailEggRenderer;
@@ -60,6 +61,7 @@ public class TalesofVarmithore {
         EntityRenderers.register(ToVEntityTypes.AZULITE.get(), AzuliteRenderer::new);
         EntityRenderers.register(ToVEntityTypes.TWINTAIL.get(), TwinTailRenderer::new);
         EntityRenderers.register(ToVEntityTypes.PUPFISH.get(), PupfishRenderer::new);
+        EntityRenderers.register(ToVEntityTypes.MOTH_FAE_DRAGON.get(), MothFaeDragonRender::new);
 
         EntityRenderers.register(ToVEntityTypes.TWINTAIL_EGG.get(), TwinTailEggRenderer::new);
 

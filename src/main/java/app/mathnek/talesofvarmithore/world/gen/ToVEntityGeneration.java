@@ -11,7 +11,7 @@ import net.minecraftforge.event.world.BiomeLoadingEvent;
 import java.util.Arrays;
 import java.util.List;
 
-public class ModEntityGeneration {
+public class ToVEntityGeneration {
     public static void onEntitySpawn(final BiomeLoadingEvent event) {
         addEntityToSpecificBiomes(event, ToVEntityTypes.TWINTAIL.get(),
                 6, 2, 4, Biomes.LUSH_CAVES);

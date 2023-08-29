@@ -46,8 +46,8 @@ public class AzuliteEntity extends Animal implements IAnimatable {
                 .add(Attributes.MAX_HEALTH, 10.0D)
                 .add(Attributes.ATTACK_DAMAGE, 1.0f)
                 .add(Attributes.ATTACK_SPEED, 1.0f)
-                .add(Attributes.FLYING_SPEED, 3.0f)
-                .add(Attributes.MOVEMENT_SPEED, 1.0f).build();
+                .add(Attributes.FLYING_SPEED, 0.3f)
+                .add(Attributes.MOVEMENT_SPEED, 0.3f).build();
     }
 
     protected void registerGoals() {

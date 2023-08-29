@@ -3,6 +3,7 @@ package app.mathnek.talesofvarmithore.event;
 import app.mathnek.talesofvarmithore.TalesofVarmithore;
 import app.mathnek.talesofvarmithore.entity.ToVEntityTypes;
 import app.mathnek.talesofvarmithore.entity.azulite.AzuliteEntity;
+import app.mathnek.talesofvarmithore.entity.moth_fae_dragon.MothFaeDragon;
 import app.mathnek.talesofvarmithore.entity.pupfish.PupfishEntity;
 import app.mathnek.talesofvarmithore.entity.twintail.TwinTailEntity;
 import app.mathnek.talesofvarmithore.entity.twintail.egg.TwinTailEgg;
@@ -21,6 +22,7 @@ public class ToVEventBusEvents {
         event.put(ToVEntityTypes.AZULITE.get(), AzuliteEntity.setAttributes());
         event.put(ToVEntityTypes.TWINTAIL.get(), TwinTailEntity.setAttributes().build());
         event.put(ToVEntityTypes.PUPFISH.get(), PupfishEntity.createAttributes().build());
+        event.put(ToVEntityTypes.MOTH_FAE_DRAGON.get(), MothFaeDragon.setAttributes());
 
         event.put(ToVEntityTypes.TWINTAIL_EGG.get(), TwinTailEgg.createAttributes().build());
     }

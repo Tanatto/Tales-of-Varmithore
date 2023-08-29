@@ -32,6 +32,10 @@ public class ToVItems {
             new RESpawnEggItem(ToVEntityTypes.TWINTAIL, 0xffffff, 0xffffff,
                     new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB).stacksTo(64)));
 
+    public static final RegistryObject<Item> MOTH_FAE_DRAGON_SPAWN_EGG = ITEMS.register("moth_fae_dragon_spawn_egg",
+            () -> new ForgeSpawnEggItem(ToVEntityTypes.MOTH_FAE_DRAGON, 0x302a2a, 0xc22f2f,
+                    new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB)));
+
     public static final RegistryObject<DragonEggItem> TWINTAIL_EGG = ITEMS.register("twintail_egg",
             () -> new DragonEggItem(new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB).stacksTo(4),
                     ToVEntityTypes.TWINTAIL_EGG));

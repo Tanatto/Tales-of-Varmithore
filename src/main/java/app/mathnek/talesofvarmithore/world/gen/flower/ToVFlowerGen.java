@@ -1,5 +1,6 @@
-package app.mathnek.talesofvarmithore.world.gen;
+package app.mathnek.talesofvarmithore.world.gen.flower;
 
+import app.mathnek.talesofvarmithore.world.gen.ToVPlacedFeatures;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -11,6 +12,7 @@ import net.minecraftforge.event.world.BiomeLoadingEvent;
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
 
 public class ToVFlowerGen {
     public static void generateFlowers(final BiomeLoadingEvent event) {
@@ -21,14 +23,14 @@ public class ToVFlowerGen {
             List<Holder<PlacedFeature>> base =
                     event.getGeneration().getFeatures(GenerationStep.Decoration.VEGETAL_DECORATION);
 
-            base.add(ToVPlacesFeatures.UNCIA_PLACED);
+            base.add(ToVPlacedFeatures.UNCIA_PLACED);
         }
 
         if (types.contains(BiomeDictionary.Type.FOREST)) {
             List<Holder<PlacedFeature>> base =
                     event.getGeneration().getFeatures(GenerationStep.Decoration.VEGETAL_DECORATION);
 
-            base.add(ToVPlacesFeatures.PERSILA_PLACED);
+            base.add(ToVPlacedFeatures.PERSILA_PLACED);
         }
     }
 }

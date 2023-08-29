@@ -233,9 +233,7 @@ public class PupfishEntity extends TamableAnimal implements IAnimatable {
     @javax.annotation.Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @javax.annotation.Nullable SpawnGroupData pSpawnData, @javax.annotation.Nullable CompoundTag pDataTag) {
         pSpawnData = super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
-        if (pReason == MobSpawnType.SPAWN_EGG) {
-            this.setVariant(this.getRandom().nextInt(getMaxAmountOfVariants()));
-        }
+        this.setVariant(this.getRandom().nextInt(getMaxAmountOfVariants()));
         return pSpawnData;
     }
 

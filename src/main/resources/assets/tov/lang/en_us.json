@@ -34,6 +34,7 @@
   "item.tov.twintail_spawn_egg": "TwinTail",
   "item.tov.wilkor_spawn_egg": "Wilkor",
   "item.tov.pupfish_spawn_egg": "Pupfish",
+  "item.tov.moth_fae_dragon_spawn_egg": "Moth Fae Dragon",
   "item.tov.twintail_egg": "TwinTail Egg",
   "item.tov.feather_tipped": "TwinTail Feather Tipped",
   "item.tov.twintail_meat": "TwinTail Meat",
@@ -49,5 +50,6 @@
   "entity.tov.twintail": "TwinTail",
   "entity.tov.wilkor": "Wilkor",
   "entity.tov.azulite": "Azulite",
-  "entity.tov.pupfish": "Pupfish"
+  "entity.tov.pupfish": "Pupfish",
+  "entity.tov.moth_fae_dragon": "Moth Fae Dragon"
 }

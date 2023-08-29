@@ -1,13 +1,12 @@
 package app.mathnek.talesofvarmithore.world.gen;
 
+import app.mathnek.talesofvarmithore.world.gen.ores.ToVOrePlacement;
 import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
-import net.minecraft.world.level.levelgen.placement.BiomeFilter;
-import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import net.minecraft.world.level.levelgen.placement.RarityFilter;
+import net.minecraft.world.level.levelgen.VerticalAnchor;
+import net.minecraft.world.level.levelgen.placement.*;
 
-public class ToVPlacesFeatures {
+public class ToVPlacedFeatures {
     public static final Holder<PlacedFeature> PERSILA_PLACED = PlacementUtils.register("persila_placed",
             ToVConfiguredFeatures.PERSILA, RarityFilter.onAverageOnceEvery(6),
             InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome());
