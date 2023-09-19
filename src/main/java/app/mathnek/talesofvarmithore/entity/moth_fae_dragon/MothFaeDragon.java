@@ -62,8 +62,8 @@ public class MothFaeDragon extends AmbientCreature implements IAnimatable {
     public static AttributeSupplier setAttributes() {
         return Monster.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 6.0D)
-                /*.add(Attributes.FLYING_SPEED, 0.3f)
-                .add(Attributes.MOVEMENT_SPEED, 0.3f)*/.build();
+                .add(Attributes.FLYING_SPEED, 0.35f)
+                .add(Attributes.MOVEMENT_SPEED, 0.3f).build();
     }
 
     /*protected void registerGoals() {
@@ -83,10 +83,10 @@ public class MothFaeDragon extends AmbientCreature implements IAnimatable {
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (event.isMoving()) {
+        /*if (event.isMoving()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("flydragon.flap", true));
             return PlayState.CONTINUE;
-        }
+        }*/
         event.getController().setAnimation(new AnimationBuilder().addAnimation("flydragon.flee", true));
         return PlayState.CONTINUE;
     }

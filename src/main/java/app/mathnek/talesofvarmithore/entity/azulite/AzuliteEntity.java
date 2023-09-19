@@ -1,14 +1,13 @@
 package app.mathnek.talesofvarmithore.entity.azulite;
 
-import app.mathnek.talesofvarmithore.entity.ToVEntityTypes;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
@@ -16,7 +15,7 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -31,12 +30,12 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class AzuliteEntity extends Animal implements IAnimatable {
+public class AzuliteEntity extends Monster implements IAnimatable, Enemy {
     protected static final EntityDataAccessor<Integer> VARIANTS = SynchedEntityData.defineId(AzuliteEntity.class, EntityDataSerializers.INT);
 
     private AnimationFactory factory = new AnimationFactory(this);
 
-    public AzuliteEntity(EntityType<? extends Animal> p_27557_, Level p_27558_) {
+    public AzuliteEntity(EntityType<? extends Monster> p_27557_, Level p_27558_) {
         super(p_27557_, p_27558_);
         this.moveControl = new FlyingMoveControl(this, 20, true);
     }
@@ -46,7 +45,7 @@ public class AzuliteEntity extends Animal implements IAnimatable {
                 .add(Attributes.MAX_HEALTH, 10.0D)
                 .add(Attributes.ATTACK_DAMAGE, 1.0f)
                 .add(Attributes.ATTACK_SPEED, 1.0f)
-                .add(Attributes.FLYING_SPEED, 0.3f)
+                .add(Attributes.FLYING_SPEED, 0.38f)
                 .add(Attributes.MOVEMENT_SPEED, 0.3f).build();
     }
 
@@ -54,7 +53,6 @@ public class AzuliteEntity extends Animal implements IAnimatable {
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.targetSelector.addGoal(2, (new HurtByTargetGoal(this)).setAlertOthers());
         this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(2, new FollowParentGoal(this, 1.0D));
         this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, true));
@@ -142,13 +140,6 @@ public class AzuliteEntity extends Animal implements IAnimatable {
     public AnimationFactory getFactory() {
         return factory;
     }
-
-    @Nullable
-    @Override
-    public AgeableMob getBreedOffspring(ServerLevel pLevel, AgeableMob pOtherParent) {
-        return ToVEntityTypes.AZULITE.get().create(pLevel);
-    }
-
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {

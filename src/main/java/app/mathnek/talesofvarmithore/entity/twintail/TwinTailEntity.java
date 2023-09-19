@@ -76,7 +76,7 @@ public class TwinTailEntity extends EntitySaddleBase {
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (this.isBaby()) {
+        /*if (this.isBaby()) {
             if (event.isMoving()) {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.walk", true));
                 return PlayState.CONTINUE;
@@ -100,13 +100,21 @@ public class TwinTailEntity extends EntitySaddleBase {
 
             event.getController().setAnimation(new AnimationBuilder().addAnimation("baby", true));
             return PlayState.CONTINUE;
-        }
+        }*/
         if (event.isMoving()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.walk", true));
             return PlayState.CONTINUE;
         }
         if (event.isMoving() && this.isVehicle()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.run", true));
+            return PlayState.CONTINUE;
+        }
+        if (event.isMoving() && this.isVehicle() && isInWater()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.swim", true));
+            return PlayState.CONTINUE;
+        }
+        if (event.isMoving() && isInWater()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.swim", true));
             return PlayState.CONTINUE;
         }
         if (this.isEntitySitting()) {

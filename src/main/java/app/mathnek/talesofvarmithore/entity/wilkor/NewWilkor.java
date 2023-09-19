@@ -62,6 +62,11 @@ public class NewWilkor extends EntityGroundBase {
         return true;
     }
 
+    @Override
+    public int getMaxAmountOfVariants() {
+        return 10;
+    }
+
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel pLevel, AgeableMob pOtherParent) {
