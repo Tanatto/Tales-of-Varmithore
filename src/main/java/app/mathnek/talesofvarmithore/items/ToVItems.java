@@ -52,6 +52,9 @@ public class ToVItems {
     public static final RegistryObject<Item> JAR = ITEMS.register("jar",
             () -> new Item(new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB).stacksTo(16)));
 
+    public static final RegistryObject<Item> JARRED_FAE = ITEM.register("jarred_fae",
+            () -> new Item(new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB)));
+
     public static final RegistryObject<Item> TWINTAIL_MEAT = ITEMS.register("twintail_meat",
             () -> new Item(new Item.Properties().tab(ToVCreativeModeTab.TOV_TAB).food(ToVFood.ROCKDRAKE_MEAT).stacksTo(64)));
 
