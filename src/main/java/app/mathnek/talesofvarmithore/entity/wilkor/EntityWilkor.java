@@ -295,7 +295,7 @@ public class EntityWilkor extends TamableAnimal implements IAnimatable {
     }
 
     protected boolean isItemStackForTaming(ItemStack stack) {
-        return stack.is(Items.BEEF);
+        return stack.is(Items.BONE);
     }
 
     public void tamedFor(Player player, boolean successful) {
