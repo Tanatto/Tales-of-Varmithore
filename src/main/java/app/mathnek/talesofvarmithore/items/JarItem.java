@@ -1,6 +1,6 @@
 package app.mathnek.talesofvarmithore.items;
 
-import app.mathnek.talesofvarmithore.entity.MothFaeDragon;
+import app.mathnek.talesofvarmithore.entity.moth_fae_dragon.MothFaeDragon;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
