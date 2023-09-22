@@ -29,7 +29,7 @@ public class JarItem extends Item {
   @Override
   public @NotNull InteractionResult interactLivingEntity(@NotNull ItemStack stack, Player playerIn, @NotNull LivingEntity target, @NotNull InteractionHand hand) {
       ItemStack trueStack = playerIn.getItemInHand(hand);
-      if (!playerIn.level.isClientSide && hand == InteractionHand.MAIN_HAND && target instanceof MothFaeDragon && ((MothFaeDragon) target).isOwnedBy(playerIn) && (trueStack.getTag() == null || (trueStack.getTag() != null && trueStack.getTag().getCompound("EntityTag").isEmpty()))) {
+      if (!playerIn.level.isClientSide && hand == InteractionHand.MAIN_HAND && target instanceof MothFaeDragon && (trueStack.getTag() == null || (trueStack.getTag() != null && trueStack.getTag().getCompound("EntityTag").isEmpty()))) {
           CompoundTag newTag = new CompoundTag();
 
           CompoundTag entityTag = new CompoundTag();
