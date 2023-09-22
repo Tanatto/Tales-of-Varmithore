@@ -105,7 +105,7 @@ public class TwinTailEntity extends EntitySaddleBase {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.walk", true));
             return PlayState.CONTINUE;
         }
-        if (event.isMoving() && this.isVehicle()) {
+        if (this.isVehicle() && event.isMoving() && this.onGround) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.run", true));
             return PlayState.CONTINUE;
         }
