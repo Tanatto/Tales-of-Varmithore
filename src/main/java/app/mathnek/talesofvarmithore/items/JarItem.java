@@ -30,17 +30,18 @@ public class JarItem extends Item {
   public @NotNull InteractionResult interactLivingEntity(@NotNull ItemStack stack, Player playerIn, @NotNull LivingEntity target, @NotNull InteractionHand hand) {
       ItemStack trueStack = playerIn.getItemInHand(hand);
           if (!playerIn.level.isClientSide && hand == InteractionHand.MAIN_HAND && target instanceof MothFaeDragon && (trueStack.getTag() == null || (trueStack.getTag() != null && trueStack.getTag().getCompound("EntityTag").isEmpty()))) {
+            CompoundTag newTag = new CompoundTag();
 
-          CompoundTag entityTag = new CompoundTag();
-          target.save(entityTag);
-          newTag.put("EntityTag", entityTag);
+            CompoundTag entityTag = new CompoundTag();
+            target.save(entityTag);
+            newTag.put("EntityTag", entityTag);
 
-          newTag.putString("JarItemID", Registry.ENTITY_TYPE.getKey(target.getType()).toString());
-          trueStack.setTag(newTag);
+            newTag.putString("JarItemID", Registry.ENTITY_TYPE.getKey(target.getType()).toString());
+            trueStack.setTag(newTag);
 
-          playerIn.swing(hand);
-          playerIn.level.playSound(playerIn, playerIn.blockPosition(), SoundEvents.ZOMBIE_VILLAGER_CONVERTED, SoundSource.NEUTRAL, 3.0F, 0.75F);
-          target.remove(Entity.RemovalReason.DISCARDED);
+            playerIn.swing(hand);
+            playerIn.level.playSound(playerIn, playerIn.blockPosition(), SoundEvents.ZOMBIE_VILLAGER_CONVERTED, SoundSource.NEUTRAL, 3.0F, 0.75F);
+            target.remove(Entity.RemovalReason.DISCARDED);
           return InteractionResult.SUCCESS;
       }
 
