@@ -1,7 +1,6 @@
 package app.mathnek.talesofvarmithore.items;
 
 import app.mathnek.talesofvarmithore.entity.moth_fae_dragon.MothFaeDragon;
-import app.mathnek.talesofvarmithore.items.JarredFae;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
@@ -30,8 +29,7 @@ public class JarItem extends Item {
   @Override
   public @NotNull InteractionResult interactLivingEntity(@NotNull ItemStack stack, Player playerIn, @NotNull LivingEntity target, @NotNull InteractionHand hand) {
       ItemStack trueStack = playerIn.getItemInHand(hand);
-      if (!playerIn.level.isClientSide && hand == InteractionHand.MAIN_HAND && target instanceof MothFaeDragon && (trueStack.getTag() == null || (trueStack.getTag() != null && trueStack.getTag().getCompound("EntityTag").isEmpty()))) {
-          CompoundTag newTag = new CompoundTag();
+          if (!playerIn.level.isClientSide && hand == InteractionHand.MAIN_HAND && target instanceof MothFaeDragon && (trueStack.getTag() == null || (trueStack.getTag() != null && trueStack.getTag().getCompound("EntityTag").isEmpty()))) {
 
           CompoundTag entityTag = new CompoundTag();
           target.save(entityTag);
@@ -51,7 +49,6 @@ public class JarItem extends Item {
 
   @Override
   public @NotNull InteractionResult useOn(UseOnContext context) {
-    ItemStack playerHeldItem = context.getItemInHand();
     if (context.getClickedFace() != Direction.UP)
       return InteractionResult.FAIL;
     ItemStack stack = context.getItemInHand();
@@ -67,7 +64,7 @@ public class JarItem extends Item {
         //Still needed to allow for intercompatibility
         if (stack.getTag().contains("EntityUUID"))
           entity.setUUID(stack.getTag().getUUID("EntityUUID"));
-  
+
         entity.absMoveTo(context.getClickedPos().getX() + 0.5D, (context.getClickedPos().getY() + 1), context.getClickedPos().getZ() + 0.5D, 180 + (context.getHorizontalDirection()).toYRot(), 0.0F);
         if (world.addFreshEntity(entity)) {
           CompoundTag tag = stack.getTag();
@@ -78,7 +75,7 @@ public class JarItem extends Item {
         }
       }
     }
-    playerHeldItem.shrink(1);
+    
     return InteractionResult.SUCCESS;
   }
 }
