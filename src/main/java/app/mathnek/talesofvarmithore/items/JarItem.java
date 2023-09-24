@@ -51,6 +51,7 @@ public class JarItem extends Item {
 
   @Override
   public @NotNull InteractionResult useOn(UseOnContext context) {
+    ItemStack playerHeldItem = context.getItemInHand();
     if (context.getClickedFace() != Direction.UP)
       return InteractionResult.FAIL;
     ItemStack stack = context.getItemInHand();
@@ -78,7 +79,6 @@ public class JarItem extends Item {
       }
     }
     playerHeldItem.shrink(1);
-    p.getInventory().addItem(JarredFae);
     return InteractionResult.SUCCESS;
   }
 }
