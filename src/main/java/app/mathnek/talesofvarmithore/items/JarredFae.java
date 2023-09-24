@@ -1,15 +1,12 @@
 package app.mathnek.talesofvarmithore.items;
 
 import app.mathnek.talesofvarmithore.entity.moth_fae_dragon.MothFaeDragon;
-import app.mathnek.talesofvarmithore.items.JarItem;
-import net.minecraft.core.Direction;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.core.BlockPos;
 import org.jetbrains.annotations.NotNull;
 
 public class JarredFae extends Item {
@@ -18,13 +15,16 @@ public class JarredFae extends Item {
     super(properties);
   }
 
-  @Overide
-  public @Notnull InteractionResult useOn(UseOnContext pContext) {
+  @Override
+  public @NotNull InteractionResult useOn(UseOnContext pContext) {
+    ItemStack playerHeldItem = pContext.getItemInHand();
     BlockPos pos = pContext.getClickedPos();
     Level level = pContext.getLevel();
-    MothFaeDragon LivingEntity = (MothFaeDragon) MothFaeVariants.get().create(level)
+    /*
+    add in code that summons FaeMothDragon here
+     */
     playerHeldItem.shrink(1);
-    p.getInventory().addItem(JarItem);
+
     return InteractionResult.SUCCESS;
   }
 }
