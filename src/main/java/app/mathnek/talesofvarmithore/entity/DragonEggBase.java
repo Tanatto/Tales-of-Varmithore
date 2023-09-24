@@ -210,6 +210,9 @@ public class DragonEggBase extends AgeableMob implements IAnimatable {
             if (stack.is(Items.STICK)) {
                 hatch();
             }
+        } else if(stack.is(Items.STICK) && !pPlayer.isCreative()) {
+            String h = "Twintail Hatch Progress: ";
+            pPlayer.displayClientMessage(new TranslatableComponent(h + getHatchProgress() + "%"), true);
         } else {
             String s = "egg.warm.toHatch";
             String s1 = "egg.cold.toHatch";
