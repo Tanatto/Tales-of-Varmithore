@@ -1,7 +1,6 @@
 package app.mathnek.talesofvarmithore.items;
 
 import app.mathnek.talesofvarmithore.entity.moth_fae_dragon.MothFaeDragon;
-import app.mathnek.talesofvarmithore.items.JarItem;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
@@ -28,10 +27,9 @@ public class JarredFae extends Item {
   }
 
   @Override
-  public @NotNull InteractionResult useOn(UseOnContext pContext){
+  public @NotNull InteractionResult interactLivingEntity(@NotNull ItemStack stack, Player playerIn, @NotNull LivingEntity target, @NotNull InteractionHand hand) {
     ItemStack trueStack = playerIn.getItemInHand(hand);
     if (!playerIn.level.isClientSide && hand == InteractionHand.MAIN_HAND && target instanceof MothFaeDragon && (trueStack.getTag() == null || (trueStack.getTag() != null && trueStack.getTag().getCompound("EntityTag").isEmpty()))) {
-      CompoundTag newTag = new CompoundTag();
 
       CompoundTag entityTag = new CompoundTag();
       target.save(entityTag);
@@ -42,6 +40,7 @@ public class JarredFae extends Item {
 
       playerIn.swing(hand);
       playerIn.level.playSound(playerIn, playerIn.blockPosition(), SoundEvents.ZOMBIE_VILLAGER_CONVERTED, SoundSource.NEUTRAL, 3.0F, 0.75F);
+      target.remove(Entity.RemovalReason.DISCARDED);
       return InteractionResult.SUCCESS;
     }
 
@@ -50,7 +49,6 @@ public class JarredFae extends Item {
 
   @Override
   public @NotNull InteractionResult useOn(UseOnContext context) {
-    ItemStack playerHeldItem = context.getItemInHand();
     if (context.getClickedFace() != Direction.UP)
       return InteractionResult.FAIL;
     ItemStack stack = context.getItemInHand();
@@ -77,7 +75,5 @@ public class JarredFae extends Item {
         }
       }
     }
-    playerHeldItem.shrink(1);
+
     return InteractionResult.SUCCESS;
-  }
-}
