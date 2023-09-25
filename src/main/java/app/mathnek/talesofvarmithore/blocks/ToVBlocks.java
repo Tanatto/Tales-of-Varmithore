@@ -22,15 +22,21 @@ public class ToVBlocks {
 
     public static final RegistryObject<Block> LAVACORE_ORE = registerBlock("lavacore_ore",
             () -> new OreBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)), ToVCreativeModeTab.TOV_TAB);
-
     public static final RegistryObject<Block> MIRCH_LEAVES = registerBlock("mirch_leaves",
-            () -> new LeavesBlock(BlockBehaviour.Properties.copy(Blocks.BIRCH_LEAVES)), ToVCreativeModeTab.TOV_TAB);
-
+            () -> new LeavesBlock(BlockBehaviour.Properties.of(Material.LEAVES)), ToVCreativeModeTab.TOV_TAB);
     public static final RegistryObject<RotatedPillarBlock> MIRCH_LOG = registerBlock("mirch_log",
-            () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.BIRCH_LOG)), ToVCreativeModeTab.TOV_TAB);
-
+            () -> new RotatedPillarBlock(BlockBehaviour.Properties.of(Material.WOOD)), ToVCreativeModeTab.TOV_TAB);
     public static final RegistryObject<RotatedPillarBlock> MIRCH_PLANKS = registerBlock("mirch_planks",
-            () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.BIRCH_LOG)), ToVCreativeModeTab.TOV_TAB);
+            () -> new RotatedPillarBlock(BlockBehaviour.Properties.of(Material.WOOD)), ToVCreativeModeTab.TOV_TAB);
+    public static final RegistryObject<Block> MIRCH_STAIRS = registerBlock("mirch_stairs",
+            () -> new StairBlock(() -> ToVBlocks.MIRCH_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.of(Material.WOOD)), ToVCreativeModeTab.TOV_TAB);
+
+    public static final RegistryObject<Block> MIRCH_SLAB = registerBlock("mirch_slab",
+            () -> new SlabBlock(BlockBehaviour.Properties.of(Material.WOOD)), ToVCreativeModeTab.TOV_TAB);
+    public static final RegistryObject<Block> MIRCH_FENCE = registerBlock("mirch_fence",
+            () -> new FenceBlock(BlockBehaviour.Properties.of(Material.WOOD)), ToVCreativeModeTab.TOV_TAB);
+    public static final RegistryObject<Block> MIRCH_FENCE_GATE = registerBlock("mirch_fence_gate",
+            () -> new FenceGateBlock(BlockBehaviour.Properties.of(Material.WOOD)), ToVCreativeModeTab.TOV_TAB);
 
     public static final RegistryObject<Block> MAGMA_BRICK = registerBlock("magma_brick",
             () -> new Block(BlockBehaviour.Properties.of(Material.STONE).strength(8.0F, 3.0F)), ToVCreativeModeTab.TOV_TAB);
@@ -46,9 +52,6 @@ public class ToVBlocks {
     public static final RegistryObject<Block> UNCIA = registerBlock("uncia",
             () -> new TallFlowerBlock(BlockBehaviour.Properties.copy(Blocks.ROSE_BUSH)), ToVCreativeModeTab.TOV_TAB);
 
-    private static <T extends Block> RegistryObject<T> registerBlockWithoutBlockItem(String name, Supplier<T> block) {
-        return BLOCKS.register(name, block);
-    }
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);

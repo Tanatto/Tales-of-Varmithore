@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "tov:block/mirch_slab"
+    },
+    "type=double": {
+      "model": "tov:block/mirch_planks"
+    },
+    "type=top": {
+      "model": "tov:block/mirch_slab_top"
+    }
+  }
+}

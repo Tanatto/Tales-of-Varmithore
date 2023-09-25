@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "tov:block/mirch_planks",
+    "top": "tov:block/mirch_planks",
+    "side": "tov:block/mirch_planks"
+  }
+}

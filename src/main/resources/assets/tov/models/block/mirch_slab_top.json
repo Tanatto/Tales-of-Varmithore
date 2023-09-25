@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "tov:block/mirch_planks",
+    "top": "tov:block/mirch_planks",
+    "side": "tov:block/mirch_planks"
+  }
+}
