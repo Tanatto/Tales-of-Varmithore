@@ -32,6 +32,7 @@ import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -264,7 +265,24 @@ public class EntityWilkor extends TamableAnimal implements IAnimatable {
             }
         }
     }
+    @Override
+    public void positionRider(@NotNull Entity passenger) {
+        Entity riddenByEntity = getControllingPassenger();
+        if (riddenByEntity != null) {
+            Vec3 pos = new Vec3(0, getPassengersRidingOffset() + riddenByEntity.getMyRidingOffset() + 0.4, /*getScale() + */ +0.55)
+                    .yRot((float) Math.toRadians(-yBodyRot))
+                    .add(position());
+            passenger.setPos(pos.x, pos.y, pos.z);
 
+            // fix rider rotation
+            if (getFirstPassenger() instanceof LivingEntity) {
+                LivingEntity rider = ((LivingEntity) riddenByEntity);
+                rider.xRotO = rider.getXRot();
+                rider.yRotO = rider.getYRot();
+                rider.yBodyRot = yBodyRot;
+            }
+        }
+    }
     public boolean canBeMounted() {
         return true;
     }
