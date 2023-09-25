@@ -6,13 +6,14 @@ license="MIT"
 modId="tov"
 version="0.1"
 displayName="Tales of Varmithore"
-logoFile="tov.png"
-credits="Kundzio, Ghanou Craft, FeatherStorm208, NaniTheDuck, Ceadrisc, Happysg, Bluedude, It's Cat,.The Bishop., Charlie, Pugman, Am Father, "
+logoFile="logo.png"
 authors="Kundzio"
-description='''Tales of Varmithore.. A fantasy themed mod that will bring so much new content to your world!
-check our discord!--> https://discord.gg/d2QFQvgynt
-our curseforge page also:--> https://legacy.curseforge.com/minecraft/mc-mods/tales-of-varmithore
-'''
+credits="Kundzio, Ghanou Craft, FeatherStorm208, NaniTheDuck, Ceadrisc, Happysg, Bluedude, It's Cat,.The Bishop., Charlie, Pugman, Am Father, "
+description='''Tales of Varmithore.. A fantasy themed mod that will bring so much new content to your world! '''
+discord=" https://discord.gg/d2QFQvgynt "
+ocurseforge=" https://legacy.curseforge.com/minecraft/mc-mods/tales-of-varmithore "
+
+
 [[dependencies.tov]]
     modId="forge"
     mandatory=true

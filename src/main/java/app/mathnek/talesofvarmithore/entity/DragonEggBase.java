@@ -218,7 +218,7 @@ public class DragonEggBase extends AgeableMob implements IAnimatable {
             String s1 = "egg.cold.toHatch";
             if (!isCold()) {
                 pPlayer.displayClientMessage(new TranslatableComponent(s), true);
-                // We only set this on the client as it's used inside renderer, and we don't need the server
+                //
                 if (this.level.isClientSide())
                     this.displayProgressTicks = 100; // 100 ticks is 5 seconds
             } else {
