@@ -11,7 +11,7 @@
     "size": 1
   },
 
-  // The biome tag to use for what biomes that this structure can spawn in"
+  // The biome tag to use for what biome that this structure can spawn in"
   "biomes": "#tov:has_structure/wilkor_den",
 
   // If true, land will be add around the bottom of the structure. (Based on the starting piece's y value)

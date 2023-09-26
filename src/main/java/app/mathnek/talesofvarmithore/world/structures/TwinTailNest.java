@@ -48,7 +48,7 @@ public class TwinTailNest extends StructureFeature<JigsawConfiguration> {
      * If you do and another mod's dimension is trying to spawn your structure,
      * the locate command will make minecraft hang forever and break the game.
      * Use the biome tags for where to spawn the structure and users can datapack
-     * it to spawn in specific biomes that aren't in the dimension they don't like if they wish.
+     * it to spawn in specific biome that aren't in the dimension they don't like if they wish.
      */
     private static boolean isFeatureChunk(PieceGeneratorSupplier.Context<JigsawConfiguration> context) {
         // Grabs the chunk position we are at

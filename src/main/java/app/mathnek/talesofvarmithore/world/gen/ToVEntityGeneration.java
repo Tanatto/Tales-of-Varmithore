@@ -17,7 +17,7 @@ public class ToVEntityGeneration {
                 6, 2, 4, Biomes.LUSH_CAVES);
 
         addEntityToSpecificBiomes(event, ToVEntityTypes.PUPFISH.get(),
-                6, 2, 4, Biomes.COLD_OCEAN);
+                10, 10, 20, Biomes.OCEAN,Biomes.BEACH);
     }
 
     private static void addEntityToAllBiomesExceptThese(BiomeLoadingEvent event, EntityType<?> type,
