@@ -1,0 +1,17 @@
+{
+  "structures": [
+    {
+      "structure": "tov:oasis",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 1276746742,
+
+    "spacing": 30,
+
+    "separation": 15,
+
+    "type": "minecraft:random_spread"
+  }
+}

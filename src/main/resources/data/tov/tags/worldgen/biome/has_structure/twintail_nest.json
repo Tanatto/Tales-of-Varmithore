@@ -3,10 +3,8 @@
   "values": [
     "minecraft:taiga",
     "minecraft:windswept_hills",
-    "minecraft:plains",
     "minecraft:dark_forest",
     "minecraft:stony_peaks",
-    "minecraft:birch_forest",
-    "minecraft:forest"
+    "minecraft:birch_forest"
   ]
 }

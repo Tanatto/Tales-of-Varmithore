@@ -1,0 +1,17 @@
+{
+  "structures": [
+    {
+      "structure": "tov:stonevulcan",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 1287326242,
+
+    "spacing": 39,
+
+    "separation": 30,
+
+    "type": "minecraft:random_spread"
+  }
+}

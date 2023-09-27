@@ -1,15 +1,15 @@
 {
   // The base structure class to use for the behavior of the structure. (Like extra terrain checks and such)
-  "type": "tov:wilkor_den",
+  "type": "tov:stonevulcan",
   "config": {
     // the path to the template pool json file to use
-    "start_pool": "tov:wilkor_den",
+    "start_pool": "tov:stonevulcan",
     // This is how many pieces away from the starting piece a piece of the structure can spawn
     // Think of it like the length of the branch of the structure
     "size": 1
   },
   // The biome tag to use for what biome that this structure can spawn in"
-  "biomes": "#tov:has_structure/wilkor_den",
+  "biomes": "#tov:has_structure/stonevulcan",
   // If true, land will be add around the bottom of the structure. (Based on the starting piece's y value)
   "adapt_noise": true,
   // What mobs can spawn over time in the structure.
@@ -19,10 +19,10 @@
       "bounding_box": "piece",
       "spawns": [
         {
-          "type": "tov:wilkor",
+          "type": "tov:azulite",
           "weight": 100,
-          "minCount": 3,
-          "maxCount": 5
+          "minCount": 6,
+          "maxCount": 15
         }
       ]
     }

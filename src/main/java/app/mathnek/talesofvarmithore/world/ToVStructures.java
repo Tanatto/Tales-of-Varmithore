@@ -1,6 +1,8 @@
 package app.mathnek.talesofvarmithore.world;
 
 import app.mathnek.talesofvarmithore.TalesofVarmithore;
+import app.mathnek.talesofvarmithore.world.structures.Oasis;
+import app.mathnek.talesofvarmithore.world.structures.StoneVulcan;
 import app.mathnek.talesofvarmithore.world.structures.TwinTailNest;
 import app.mathnek.talesofvarmithore.world.structures.WilkorDen;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
@@ -30,6 +32,11 @@ public class ToVStructures {
 
     public static final RegistryObject<StructureFeature<?>> TWINTAIL_NEST =
             STRUCTURES.register("twintail_nest", TwinTailNest::new);
+    public static final RegistryObject<StructureFeature<?>> OASIS =
+            STRUCTURES.register("oasis", Oasis::new);
+
+    public static final RegistryObject<StructureFeature<?>> STONEVULCAN =
+            STRUCTURES.register("stonevulcan", StoneVulcan::new);
 
     public static void register(IEventBus eventBus) {
         STRUCTURES.register(eventBus);
