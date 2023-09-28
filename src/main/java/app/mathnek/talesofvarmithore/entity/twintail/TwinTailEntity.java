@@ -2,6 +2,7 @@ package app.mathnek.talesofvarmithore.entity.twintail;
 
 import app.mathnek.talesofvarmithore.entity.EntitySaddleBase;
 import app.mathnek.talesofvarmithore.entity.ToVEntityTypes;
+import app.mathnek.talesofvarmithore.entity.ai.*;
 import app.mathnek.talesofvarmithore.messages.ControlMessageBite;
 import app.mathnek.talesofvarmithore.messages.ControlNetwork;
 import app.mathnek.talesofvarmithore.util.MathB;
@@ -24,6 +25,11 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.BreedGoal;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
+import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -59,6 +65,12 @@ public class TwinTailEntity extends EntitySaddleBase {
         super(pEntityType, pLevel);
         this.rockdrakeBiteOffset = new EntityPart(this, "rockdrakeBiteOffset", 1.5F, 1.5F);
         this.subParts = new EntityPart[]{this.rockdrakeBiteOffset};
+    }
+
+    @Override
+    protected void registerGoals() {
+        this.goalSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true));
+        this.goalSelector.addGoal(1, new ToVMeleeAttackGoal(this, 1.0, true));
     }
 
     public static AttributeSupplier.Builder setAttributes() {
