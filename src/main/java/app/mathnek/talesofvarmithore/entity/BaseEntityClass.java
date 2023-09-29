@@ -1,8 +1,8 @@
 package app.mathnek.talesofvarmithore.entity;
 
-import app.mathnek.talesofvarmithore.entity.ai.ToVAIWander;
 import app.mathnek.talesofvarmithore.entity.ai.ToVAIWatchClosest;
 import app.mathnek.talesofvarmithore.entity.ai.ToVFollowParentGoal;
+import app.mathnek.talesofvarmithore.entity.ai.ToVMeleeAttackGoal;
 import app.mathnek.talesofvarmithore.entity.ai.ToVRandomLookAroundGoal;
 import app.mathnek.talesofvarmithore.util.Util;
 import net.minecraft.nbt.CompoundTag;
@@ -13,6 +13,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -20,9 +21,15 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.BreedGoal;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.*;
+import net.minecraft.world.entity.animal.AbstractGolem;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.monster.AbstractSkeleton;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
@@ -38,6 +45,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public abstract class BaseEntityClass extends TamableAnimal implements IAnimatable, Saddleable {
     private AnimationFactory factory = new AnimationFactory(this);
@@ -106,14 +114,51 @@ public abstract class BaseEntityClass extends TamableAnimal implements IAnimatab
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new FloatGoal(this));
+        //this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
+        this.targetSelector.addGoal(1, new OwnerHurtTargetGoal(this));
+        this.targetSelector.addGoal(2, new OwnerHurtByTargetGoal(this));
+        this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(4, new ToVFollowParentGoal(this, 1.0D));
-        this.goalSelector.addGoal(6, new ToVAIWander(this, 0.7, 20));
+        this.goalSelector.addGoal(3, new ToVMeleeAttackGoal(this, 1.0, true));
+        this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 0.7, 20));
         this.goalSelector.addGoal(7, new ToVAIWatchClosest(this, Player.class, 8.0F));
         this.goalSelector.addGoal(7, new ToVRandomLookAroundGoal(this));
         this.goalSelector.addGoal(5, new RandomSwimmingGoal(this, 1, 1));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, false));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractSkeleton.class, false));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Monster.class, false));
+        this.targetSelector.addGoal(3, new NonTameRandomTargetGoal<>(this, Animal.class, false, BaseEntityClass::canHostilesTarget));
+    }
+
+    public static final Predicate<LivingEntity> PREY_SELECTOR = (p_30437_) -> {
+        EntityType<?> entitytype = p_30437_.getType();
+        return entitytype == EntityType.SHEEP || entitytype == EntityType.RABBIT || entitytype == EntityType.FOX;
+    };
+
+    public static boolean canHostilesTarget(Entity entity) {
+        if (entity instanceof Player && (entity.level.getDifficulty() == Difficulty.PEACEFUL || ((Player) entity).isCreative())) {
+            return false;
+        }
+        if (entity instanceof BaseEntityClass && entity.isAlive()) {
+            return false;
+        }
+        if (entity instanceof DragonEggBase && entity.isAlive()) {
+            return false;
+        } else {
+            return entity instanceof LivingEntity && entity.isAlive();
+        }
+    }
+
+    public static boolean canTameDragonAttack(Entity entity) {
+        if (entity instanceof AbstractVillager || entity instanceof AbstractGolem || entity instanceof Player) {
+            return false;
+        }
+        if (entity instanceof TamableAnimal) {
+            return !((TamableAnimal) entity).isTame();
+        }
+        return true;
     }
 
     public boolean shouldStopMovingIndependently() {
@@ -240,17 +285,20 @@ public abstract class BaseEntityClass extends TamableAnimal implements IAnimatab
             return InteractionResult.SUCCESS;
         }
 
-        /*if (!isTame() && isBaby() && !itemForTaming(itemstack)) {
-            if (!level.isClientSide() && itemForTaming(itemstack) && !isTame()) {
-                itemstack.shrink(1);
-                tamedFor(player, getRandom().nextInt(10) == 0);
-                return InteractionResult.SUCCESS;
+        if (isItemStackForTaming(itemstack) && isAlive()) {
+            if (this.random.nextInt(7) == 0 && !ForgeEventFactory.onAnimalTame(this, player)) {
+                this.tame(player);
+                this.playSound(SoundEvents.GENERIC_EAT, this.getSoundVolume(), this.getVoicePitch());
+                this.navigation.stop();
+                this.setTarget(null);
+                this.level.broadcastEntityEvent(this, (byte) 7);
+                if (!player.getAbilities().instabuild && !player.getLevel().isClientSide()) {
+                    itemstack.shrink(1);
+                }
             }
+        }
 
-            return InteractionResult.PASS;
-        }*/
-
-        if (!isTame()) {
+        /*if (!isTame()) {
             if (isFoodEdibleToDragon(itemstack)) {
                 this.level.playLocalSound(getX(), getY(), getZ(), SoundEvents.DONKEY_EAT, SoundSource.NEUTRAL, 1, getSoundPitch(), true);
 
@@ -266,7 +314,7 @@ public abstract class BaseEntityClass extends TamableAnimal implements IAnimatab
                     }
                 }
             }
-        }
+        }*/
 
         if (!isCommandItem(itemstack) && !isFood(itemstack) && !isBaby()) {
             rideInteract(player, hand, itemstack);

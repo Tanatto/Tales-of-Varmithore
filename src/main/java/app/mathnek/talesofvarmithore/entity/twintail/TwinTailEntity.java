@@ -2,7 +2,6 @@ package app.mathnek.talesofvarmithore.entity.twintail;
 
 import app.mathnek.talesofvarmithore.entity.EntitySaddleBase;
 import app.mathnek.talesofvarmithore.entity.ToVEntityTypes;
-import app.mathnek.talesofvarmithore.entity.ai.*;
 import app.mathnek.talesofvarmithore.messages.ControlMessageBite;
 import app.mathnek.talesofvarmithore.messages.ControlNetwork;
 import app.mathnek.talesofvarmithore.util.MathB;
@@ -25,11 +24,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.BreedGoal;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
-import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -51,7 +45,6 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class TwinTailEntity extends EntitySaddleBase {
-
     EntityPart[] subParts;
     EntityPart rockdrakeBiteOffset;
 
@@ -65,12 +58,6 @@ public class TwinTailEntity extends EntitySaddleBase {
         super(pEntityType, pLevel);
         this.rockdrakeBiteOffset = new EntityPart(this, "rockdrakeBiteOffset", 1.5F, 1.5F);
         this.subParts = new EntityPart[]{this.rockdrakeBiteOffset};
-    }
-
-    @Override
-    protected void registerGoals() {
-        this.goalSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true));
-        this.goalSelector.addGoal(1, new ToVMeleeAttackGoal(this, 1.0, true));
     }
 
     public static AttributeSupplier.Builder setAttributes() {
@@ -113,12 +100,20 @@ public class TwinTailEntity extends EntitySaddleBase {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("baby", true));
             return PlayState.CONTINUE;
         }*/
-        if (event.isMoving()) {
+        /*if (event.isMoving()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.walk", true));
             return PlayState.CONTINUE;
         }
-        if (this.isVehicle() && event.isMoving() && this.onGround) {
+        if (this.isVehicle() && this.setDeltaMovement( > 0) && this.onGround) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.run", true));
+            return PlayState.CONTINUE;
+        }*/
+        if (isDragonMoving() && !shouldStopMovingIndependently()) {
+            if (getTarget() != null && !getTarget().isDeadOrDying() && distanceTo(getTarget()) < 14 || isVehicle()) {
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.run", true));
+            } else {
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.walk", true));
+            }
             return PlayState.CONTINUE;
         }
         if (event.isMoving() && this.isVehicle() && isInWater()) {
@@ -146,13 +141,17 @@ public class TwinTailEntity extends EntitySaddleBase {
         return PlayState.CONTINUE;
     }
 
-
     private <E extends IAnimatable> PlayState attackController(AnimationEvent<E> event) {
         if (IsBiting()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.bite", true));
             return PlayState.CONTINUE;
         }
         return PlayState.CONTINUE;
+    }
+
+    // isMoving check that works on servers
+    public boolean isDragonMoving() {
+        return this.getX() != xOld || this.getZ() != this.zOld;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package app.mathnek.talesofvarmithore.entity.wilkor;
 
+import app.mathnek.talesofvarmithore.entity.ToVEntityTypes;
 import app.mathnek.talesofvarmithore.entity.ai.ToVAIWander;
 import app.mathnek.talesofvarmithore.entity.ai.ToVAIWatchClosest;
 import app.mathnek.talesofvarmithore.entity.ai.ToVFollowParentGoal;
@@ -33,7 +34,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -42,6 +42,7 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
@@ -109,12 +110,12 @@ public class EntityWilkor extends TamableAnimal implements IAnimatable {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
+        /*this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(4, new WilkorFollowParentGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new WilkorAIWander(this, 0.7, 20));
         this.goalSelector.addGoal(7, new WilkorAIWatchClosest(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(7, new WilkorRandomLookAroundGoal(this));
+        this.goalSelector.addGoal(7, new WilkorRandomLookAroundGoal(this));*/
     }
 
     @Override
@@ -504,8 +505,8 @@ public class EntityWilkor extends TamableAnimal implements IAnimatable {
 
     @Nullable
     @Override
-    public AgeableMob getBreedOffspring(ServerLevel pLevel, AgeableMob pOtherParent) {
-        return null;
+    public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob mob) {
+        return ToVEntityTypes.WILKOR.get().create(serverLevel);
     }
 
     @Override
