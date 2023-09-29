@@ -4,6 +4,7 @@ import app.mathnek.talesofvarmithore.entity.ai.ToVAIWatchClosest;
 import app.mathnek.talesofvarmithore.entity.ai.ToVFollowParentGoal;
 import app.mathnek.talesofvarmithore.entity.ai.ToVMeleeAttackGoal;
 import app.mathnek.talesofvarmithore.entity.ai.ToVRandomLookAroundGoal;
+import app.mathnek.talesofvarmithore.entity.twintail.TwinTailEntity;
 import app.mathnek.talesofvarmithore.util.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -20,10 +21,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.BreedGoal;
-import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
-import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.*;
 import net.minecraft.world.entity.animal.AbstractGolem;
 import net.minecraft.world.entity.animal.Animal;
@@ -122,26 +120,20 @@ public abstract class BaseEntityClass extends TamableAnimal implements IAnimatab
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(4, new ToVFollowParentGoal(this, 1.0D));
         this.goalSelector.addGoal(3, new ToVMeleeAttackGoal(this, 1.0, true));
-        this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 0.7, 20));
+        this.goalSelector.addGoal(6, new RandomStrollGoal(this, 0.8D, 50));
+        //this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 0.7, 20));
         this.goalSelector.addGoal(7, new ToVAIWatchClosest(this, Player.class, 8.0F));
         this.goalSelector.addGoal(7, new ToVRandomLookAroundGoal(this));
         this.goalSelector.addGoal(5, new RandomSwimmingGoal(this, 1, 1));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, false));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractSkeleton.class, false));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Monster.class, false));
-        this.targetSelector.addGoal(3, new NonTameRandomTargetGoal<>(this, Animal.class, false, BaseEntityClass::canHostilesTarget));
+        this.targetSelector.addGoal(3, new NonTameRandomTargetGoal<>(this, LivingEntity.class, false, BaseEntityClass::canHostilesTarget));
     }
-
-    public static final Predicate<LivingEntity> PREY_SELECTOR = (p_30437_) -> {
-        EntityType<?> entitytype = p_30437_.getType();
-        return entitytype == EntityType.SHEEP || entitytype == EntityType.RABBIT || entitytype == EntityType.FOX;
-    };
 
     public static boolean canHostilesTarget(Entity entity) {
         if (entity instanceof Player && (entity.level.getDifficulty() == Difficulty.PEACEFUL || ((Player) entity).isCreative())) {
             return false;
         }
-        if (entity instanceof BaseEntityClass && entity.isAlive()) {
+        //Change TwinTailEntity to BaseEntityClass if you don't want them attacking Wilkors
+        if (entity instanceof TwinTailEntity && entity.isAlive()) {
             return false;
         }
         if (entity instanceof DragonEggBase && entity.isAlive()) {

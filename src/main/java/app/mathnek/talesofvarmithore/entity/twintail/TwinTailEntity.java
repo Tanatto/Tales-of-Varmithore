@@ -2,6 +2,7 @@ package app.mathnek.talesofvarmithore.entity.twintail;
 
 import app.mathnek.talesofvarmithore.entity.EntitySaddleBase;
 import app.mathnek.talesofvarmithore.entity.ToVEntityTypes;
+import app.mathnek.talesofvarmithore.entity.pupfish.PupfishEntity;
 import app.mathnek.talesofvarmithore.messages.ControlMessageBite;
 import app.mathnek.talesofvarmithore.messages.ControlNetwork;
 import app.mathnek.talesofvarmithore.util.MathB;
@@ -24,11 +25,18 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
+import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.pathfinder.AmphibiousNodeEvaluator;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -58,6 +66,9 @@ public class TwinTailEntity extends EntitySaddleBase {
         super(pEntityType, pLevel);
         this.rockdrakeBiteOffset = new EntityPart(this, "rockdrakeBiteOffset", 1.5F, 1.5F);
         this.subParts = new EntityPart[]{this.rockdrakeBiteOffset};
+        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+        this.moveControl = new TwinTailEntity.TwinTailEntityMoveControl(this);
+        this.lookControl = new TwinTailEntity.TwinTailEntityLookControl(this, 20);
     }
 
     public static AttributeSupplier.Builder setAttributes() {
@@ -65,8 +76,12 @@ public class TwinTailEntity extends EntitySaddleBase {
                 .add(Attributes.MAX_HEALTH, 80.0D)
                 .add(Attributes.ATTACK_DAMAGE, 12.5f)
                 .add(Attributes.ATTACK_SPEED, 5.0f)
-                .add(Attributes.MOVEMENT_SPEED, 0.3f)
+                .add(Attributes.MOVEMENT_SPEED, 0.7D)
                 .add(Attributes.JUMP_STRENGTH, 2);
+    }
+
+    protected PathNavigation createNavigation(Level pLevel) {
+        return new TwinTailEntity.TwinTailEntityPathNavigation(this, pLevel);
     }
 
     @Override
@@ -75,53 +90,19 @@ public class TwinTailEntity extends EntitySaddleBase {
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        /*if (this.isBaby()) {
-            if (event.isMoving()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.walk", true));
-                return PlayState.CONTINUE;
-            }
-            if (event.isMoving() && this.isVehicle()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.run", true));
-                return PlayState.CONTINUE;
-            }
-            if (this.isEntitySitting()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.sit", true));
-                return PlayState.CONTINUE;
-            }
-            if (this.isEntitySleeping()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.sleep", true));
-                return PlayState.CONTINUE;
-            }
-            if (event.isMoving() && this.isInWater()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.swim", true));
-                return PlayState.CONTINUE;
-            }
-
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("baby", true));
-            return PlayState.CONTINUE;
-        }*/
-        /*if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.walk", true));
-            return PlayState.CONTINUE;
-        }
-        if (this.isVehicle() && this.setDeltaMovement( > 0) && this.onGround) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.run", true));
-            return PlayState.CONTINUE;
-        }*/
-        if (isDragonMoving() && !shouldStopMovingIndependently()) {
+        if (isDragonMoving() && !shouldStopMovingIndependently() && !isInWater()) {
             if (getTarget() != null && !getTarget().isDeadOrDying() && distanceTo(getTarget()) < 14 || isVehicle()) {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.run", true));
             } else {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.walk", true));
             }
             return PlayState.CONTINUE;
-        }
-        if (event.isMoving() && this.isVehicle() && isInWater()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.swim", true));
-            return PlayState.CONTINUE;
-        }
-        if (event.isMoving() && isInWater()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.swim", true));
+        } else if (isDragonMoving() && !shouldStopMovingIndependently() && isInWater()) {
+            if (getTarget() != null && !getTarget().isDeadOrDying() && distanceTo(getTarget()) < 14 || isVehicle()) {
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.swim", true));
+            } else {
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.swim", true));
+            }
             return PlayState.CONTINUE;
         }
         if (this.isEntitySitting()) {
@@ -152,6 +133,11 @@ public class TwinTailEntity extends EntitySaddleBase {
     // isMoving check that works on servers
     public boolean isDragonMoving() {
         return this.getX() != xOld || this.getZ() != this.zOld;
+    }
+
+    @Override
+    public boolean canBreatheUnderwater() {
+        return true;
     }
 
     @Override
@@ -374,5 +360,59 @@ public class TwinTailEntity extends EntitySaddleBase {
 
     public void setIsBiting(boolean ability_pressed) {
         this.entityData.set(BITING, ability_pressed);
+    }
+
+    static class TwinTailEntityMoveControl extends SmoothSwimmingMoveControl {
+        private final TwinTailEntity axolotl;
+
+        public TwinTailEntityMoveControl(TwinTailEntity pAxolotl) {
+            super(pAxolotl, 85, 10, 0.1F, 0.5F, false);
+            this.axolotl = pAxolotl;
+        }
+
+        public void tick() {
+            if (this.axolotl.isAlive()) {
+                super.tick();
+            }
+
+        }
+    }
+
+    static class TwinTailEntityPathNavigation extends WaterBoundPathNavigation {
+        TwinTailEntityPathNavigation(TwinTailEntity pTwintail, Level pLevel) {
+            super(pTwintail, pLevel);
+        }
+
+        /**
+         * If on ground or swimming and can swim
+         */
+        protected boolean canUpdatePath() {
+            return true;
+        }
+
+        protected PathFinder createPathFinder(int pMaxVisitedNodes) {
+            this.nodeEvaluator = new AmphibiousNodeEvaluator(false);
+            return new PathFinder(this.nodeEvaluator, pMaxVisitedNodes);
+        }
+
+        public boolean isStableDestination(BlockPos pPos) {
+            return !this.level.getBlockState(pPos.below()).isAir();
+        }
+    }
+
+    class TwinTailEntityLookControl extends SmoothSwimmingLookControl {
+        public TwinTailEntityLookControl(TwinTailEntity pPupfish, int pMaxYRotFromCenter) {
+            super(pPupfish, pMaxYRotFromCenter);
+        }
+
+        /**
+         * Updates look
+         */
+        public void tick() {
+            if (TwinTailEntity.this.isAlive()) {
+                super.tick();
+            }
+
+        }
     }
 }
