@@ -86,6 +86,11 @@ public class TwinTailEntity extends EntitySaddleBase {
     }
 
     @Override
+    public boolean canBeRiddenInWater(Entity rider) {
+        return true;
+    }
+
+    @Override
     public int getMaxAmountOfVariants() {
         return 14;
     }
