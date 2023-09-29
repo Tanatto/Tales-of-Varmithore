@@ -120,7 +120,7 @@ public abstract class BaseEntityClass extends TamableAnimal implements IAnimatab
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(4, new ToVFollowParentGoal(this, 1.0D));
         this.goalSelector.addGoal(3, new ToVMeleeAttackGoal(this, 1.0, true));
-        this.goalSelector.addGoal(6, new RandomStrollGoal(this, 0.8D, 50));
+        this.goalSelector.addGoal(6, new RandomStrollGoal(this, 1.0D, 50));
         //this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 0.7, 20));
         this.goalSelector.addGoal(7, new ToVAIWatchClosest(this, Player.class, 8.0F));
         this.goalSelector.addGoal(7, new ToVRandomLookAroundGoal(this));
