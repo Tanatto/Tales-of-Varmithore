@@ -35,7 +35,7 @@ public class ToVMeleeAttackGoal extends Goal {
     }
 
     public boolean canUse() {
-        long i = this.dragon.level.getGameTime();
+        long i = this.dragon.level().getGameTime();
         if (i - this.lastCanUseCheck < 20L) {
             return false;
         } else {

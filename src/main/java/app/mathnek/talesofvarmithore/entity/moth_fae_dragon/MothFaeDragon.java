@@ -34,15 +34,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class MothFaeDragon extends AmbientCreature implements IAnimatable {
+public class MothFaeDragon extends AmbientCreature implements GeoAnimatable {
     protected static final EntityDataAccessor<Integer> VARIANTS = SynchedEntityData.defineId(MothFaeDragon.class, EntityDataSerializers.INT);
     public static final float FLAP_DEGREES_PER_TICK = 74.48451F;
     public static final int TICKS_PER_FLAP = Mth.ceil(2.4166098F);
@@ -51,7 +52,7 @@ public class MothFaeDragon extends AmbientCreature implements IAnimatable {
     private static final TargetingConditions BAT_RESTING_TARGETING = TargetingConditions.forNonCombat().range(4.0D);
     @javax.annotation.Nullable
     private BlockPos targetPosition;
-    private AnimationFactory factory = new AnimationFactory(this);
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public MothFaeDragon(EntityType<? extends AmbientCreature> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -86,13 +87,11 @@ public class MothFaeDragon extends AmbientCreature implements IAnimatable {
         return 0;
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private PlayState predicate(AnimationState event) {
         /*if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("flydragon.flap", true));
-            return PlayState.CONTINUE;
+        return event.setAndContinue(RawAnimation.begin().thenLoop("flydragon.flap"));
         }*/
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("flydragon.flee", true));
-        return PlayState.CONTINUE;
+        return event.setAndContinue(RawAnimation.begin().thenLoop("flydragon.flee"));
     }
 
     @Override
@@ -154,7 +153,7 @@ public class MothFaeDragon extends AmbientCreature implements IAnimatable {
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
         pSpawnData = super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
-        Holder<Biome> holder = pLevel.getBiome(this.blockPosition());
+        Holder<Biome> holder = level().getBiome(this.blockPosition());
         if (holder.is(Biomes.PLAINS)) {
             this.setVariant(MothFaeVariants.FIREBASE1);
         }
@@ -233,30 +232,30 @@ public class MothFaeDragon extends AmbientCreature implements IAnimatable {
         BlockPos blockpos1 = blockpos.above();
         if (this.isResting()) {
             boolean flag = this.isSilent();
-            if (this.level.getBlockState(blockpos1).isRedstoneConductor(this.level, blockpos)) {
+            if (this.level().getBlockState(blockpos1).isRedstoneConductor(this.level(), blockpos)) {
                 if (this.random.nextInt(200) == 0) {
                     this.yHeadRot = (float)this.random.nextInt(360);
                 }
 
-                if (this.level.getNearestPlayer(BAT_RESTING_TARGETING, this) != null) {
+                if (this.level().getNearestPlayer(BAT_RESTING_TARGETING, this) != null) {
                     this.setResting(false);
                     if (!flag) {
-                        this.level.levelEvent((Player)null, 1025, blockpos, 0);
+                        this.level().levelEvent((Player)null, 1025, blockpos, 0);
                     }
                 }
             } else {
                 this.setResting(false);
                 if (!flag) {
-                    this.level.levelEvent((Player)null, 1025, blockpos, 0);
+                    this.level().levelEvent((Player)null, 1025, blockpos, 0);
                 }
             }
         } else {
-            if (this.targetPosition != null && (!this.level.isEmptyBlock(this.targetPosition) || this.targetPosition.getY() <= this.level.getMinBuildHeight())) {
+            if (this.targetPosition != null && (!this.level().isEmptyBlock(this.targetPosition) || this.targetPosition.getY() <= this.level().getMinBuildHeight())) {
                 this.targetPosition = null;
             }
 
             if (this.targetPosition == null || this.random.nextInt(30) == 0 || this.targetPosition.closerToCenterThan(this.position(), 2.0D)) {
-                this.targetPosition = new BlockPos(this.getX() + (double)this.random.nextInt(7) - (double)this.random.nextInt(7), this.getY() + (double)this.random.nextInt(6) - 2.0D, this.getZ() + (double)this.random.nextInt(7) - (double)this.random.nextInt(7));
+                this.targetPosition = new BlockPos((int) (this.getX() + (double)this.random.nextInt(7) - (double)this.random.nextInt(7)), (int) (this.getY() + (double)this.random.nextInt(6) - 2.0D), (int) (this.getZ() + (double)this.random.nextInt(7) - (double)this.random.nextInt(7)));
             }
 
             double d2 = (double)this.targetPosition.getX() + 0.5D - this.getX();
@@ -269,7 +268,7 @@ public class MothFaeDragon extends AmbientCreature implements IAnimatable {
             float f1 = Mth.wrapDegrees(f - this.getYRot());
             this.zza = 0.5F;
             this.setYRot(this.getYRot() + f1);
-            if (this.random.nextInt(100) == 0 && this.level.getBlockState(blockpos1).isRedstoneConductor(this.level, blockpos1)) {
+            if (this.random.nextInt(100) == 0 && this.level().getBlockState(blockpos1).isRedstoneConductor(this.level(), blockpos1)) {
                 this.setResting(true);
             }
         }
@@ -301,7 +300,7 @@ public class MothFaeDragon extends AmbientCreature implements IAnimatable {
         if (this.isInvulnerableTo(pSource)) {
             return false;
         } else {
-            if (!this.level.isClientSide && this.isResting()) {
+            if (!this.level().isClientSide && this.isResting()) {
                 this.setResting(false);
             }
 
@@ -314,12 +313,17 @@ public class MothFaeDragon extends AmbientCreature implements IAnimatable {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "controller", 5, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
+        data.add(new AnimationController(this, "controller", 5, this::predicate));
     }
 
     @Override
-    public AnimationFactory getFactory() {
-        return factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.cache;
+    }
+
+    @Override
+    public double getTick(Object o) {
+        return 0;
     }
 }

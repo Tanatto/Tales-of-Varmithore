@@ -2,7 +2,6 @@ package app.mathnek.talesofvarmithore.entity.twintail;
 
 import app.mathnek.talesofvarmithore.entity.EntitySaddleBase;
 import app.mathnek.talesofvarmithore.entity.ToVEntityTypes;
-import app.mathnek.talesofvarmithore.entity.pupfish.PupfishEntity;
 import app.mathnek.talesofvarmithore.messages.ControlMessageBite;
 import app.mathnek.talesofvarmithore.messages.ControlNetwork;
 import app.mathnek.talesofvarmithore.util.MathB;
@@ -11,8 +10,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientboundAddMobPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -21,9 +18,7 @@ import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
@@ -43,17 +38,19 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.entity.PartEntity;
 import org.jetbrains.annotations.NotNull;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 public class TwinTailEntity extends EntitySaddleBase {
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     EntityPart[] subParts;
     EntityPart rockdrakeBiteOffset;
 
@@ -95,43 +92,36 @@ public class TwinTailEntity extends EntitySaddleBase {
         return 14;
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private PlayState movementPredicate(AnimationState event) {
         if (isDragonMoving() && !shouldStopMovingIndependently() && !isInWater()) {
             if (getTarget() != null && !getTarget().isDeadOrDying() && distanceTo(getTarget()) < 14 || isVehicle()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.run", true));
+                return event.setAndContinue(RawAnimation.begin().thenLoop("drake.run"));
             } else {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.walk", true));
+                return event.setAndContinue(RawAnimation.begin().thenLoop("drake.walk"));
             }
-            return PlayState.CONTINUE;
         } else if (isDragonMoving() && !shouldStopMovingIndependently() && isInWater()) {
             if (getTarget() != null && !getTarget().isDeadOrDying() && distanceTo(getTarget()) < 14 || isVehicle()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.swim", true));
+                return event.setAndContinue(RawAnimation.begin().thenLoop("drake.swim"));
             } else {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.swim", true));
+                return event.setAndContinue(RawAnimation.begin().thenLoop("drake.swim"));
             }
-            return PlayState.CONTINUE;
         }
         if (this.isEntitySitting()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.sit", true));
-            return PlayState.CONTINUE;
+            return event.setAndContinue(RawAnimation.begin().thenLoop("drake.sit"));
         }
         if (this.isEntitySleeping()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.sleep", true));
-            return PlayState.CONTINUE;
+            return event.setAndContinue(RawAnimation.begin().thenLoop("drake.sleep"));
         }
         if (event.isMoving() && this.isInWater()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.swim", true));
-            return PlayState.CONTINUE;
+            return event.setAndContinue(RawAnimation.begin().thenLoop("drake.swim"));
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.idle", true));
-        return PlayState.CONTINUE;
+        return event.setAndContinue(RawAnimation.begin().thenLoop("drake.idle"));
     }
 
-    private <E extends IAnimatable> PlayState attackController(AnimationEvent<E> event) {
+    private PlayState attackPredicate(AnimationState event) {
         if (IsBiting()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("drake.bite", true));
-            return PlayState.CONTINUE;
+            return event.setAndContinue(RawAnimation.begin().thenLoop("drake.bite"));
         }
         return PlayState.CONTINUE;
     }
@@ -153,25 +143,6 @@ public class TwinTailEntity extends EntitySaddleBase {
                 this.doPlayerRide(pPlayer);
             } else if (pPlayer != getOwner() && getControllingPassenger() == this.getOwner()) {
                 this.doPlayerRide(pPlayer);
-            }
-        }
-    }
-
-    @Override
-    public void positionRider(@NotNull Entity passenger) {
-        Entity riddenByEntity = getControllingPassenger();
-        if (riddenByEntity != null) {
-            Vec3 pos = new Vec3(0, getPassengersRidingOffset() + riddenByEntity.getMyRidingOffset() + 0.4, /*getScale() + */ +0.55)
-                    .yRot((float) Math.toRadians(-yBodyRot))
-                    .add(position());
-            passenger.setPos(pos.x, pos.y, pos.z);
-
-            // fix rider rotation
-            if (getFirstPassenger() instanceof LivingEntity) {
-                LivingEntity rider = ((LivingEntity) riddenByEntity);
-                rider.xRotO = rider.getXRot();
-                rider.yRotO = rider.getYRot();
-                rider.yBodyRot = yBodyRot;
             }
         }
     }
@@ -211,15 +182,15 @@ public class TwinTailEntity extends EntitySaddleBase {
         super.tick();
 
         String s = ChatFormatting.stripFormatting(this.getName().getString());
-        if (s.equals("Bluedude") || s.equals("bluedude")) {
+        if (s.equals("Bluedude") || s.equals("bluedude")) { // TODO: Bluedude?
             this.setVariant(15);
         }
 
-        if (level.isClientSide()) {
+        if (level().isClientSide()) {
             ControlNetwork.INSTANCE.sendToServer(new ControlMessageBite(IsBitingDamageTrue(), this.getId()));
         }
 
-        if (level.isClientSide()) {
+        if (level().isClientSide()) {
             updateClientControls();
         }
 
@@ -240,21 +211,6 @@ public class TwinTailEntity extends EntitySaddleBase {
     @Override
     public PartEntity<?>[] getParts() {
         return this.subParts;
-    }
-
-    @Override
-    public void recreateFromPacket(@NotNull ClientboundAddMobPacket mobPacket) {
-        super.recreateFromPacket(mobPacket);
-        PartEntity<?>[] stingerPart = this.getParts();
-
-        for (int i = 0; i < stingerPart.length; ++i) {
-            stingerPart[i].setId(i + mobPacket.getId());
-        }
-    }
-
-    @Override
-    public @NotNull Packet<?> getAddEntityPacket() {
-        return new ClientboundAddMobPacket(this);
     }
 
     private void tickPart(EntityPart pPart, double pOffsetX, double pOffsetY, double pOffsetZ) {
@@ -289,20 +245,14 @@ public class TwinTailEntity extends EntitySaddleBase {
             if (IsBiting() && IsBitingDamageTrue()) {
                 //this.knockBack(this.level.getEntities(this, this.rockdrakeBiteOffset.getBoundingBox().inflate(0.3D, 0.3D, 0.3D).move(0.0D, -0.3D, 0.0D), EntitySelector.NO_CREATIVE_OR_SPECTATOR));
 
-                if (!level.isClientSide()) {
-                    this.hurt(this.level.getEntities(this, this.rockdrakeBiteOffset.getBoundingBox().inflate(1.0D), EntitySelector.NO_CREATIVE_OR_SPECTATOR));
+                if (!level().isClientSide()) {
+                    this.hurt(this.level().getEntities(this, this.rockdrakeBiteOffset.getBoundingBox().inflate(1.0D), EntitySelector.NO_CREATIVE_OR_SPECTATOR));
                 }
             }
         }
     }
 
-    private void hurt(List<Entity> pEntities) {
-        for (Entity entity : pEntities) {
-            if (entity instanceof LivingEntity) {
-                entity.hurt(DamageSource.mobAttack(this), 8.0F);
-                this.doEnchantDamageEffects(this, entity);
-            }
-        }
+    private void hurt(List<Entity> entities) {
     }
 
     @Override
@@ -311,7 +261,8 @@ public class TwinTailEntity extends EntitySaddleBase {
     }
 
     private int getTypeForBiome(ServerLevelAccessor pLevel) {
-        Holder<Biome> biome = pLevel.getBiome(new BlockPos(this.position()));
+        Holder<Biome> biome = pLevel.getBiome(new BlockPos((int)this.position().x, (int)this.position().y, (int)this.position().z));
+
         if (biome.is(BiomeTags.HAS_IGLOO)) {
             return 14;
         }
@@ -326,9 +277,9 @@ public class TwinTailEntity extends EntitySaddleBase {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "controller", 5, this::predicate));
-        data.addAnimationController(new AnimationController(this, "attack_Controller", 5, this::attackController));
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
+        data.add(new AnimationController(this, "controller", 5, this::movementPredicate));
+        data.add(new AnimationController(this, "controller", 5, this::attackPredicate));
     }
 
     @Override
@@ -366,6 +317,27 @@ public class TwinTailEntity extends EntitySaddleBase {
 
     public void setIsBiting(boolean ability_pressed) {
         this.entityData.set(BITING, ability_pressed);
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.cache;
+    }
+
+    @Override
+    public double getTick(Object o) {
+        return 0;
+    }
+
+    @Override
+    public boolean alwaysAccepts() {
+        return super.alwaysAccepts();
+    }
+
+    @org.jetbrains.annotations.Nullable
+    @Override
+    public LivingEntity getOwner() {
+        return super.getOwner();
     }
 
     static class TwinTailEntityMoveControl extends SmoothSwimmingMoveControl {

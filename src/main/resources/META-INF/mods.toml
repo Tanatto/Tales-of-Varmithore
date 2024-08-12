@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[39,)"
+loaderVersion="[47,)"
 license="MIT"
 
 [[mods]]
@@ -8,21 +8,15 @@ version="0.1"
 displayName="Tales of Varmithore"
 logoFile="logo.png"
 authors="Kundzio"
-credits="Kundzio, Ghanou Craft, FeatherStorm208, NaniTheDuck, Ceadrisc, Happysg, Bluedude, It's Cat,.The Bishop., Charlie, Pugman, Am Father, "
+credits="Kundzio, Ghanou Craft, FeatherStorm208, Dan, Storm NaniTheDuck, Ceadrisc, Happysg, Bluedude, It's Cat,.The Bishop., Charlie, Pugman, Am Father, "
 description='''Tales of Varmithore.. A fantasy themed mod that will bring so much new content to your world! '''
 discord=" https://discord.gg/d2QFQvgynt "
 ocurseforge=" https://legacy.curseforge.com/minecraft/mc-mods/tales-of-varmithore "
 
 
-[[dependencies.tov]]
+[[dependencies.${mod_id}]]
     modId="forge"
     mandatory=true
-    versionRange="[39,)"
-    ordering="NONE"
-    side="BOTH"
-[[dependencies.tov]]
-    modId="minecraft"
-    mandatory=true
-    versionRange="[1.18.1,1.19)"
+    versionRange="${forge_version_range}"
     ordering="NONE"
     side="BOTH"

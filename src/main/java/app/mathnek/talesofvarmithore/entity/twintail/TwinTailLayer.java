@@ -4,19 +4,27 @@ import app.mathnek.talesofvarmithore.TalesofVarmithore;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.renderers.geo.GeoLayerRenderer;
-import software.bernie.geckolib3.renderers.geo.IGeoRenderer;
+import software.bernie.geckolib.model.GeoModel;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
+import software.bernie.geckolib.renderer.GeoRenderer;
 
-public class TwinTailLayer extends GeoLayerRenderer<TwinTailEntity> {
+public class TwinTailLayer extends GeoEntityRenderer<TwinTailEntity> {
+    public TwinTailLayer(EntityRendererProvider.Context renderManager, GeoModel<TwinTailEntity> model) {
+        super(renderManager, model);
+    }
+}
 
+//TODO: I dont know how to port this
+    /**
     private static final ResourceLocation LAYER = new ResourceLocation(TalesofVarmithore.MOD_ID, "textures/entity/twintail/equipment.png");
     private static final ResourceLocation MODEL = new ResourceLocation(TalesofVarmithore.MOD_ID, "geo/twintail.geo.json");
 
 
-    public TwinTailLayer(IGeoRenderer<?> entityRendererIn) {
-        super((IGeoRenderer<TwinTailEntity>) entityRendererIn);
+    public TwinTailLayer(GeoEntityRenderer<?> entityRendererIn) {
+        super((GeoRenderer<TwinTailEntity>) entityRendererIn);
     }
 
     @Override
@@ -30,5 +38,4 @@ public class TwinTailLayer extends GeoLayerRenderer<TwinTailEntity> {
                     bufferIn.getBuffer(cameo), packedLightIn, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
         }
         matrixStackIn.popPose();
-    }
-}
+    }*/

@@ -22,18 +22,19 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class AzuliteEntity extends Monster implements IAnimatable, Enemy {
+public class AzuliteEntity extends Monster implements GeoAnimatable, Enemy {
     protected static final EntityDataAccessor<Integer> VARIANTS = SynchedEntityData.defineId(AzuliteEntity.class, EntityDataSerializers.INT);
 
-    private AnimationFactory factory = new AnimationFactory(this);
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public AzuliteEntity(EntityType<? extends Monster> p_27557_, Level p_27558_) {
         super(p_27557_, p_27558_);
@@ -67,19 +68,11 @@ public class AzuliteEntity extends Monster implements IAnimatable, Enemy {
         return 0;
     }
 
-
-    private static final AnimationBuilder HOVER = new AnimationBuilder().addAnimation("Hover");
-    private static final AnimationBuilder IDLE = new AnimationBuilder().addAnimation("Idle");
-    private static final AnimationBuilder FLAP = new AnimationBuilder().addAnimation("Flap");
-    private static final AnimationBuilder BITE = new AnimationBuilder().addAnimation("Bite");
-
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private PlayState movementPredicate(AnimationState event) {
         if (event.isMoving()) {
-            event.getController().setAnimation(FLAP);
-            return PlayState.CONTINUE;
+            return event.setAndContinue(RawAnimation.begin().thenLoop("flap"));
         }
-        event.getController().setAnimation(HOVER);
-        return PlayState.CONTINUE;
+        return event.setAndContinue(RawAnimation.begin().thenLoop("hover"));
     }
 
 
@@ -120,8 +113,8 @@ public class AzuliteEntity extends Monster implements IAnimatable, Enemy {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "controller", 5, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
+        data.add(new AnimationController(this, "controller", 5, this::movementPredicate));
     }
 
     public int getVariant() {
@@ -137,8 +130,13 @@ public class AzuliteEntity extends Monster implements IAnimatable, Enemy {
     }
 
     @Override
-    public AnimationFactory getFactory() {
-        return factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.cache;
+    }
+
+    @Override
+    public double getTick(Object o) {
+        return 0;
     }
 
     @Override

@@ -36,20 +36,21 @@ import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class PupfishEntity extends TamableAnimal implements IAnimatable {
+public class PupfishEntity extends TamableAnimal implements GeoAnimatable {
 
     @javax.annotation.Nullable
     private PupfishEntity.PupfishAvoidEntityGoal<Player> pupfishAvoidPlayersGoal;
 
-    private AnimationFactory factory = new AnimationFactory(this);
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     protected static final EntityDataAccessor<Boolean> SITTING =
             SynchedEntityData.defineId(PupfishEntity.class, EntityDataSerializers.BOOLEAN);
@@ -66,29 +67,23 @@ public class PupfishEntity extends TamableAnimal implements IAnimatable {
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
         this.moveControl = new PupfishEntity.PupfishMoveControl(this);
         this.lookControl = new PupfishEntity.PupfishLookControl(this, 20);
-        this.maxUpStep = 1.0F;
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private PlayState predicate(AnimationState event) {
         if (event.isMoving() && !this.isInWater()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("pupfish.Walk", true));
-            return PlayState.CONTINUE;
+            return event.setAndContinue(RawAnimation.begin().thenLoop("pupfish.Walk"));
         }
         if (this.isInSittingPose()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("pupfish.Sit", true));
-            return PlayState.CONTINUE;
+            return event.setAndContinue(RawAnimation.begin().thenLoop("pupfish.Sit"));
         }
         if (event.isMoving() && this.isInWater()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("pupfish.swim", true));
-            return PlayState.CONTINUE;
+            return event.setAndContinue(RawAnimation.begin().thenLoop("pupfish.swim"));
         }
         if (!event.isMoving() && this.isInWater()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("pupfish.HoverInWater", true));
-            return PlayState.CONTINUE;
+            return event.setAndContinue(RawAnimation.begin().thenLoop("pupfish.HoverinWater"));
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("pupfish.Idle", true));
-        return PlayState.CONTINUE;
+        return event.setAndContinue(RawAnimation.begin().thenLoop("pupfish.idle"));
     }
 
     @Override
@@ -97,10 +92,10 @@ public class PupfishEntity extends TamableAnimal implements IAnimatable {
         Item item = itemstack.getItem();
 
         if (!isTame() && isBaby() && !isCommandItem(itemstack)) {
-            if (!level.isClientSide() && itemForTaming(itemstack) && !isTame() && !ForgeEventFactory.onAnimalTame(this, player)) {
+            if (!level().isClientSide() && itemForTaming(itemstack) && !isTame() && !ForgeEventFactory.onAnimalTame(this, player)) {
                 itemstack.shrink(1);
                 tamedFor(player, getRandom().nextInt(5) == 0);
-                this.level.broadcastEntityEvent(this, (byte) 7);
+                this.level().broadcastEntityEvent(this, (byte) 7);
                 return InteractionResult.SUCCESS;
             }
 
@@ -157,9 +152,9 @@ public class PupfishEntity extends TamableAnimal implements IAnimatable {
             navigation.stop();
             setTarget(null);
             setOwnerUUID(player.getUUID());
-            level.broadcastEntityEvent(this, (byte) 7);
+            level().broadcastEntityEvent(this, (byte) 7);
         } else {
-            level.broadcastEntityEvent(this, (byte) 6);
+            level().broadcastEntityEvent(this, (byte) 6);
         }
     }
 
@@ -261,7 +256,7 @@ public class PupfishEntity extends TamableAnimal implements IAnimatable {
 
         if (this.shouldStopMovingIndependently()) {
             this.getNavigation().stop();
-            this.getNavigation().timeoutPath();
+            this.getNavigation().getPath();
             this.setRot(this.getYRot(), this.getXRot());
         }
     }
@@ -284,7 +279,6 @@ public class PupfishEntity extends TamableAnimal implements IAnimatable {
             this.setAirSupply(pAirSupply - 1);
             if (this.getAirSupply() == -20) {
                 this.setAirSupply(0);
-                this.hurt(DamageSource.DRY_OUT, 2.0F);
             }
         } else {
             this.setAirSupply(this.getMaxAirSupply());
@@ -329,22 +323,12 @@ public class PupfishEntity extends TamableAnimal implements IAnimatable {
         return new PupfishEntity.PupfishPathNavigation(this, pLevel);
     }
 
-    public boolean doHurtTarget(Entity pEntity) {
-        boolean flag = pEntity.hurt(DamageSource.mobAttack(this), (float) ((int) this.getAttributeValue(Attributes.ATTACK_DAMAGE)));
-        if (flag) {
-            this.doEnchantDamageEffects(this, pEntity);
-            this.playSound(SoundEvents.AXOLOTL_ATTACK, 1.0F, 1.0F);
-        }
-
-        return flag;
-    }
-
     /**
      * Called when the entity is attacked.
      */
     public boolean hurt(DamageSource pSource, float pAmount) {
         float f = this.getHealth();
-        if (!this.level.isClientSide && !this.isNoAi() && this.level.random.nextInt(3) == 0 && ((float) this.level.random.nextInt(3) < pAmount || f / this.getMaxHealth() < 0.5F) && pAmount < f && this.isInWater() && (pSource.getEntity() != null || pSource.getDirectEntity() != null)) {
+        if (!this.level().isClientSide && !this.isNoAi() && this.level().random.nextInt(3) == 0 && ((float) this.level().random.nextInt(3) < pAmount || f / this.getMaxHealth() < 0.5F) && pAmount < f && this.isInWater() && (pSource.getEntity() != null || pSource.getDirectEntity() != null)) {
             this.brain.setMemory(MemoryModuleType.PLAY_DEAD_TICKS, 200);
         }
 
@@ -363,13 +347,18 @@ public class PupfishEntity extends TamableAnimal implements IAnimatable {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "controller", 5, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
+        data.add(new AnimationController(this, "controller", 5, this::predicate));
     }
 
     @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.cache;
+    }
+
+    @Override
+    public double getTick(Object o) {
+        return 0;
     }
 
     static class PupfishMoveControl extends SmoothSwimmingMoveControl {

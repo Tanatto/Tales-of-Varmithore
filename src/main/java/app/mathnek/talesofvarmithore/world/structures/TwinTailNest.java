@@ -1,4 +1,5 @@
-package app.mathnek.talesofvarmithore.world.structures;
+// TODO: Change to JSON Features due to the new Minecraft World Gen
+/**package app.mathnek.talesofvarmithore.world.structures;
 
 import app.mathnek.talesofvarmithore.TalesofVarmithore;
 import net.minecraft.core.BlockPos;
@@ -49,7 +50,7 @@ public class TwinTailNest extends StructureFeature<JigsawConfiguration> {
      * the locate command will make minecraft hang forever and break the game.
      * Use the biome tags for where to spawn the structure and users can datapack
      * it to spawn in specific biome that aren't in the dimension they don't like if they wish.
-     */
+
     private static boolean isFeatureChunk(PieceGeneratorSupplier.Context<JigsawConfiguration> context) {
         // Grabs the chunk position we are at
         ChunkPos chunkpos = context.chunkPos();
@@ -93,7 +94,7 @@ public class TwinTailNest extends StructureFeature<JigsawConfiguration> {
          *
          * An example of a custom JigsawPlacement.addPieces in action can be found here (warning, it is using Mojmap mappings):
          * https://github.com/TelepathicGrunt/RepurposedStructures/blob/1.18.2/src/main/java/com/telepathicgrunt/repurposedstructures/world/structures/pieces/PieceLimitedJigsawManager.java
-         */
+
 
         if (structurePiecesGenerator.isPresent()) {
             // I use to debug and quickly find out if the structure is spawning or not and where it is.
@@ -111,9 +112,9 @@ public class TwinTailNest extends StructureFeature<JigsawConfiguration> {
      * <p>
      * Generation step for when to generate the structure. there are 10 stages you can pick from!
      * This surface structure stage places the structure before plants and ores are generated.
-     */
+
     @Override
     public GenerationStep.Decoration step() {
         return GenerationStep.Decoration.SURFACE_STRUCTURES;
     }
-}
+}*/

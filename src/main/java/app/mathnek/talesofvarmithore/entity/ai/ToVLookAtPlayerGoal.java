@@ -56,9 +56,9 @@ public class ToVLookAtPlayerGoal extends Goal {
             }
 
             if (this.lookAtType == Player.class) {
-                this.lookAt = this.dragon.level.getNearestPlayer(this.lookAtContext, this.dragon, this.dragon.getX(), this.dragon.getEyeY(), this.dragon.getZ());
+                this.lookAt = this.dragon.level().getNearestPlayer(this.lookAtContext, this.dragon, this.dragon.getX(), this.dragon.getEyeY(), this.dragon.getZ());
             } else {
-                this.lookAt = this.dragon.level.getNearestEntity(this.dragon.level.getEntitiesOfClass(this.lookAtType, this.dragon.getBoundingBox().inflate((double) this.lookDistance, 3.0, (double) this.lookDistance), (p_148124_) -> {
+                this.lookAt = this.dragon.level().getNearestEntity(this.dragon.level().getEntitiesOfClass(this.lookAtType, this.dragon.getBoundingBox().inflate((double) this.lookDistance, 3.0, (double) this.lookDistance), (p_148124_) -> {
                     return true;
                 }), this.lookAtContext, this.dragon, this.dragon.getX(), this.dragon.getEyeY(), this.dragon.getZ());
             }

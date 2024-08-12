@@ -10,43 +10,40 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class NewWilkor extends EntityGroundBase {
+
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public NewWilkor(EntityType animal, Level world) {
         super(animal, world);
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private PlayState predicate(AnimationState event) {
         if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("direwolf.walk", true));
-            return PlayState.CONTINUE;
+            return event.setAndContinue(RawAnimation.begin().thenLoop("direwolf.walk"));
         }
         if (event.isMoving() && this.isVehicle()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("direwolf.run", true));
-            return PlayState.CONTINUE;
+            return event.setAndContinue(RawAnimation.begin().thenLoop("direwolf.run"));
         }
         if (this.isEntitySitting()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("direwolf.sit", true));
-            return PlayState.CONTINUE;
+            return event.setAndContinue(RawAnimation.begin().thenLoop("direwolf.sit"));
         }
         if (this.isEntitySleeping()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("direwolf.sleep", true));
-            return PlayState.CONTINUE;
+            return event.setAndContinue(RawAnimation.begin().thenLoop("direwolf.sleep"));
         }
         if (event.isMoving() && this.isInWater()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("direwolf.swim", true));
-            return PlayState.CONTINUE;
+            return event.setAndContinue(RawAnimation.begin().thenLoop("direwolf.swim"));
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("direwolf.idle", true));
-        return PlayState.CONTINUE;
+        return event.setAndContinue(RawAnimation.begin().thenLoop("direwolf.idle"));
     }
 
     public static AttributeSupplier.Builder setAttributes() {
@@ -74,7 +71,17 @@ public class NewWilkor extends EntityGroundBase {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "controller", 5, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
+        data.add(new AnimationController(this, "controller", 5, this::predicate));
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.cache;
+    }
+
+    @Override
+    public double getTick(Object o) {
+        return 0;
     }
 }

@@ -18,7 +18,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ToVEntityTypes {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES =
-            DeferredRegister.create(ForgeRegistries.ENTITIES, TalesofVarmithore.MOD_ID);
+            DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, TalesofVarmithore.MOD_ID);
 
     private static final float PIXEL = 0.0625F;
 

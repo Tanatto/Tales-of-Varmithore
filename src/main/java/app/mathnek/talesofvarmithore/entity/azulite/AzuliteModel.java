@@ -2,17 +2,17 @@ package app.mathnek.talesofvarmithore.entity.azulite;
 
 import app.mathnek.talesofvarmithore.TalesofVarmithore;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class AzuliteModel extends AnimatedGeoModel<AzuliteEntity> {
+public class AzuliteModel extends GeoModel<AzuliteEntity> {
 
     @Override
-    public ResourceLocation getModelLocation(AzuliteEntity object) {
+    public ResourceLocation getModelResource(AzuliteEntity object) {
         return new ResourceLocation(TalesofVarmithore.MOD_ID, "geo/azulite.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(AzuliteEntity object) {
+    public ResourceLocation getTextureResource(AzuliteEntity object) {
         switch (object.getVariant()) {
             case 0:
             default:
@@ -35,7 +35,7 @@ public class AzuliteModel extends AnimatedGeoModel<AzuliteEntity> {
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(AzuliteEntity animatable) {
+    public ResourceLocation getAnimationResource(AzuliteEntity animatable) {
         return new ResourceLocation(TalesofVarmithore.MOD_ID, "animations/azulite.animation.json");
     }
 }

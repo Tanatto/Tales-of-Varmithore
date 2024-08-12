@@ -3,17 +3,17 @@ package app.mathnek.talesofvarmithore.entity.moth_fae_dragon;
 import app.mathnek.talesofvarmithore.TalesofVarmithore;
 import app.mathnek.talesofvarmithore.entity.azulite.AzuliteEntity;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class MothFaeDragonModel extends AnimatedGeoModel<MothFaeDragon> {
+public class MothFaeDragonModel extends GeoModel<MothFaeDragon> {
 
     @Override
-    public ResourceLocation getModelLocation(MothFaeDragon object) {
+    public ResourceLocation getModelResource(MothFaeDragon object) {
         return new ResourceLocation(TalesofVarmithore.MOD_ID, "geo/moth_fae_dragon.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(MothFaeDragon object) {
+    public ResourceLocation getTextureResource(MothFaeDragon object) {
         /*switch (object.getVariant()) {
             case 0:
             default:
@@ -39,7 +39,7 @@ public class MothFaeDragonModel extends AnimatedGeoModel<MothFaeDragon> {
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(MothFaeDragon animatable) {
+    public ResourceLocation getAnimationResource(MothFaeDragon animatable) {
         return new ResourceLocation(TalesofVarmithore.MOD_ID, "animations/moth_fae_dragon.animation.json");
     }
 }

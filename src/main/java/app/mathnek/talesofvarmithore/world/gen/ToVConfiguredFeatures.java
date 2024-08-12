@@ -1,4 +1,5 @@
-package app.mathnek.talesofvarmithore.world.gen;
+// TODO: Change to JSON Features due to the new Minecraft World Gen
+/**package app.mathnek.talesofvarmithore.world.gen;
 
 import app.mathnek.talesofvarmithore.blocks.ToVBlocks;
 import net.minecraft.core.Holder;
@@ -26,4 +27,4 @@ public class ToVConfiguredFeatures {
                     new RandomPatchConfiguration(32, 6, 2, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK,
                             new SimpleBlockConfiguration(BlockStateProvider.simple(ToVBlocks.PERSILA.get())))));
 
-}
+}*/

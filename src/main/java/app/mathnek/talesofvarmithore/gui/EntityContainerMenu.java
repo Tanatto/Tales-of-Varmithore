@@ -17,7 +17,7 @@ public class EntityContainerMenu extends AbstractContainerMenu {
 
     public EntityContainerMenu(int iD, Inventory playerInv, int entityID) {
         super(ToVContainers.ENTITY_INV.get(), iD);
-        this.dragon = (EntitySaddleBase) playerInv.player.level.getEntity(entityID);
+        this.dragon = (EntitySaddleBase) playerInv.player.level().getEntity(entityID);
         this.dragonContainer = this.dragon.entityContainer;
         boolean i = true;
         this.dragonContainer.startOpen(playerInv.player);

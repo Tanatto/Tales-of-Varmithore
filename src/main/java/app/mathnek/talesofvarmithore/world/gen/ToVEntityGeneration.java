@@ -1,4 +1,5 @@
-package app.mathnek.talesofvarmithore.world.gen;
+// TODO: Change to JSON Features due to the new Minecraft World Gen
+/**package app.mathnek.talesofvarmithore.world.gen;
 
 import app.mathnek.talesofvarmithore.entity.ToVEntityTypes;
 import net.minecraft.resources.ResourceKey;
@@ -69,4 +70,4 @@ public class ToVEntityGeneration {
         List<MobSpawnSettings.SpawnerData> base = event.getSpawns().getSpawner(type.getCategory());
         base.add(new MobSpawnSettings.SpawnerData(type, weight, minCount, maxCount));
     }
-}
+}*/

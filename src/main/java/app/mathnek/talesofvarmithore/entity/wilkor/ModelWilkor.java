@@ -2,16 +2,16 @@ package app.mathnek.talesofvarmithore.entity.wilkor;
 
 import app.mathnek.talesofvarmithore.TalesofVarmithore;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class ModelWilkor extends AnimatedGeoModel<NewWilkor> {
+public class ModelWilkor extends GeoModel<NewWilkor> {
     @Override
-    public ResourceLocation getModelLocation(NewWilkor object) {
+    public ResourceLocation getModelResource(NewWilkor object) {
         return new ResourceLocation(TalesofVarmithore.MOD_ID, "geo/wilkor.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(NewWilkor object) {
+    public ResourceLocation getTextureResource(NewWilkor object) {
         switch (object.getVariant()) {
             case 0:
             default:
@@ -30,7 +30,7 @@ public class ModelWilkor extends AnimatedGeoModel<NewWilkor> {
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(NewWilkor animatable) {
+    public ResourceLocation getAnimationResource(NewWilkor animatable) {
         return new ResourceLocation(TalesofVarmithore.MOD_ID, "animations/wilkor.animation.json");
     }
 }

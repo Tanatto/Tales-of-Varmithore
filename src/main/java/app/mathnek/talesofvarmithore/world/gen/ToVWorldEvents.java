@@ -1,4 +1,5 @@
-package app.mathnek.talesofvarmithore.world.gen;
+// TODO: Change to JSON Features due to the new Minecraft World Gen
+/**package app.mathnek.talesofvarmithore.world.gen;
 
 import app.mathnek.talesofvarmithore.TalesofVarmithore;
 import app.mathnek.talesofvarmithore.world.gen.flower.ToVFlowerGen;
@@ -15,4 +16,4 @@ import net.minecraftforge.fml.common.Mod;
         //ModTreeGeneration.generateTrees(event);
         ToVFlowerGen.generateFlowers(event);
     }
-}
+}*/

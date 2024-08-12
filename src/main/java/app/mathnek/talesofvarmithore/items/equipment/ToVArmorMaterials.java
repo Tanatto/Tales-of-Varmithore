@@ -6,6 +6,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
 
@@ -48,6 +49,16 @@ public enum ToVArmorMaterials implements ArmorMaterial {
 
     public int getDefenseForSlot(EquipmentSlot pSlot) {
         return this.slotProtections[pSlot.getIndex()];
+    }
+
+    @Override
+    public int getDurabilityForType(ArmorItem.Type type) {
+        return 0;
+    }
+
+    @Override
+    public int getDefenseForType(ArmorItem.Type type) {
+        return 0;
     }
 
     public int getEnchantmentValue() {

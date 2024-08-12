@@ -2,17 +2,17 @@ package app.mathnek.talesofvarmithore.entity.twintail;
 
 import app.mathnek.talesofvarmithore.TalesofVarmithore;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class TwinTailModel extends AnimatedGeoModel<TwinTailEntity> {
+public class TwinTailModel extends GeoModel<TwinTailEntity> {
 
     @Override
-    public ResourceLocation getModelLocation(TwinTailEntity object) {
+    public ResourceLocation getModelResource(TwinTailEntity object) {
         return new ResourceLocation(TalesofVarmithore.MOD_ID, "geo/twintail.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(TwinTailEntity object) {
+    public ResourceLocation getTextureResource(TwinTailEntity object) {
         switch (object.getVariant()) {
             case 0:
             default:
@@ -49,7 +49,7 @@ public class TwinTailModel extends AnimatedGeoModel<TwinTailEntity> {
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(TwinTailEntity animatable) {
+    public ResourceLocation getAnimationResource(TwinTailEntity animatable) {
         return new ResourceLocation(TalesofVarmithore.MOD_ID, "animations/twintail.animation.json");
     }
 }

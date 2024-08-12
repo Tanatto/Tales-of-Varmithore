@@ -51,7 +51,7 @@ public class ToVHurtByTargetGoal extends TargetGoal {
             }
 
             if ($$0 != this.timestamp && $$1 != null) {
-                if ($$1.getType() == EntityType.PLAYER && this.dragonBase.level.getGameRules().getBoolean(GameRules.RULE_UNIVERSAL_ANGER)) {
+                if ($$1.getType() == EntityType.PLAYER && this.dragonBase.level().getGameRules().getBoolean(GameRules.RULE_UNIVERSAL_ANGER)) {
                     return false;
                 } else {
                     Class[] var3 = this.toIgnoreDamage;
@@ -93,7 +93,7 @@ public class ToVHurtByTargetGoal extends TargetGoal {
     protected void alertOthers() {
         double $$0 = this.getFollowDistance();
         AABB $$1 = AABB.unitCubeFromLowerCorner(this.dragonBase.position()).inflate($$0, 10.0, $$0);
-        List $$2 = this.dragonBase.level.getEntitiesOfClass(this.dragonBase.getClass(), $$1, EntitySelector.NO_SPECTATORS);
+        List $$2 = this.dragonBase.level().getEntitiesOfClass(this.dragonBase.getClass(), $$1, EntitySelector.NO_SPECTATORS);
         Iterator var5 = $$2.iterator();
 
         while (true) {

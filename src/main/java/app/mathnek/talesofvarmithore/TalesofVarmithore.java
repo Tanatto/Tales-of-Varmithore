@@ -14,7 +14,6 @@ import app.mathnek.talesofvarmithore.items.ToVItems;
 import app.mathnek.talesofvarmithore.messages.ControlNetwork;
 import app.mathnek.talesofvarmithore.sound.ToVSounds;
 import app.mathnek.talesofvarmithore.util.ToVKeybinds;
-import app.mathnek.talesofvarmithore.world.ToVStructures;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -30,7 +29,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import software.bernie.geckolib3.GeckoLib;
 import net.minecraftforge.network.simple.SimpleChannel;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.NetworkEvent;
@@ -51,13 +49,11 @@ public class TalesofVarmithore {
         ToVBlocks.register(eventBus);
         ToVSounds.register(eventBus);
         ToVEntityTypes.register(eventBus);
-        ToVStructures.register(eventBus);
+        //ToVStructures.register(eventBus);
         ToVContainers.register(eventBus);
 
         eventBus.addListener(this::setup);
         eventBus.addListener(this::clientSetup);
-
-        GeckoLib.initialize();
 
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -69,7 +65,7 @@ public class TalesofVarmithore {
         EntityRenderers.register(ToVEntityTypes.PUPFISH.get(), PupfishRenderer::new);
         EntityRenderers.register(ToVEntityTypes.MOTH_FAE_DRAGON.get(), MothFaeDragonRender::new);
 
-        EntityRenderers.register(ToVEntityTypes.TWINTAIL_EGG.get(), TwinTailEggRenderer::new);
+        //EntityRenderers.register(ToVEntityTypes.TWINTAIL_EGG.get(), TwinTailEggRenderer::new);
 
         ItemBlockRenderTypes.setRenderLayer(ToVBlocks.PERSILA.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(ToVBlocks.UNCIA.get(), RenderType.cutout());

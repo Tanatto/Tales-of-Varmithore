@@ -1,4 +1,5 @@
-package app.mathnek.talesofvarmithore.world.gen.flower;
+// TODO: Change to JSON Features due to the new Minecraft World Gen
+/**package app.mathnek.talesofvarmithore.world.gen.flower;
 
 import app.mathnek.talesofvarmithore.world.gen.ToVPlacedFeatures;
 import net.minecraft.core.Holder;
@@ -33,4 +34,4 @@ public class ToVFlowerGen {
             base.add(ToVPlacedFeatures.PERSILA_PLACED);
         }
     }
-}
+}*/

@@ -9,7 +9,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class ToVContainers {
-    public static final DeferredRegister<MenuType<?>> CONTAINER_TYPES = DeferredRegister.create(ForgeRegistries.CONTAINERS, TalesofVarmithore.MOD_ID);
+    public static final DeferredRegister<MenuType<?>> CONTAINER_TYPES = DeferredRegister.create(ForgeRegistries.MENU_TYPES, TalesofVarmithore.MOD_ID);
 
     public static final RegistryObject<MenuType<EntityContainerMenu>> ENTITY_INV = CONTAINER_TYPES.register("entity_inv",
             () -> IForgeMenuType.create((windowId, inv, data) -> new EntityContainerMenu(windowId, inv, data.readInt())));

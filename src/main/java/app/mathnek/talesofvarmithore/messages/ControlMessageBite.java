@@ -36,7 +36,7 @@ public class ControlMessageBite {
         context.enqueueWork(() -> {
             ServerPlayer player = context.getSender();
             if (player != null) {
-                Entity entity = player.level.getEntity(message.dragonId);
+                Entity entity = player.level().getEntity(message.dragonId);
                 if (entity instanceof TwinTailEntity) {
                     TwinTailEntity dragon = (TwinTailEntity) entity;
                     if (player.getVehicle() == dragon && dragon.getOwner() == player) {

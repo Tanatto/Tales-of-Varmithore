@@ -11,6 +11,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.*;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Inventory;
@@ -44,11 +45,11 @@ public abstract class EntitySaddleBase extends EntityGroundBase implements Conta
     }
 
     public void openGUI(Player playerEntity) {
-        if (!this.level.isClientSide() && (!this.isVehicle() || playerEntity.getVehicle() != this && this.isTame())) {
+        if (!this.level().isClientSide() && (!this.isVehicle() || playerEntity.getVehicle() != this && this.isTame())) {
             if (playerEntity instanceof ServerPlayer) {
                 Component dragonName = this.getName();
                 int id = this.getId();
-                NetworkHooks.openGui((ServerPlayer) playerEntity, new MenuProvider() {
+                NetworkHooks.openScreen((ServerPlayer) playerEntity, new MenuProvider() {
 
                     @Override
                     public @NotNull Component getDisplayName() {
@@ -93,6 +94,8 @@ public abstract class EntitySaddleBase extends EntityGroundBase implements Conta
     public void setSaddle(boolean saddle) {
         this.entityData.set(ID_SADDLE, saddle);
     }
+
+    public abstract boolean canBeRiddenInWater(Entity rider);
 
     protected void defineSynchedData() {
         super.defineSynchedData();
@@ -163,7 +166,7 @@ public abstract class EntitySaddleBase extends EntityGroundBase implements Conta
     protected void dropEquipment() {
         super.dropEquipment();
         if (this.hasChest()) {
-            if (!this.level.isClientSide) {
+            if (!this.level().isClientSide) {
                 this.spawnAtLocation(Blocks.CHEST);
             }
 
@@ -269,7 +272,7 @@ public abstract class EntitySaddleBase extends EntityGroundBase implements Conta
     }
 
     protected void updateContainerEquipment() {
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             this.setSaddle(!this.entityContainer.getItem(0).isEmpty());
             this.setChest(!this.entityContainer.getItem(1).isEmpty());
         }

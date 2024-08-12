@@ -8,8 +8,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -36,18 +36,19 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class DragonEggBase extends AgeableMob implements IAnimatable {
+public class DragonEggBase extends AgeableMob implements GeoAnimatable {
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private static final EntityDataAccessor<Integer> DRAGON_VARIANT = SynchedEntityData.defineId(DragonEggBase.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> TICK_HATCH_TIME = SynchedEntityData.defineId(DragonEggBase.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> CAN_HATCH = SynchedEntityData.defineId(DragonEggBase.class, EntityDataSerializers.BOOLEAN);
     protected TwinTailEntity dragonResult;
     public int displayProgressTicks = 0;
 
-    AnimationFactory factory = new AnimationFactory(this);
     protected boolean canHatch;
 
     public DragonEggBase(EntityType<? extends DragonEggBase> pEntityType, Level pLevel) {
@@ -127,17 +128,6 @@ public class DragonEggBase extends AgeableMob implements IAnimatable {
     }
 
     @Override
-    public boolean isInvulnerableTo(@NotNull DamageSource pSource) {
-        if (pSource == DamageSource.IN_FIRE || pSource == DamageSource.ON_FIRE || pSource == DamageSource.FALL || pSource == DamageSource.LAVA
-                || pSource == DamageSource.IN_WALL || pSource == DamageSource.CRAMMING || pSource == DamageSource.FLY_INTO_WALL
-                || pSource == DamageSource.CACTUS || pSource == DamageSource.explosion((LivingEntity) null)) {
-            return true;
-        } else {
-            return super.isInvulnerableTo(pSource);
-        }
-    }
-
-    @Override
     public Iterable<ItemStack> getArmorSlots() {
         return ImmutableList.of();
     }
@@ -158,7 +148,7 @@ public class DragonEggBase extends AgeableMob implements IAnimatable {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return new ClientboundAddEntityPacket(this);
     }
 
@@ -195,12 +185,18 @@ public class DragonEggBase extends AgeableMob implements IAnimatable {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+
     }
 
     @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.cache;
+    }
+
+    @Override
+    public double getTick(Object o) {
+        return 0;
     }
 
     @Override
@@ -212,17 +208,17 @@ public class DragonEggBase extends AgeableMob implements IAnimatable {
             }
         } else if(stack.is(Items.STICK) && !pPlayer.isCreative()) {
             String h = "Twintail Hatch Progress: ";
-            pPlayer.displayClientMessage(new TranslatableComponent(h + getHatchProgress() + "%"), true);
+            //pPlayer.displayClientMessage(new TranslatableComponent(h + getHatchProgress() + "%"), true);
         } else {
             String s = "egg.warm.toHatch";
             String s1 = "egg.cold.toHatch";
             if (!isCold()) {
-                pPlayer.displayClientMessage(new TranslatableComponent(s), true);
+                //pPlayer.displayClientMessage(new TranslatableComponent(s), true);
                 //
-                if (this.level.isClientSide())
+                if (this.level().isClientSide())
                     this.displayProgressTicks = 100; // 100 ticks is 5 seconds
             } else {
-                pPlayer.displayClientMessage(new TranslatableComponent(s1), true);
+                //pPlayer.displayClientMessage(new TranslatableComponent(s1), true);
             }
         }
         InteractionResult ret = super.interact(pPlayer, pHand);
@@ -245,8 +241,8 @@ public class DragonEggBase extends AgeableMob implements IAnimatable {
     }
 
     public boolean isCold() {
-        BlockPos pos = new BlockPos(getX(), getY(), getZ());
-        int i5 = level.getLightEngine().getLayerListener(LightLayer.BLOCK).getLightValue(pos);
+        BlockPos pos = new BlockPos((int) getX(), (int) getY(), (int) getZ());
+        int i5 = level().getLightEngine().getLayerListener(LightLayer.BLOCK).getLightValue(pos);
 //        System.out.println("getLightEngine.getLayerListener(LightLayer.BLOCK).getLightValue() " + i5);
         return i5 < 10;
     }
@@ -263,7 +259,7 @@ public class DragonEggBase extends AgeableMob implements IAnimatable {
         if (this.displayProgressTicks > 0)
             this.displayProgressTicks--;
 
-        if (!level.isClientSide() && this.tickCount % 20 == 0) {
+        if (!level().isClientSide() && this.tickCount % 20 == 0) {
             if (!isCold() && this.getTicksToHatch() <= getHatchTime()) {
                 this.setTicksToHatch(getTicksToHatch() + 1);
             } else if (isCold() && getTicksToHatch() > 0) {
@@ -283,13 +279,13 @@ public class DragonEggBase extends AgeableMob implements IAnimatable {
         dragonResult.moveTo(this.getX(), this.getY(), this.getZ(), 0.0F, 0.0F);
         dragonResult.setVariant(random.nextInt(dragonResult.getMaxAmountOfVariants()));
         dragonResult.setTame(true);
-        this.level.addFreshEntity(dragonResult);
+        this.level().addFreshEntity(dragonResult);
         this.discard();
-        if (this.level instanceof ServerLevel) {
-            ((ServerLevel) this.level).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, getBlockParticle().defaultBlockState()), this.getX(), this.getY(0.6666666666666666D), this.getZ(), particleEggShellCount(), (double) (this.getBbWidth() / 3.0F), (double) (this.getBbHeight() / 3.0F), (double) (this.getBbWidth() / 3.0F), 0.10D);
+        if (this.level() instanceof ServerLevel) {
+            ((ServerLevel) this.level()).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, getBlockParticle().defaultBlockState()), this.getX(), this.getY(0.6666666666666666D), this.getZ(), particleEggShellCount(), (double) (this.getBbWidth() / 3.0F), (double) (this.getBbHeight() / 3.0F), (double) (this.getBbWidth() / 3.0F), 0.10D);
         }
-        if (level.isClientSide)
-            level.playLocalSound(position().x(), position().y(), position().z(), SoundEvents.TURTLE_EGG_HATCH, SoundSource.NEUTRAL, 1, 1, false);
+        if (level().isClientSide)
+            level().playLocalSound(position().x(), position().y(), position().z(), SoundEvents.TURTLE_EGG_HATCH, SoundSource.NEUTRAL, 1, 1, false);
     }
 
     protected int particleEggShellCount() {
@@ -299,7 +295,7 @@ public class DragonEggBase extends AgeableMob implements IAnimatable {
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
         if (!isRemoved()) {
-            if (!level.isClientSide()) {
+            if (!level().isClientSide()) {
                 DragonEggItem item = getItemVersion();
                 this.spawnAtLocation(item);
                 this.discard();
@@ -326,7 +322,7 @@ public class DragonEggBase extends AgeableMob implements IAnimatable {
 
     // stinger would be the default
     protected TwinTailEntity getDragonEggResult() {
-        return ToVEntityTypes.TWINTAIL.get().create(this.level);
+        return ToVEntityTypes.TWINTAIL.get().create(this.level());
     }
 
     /**

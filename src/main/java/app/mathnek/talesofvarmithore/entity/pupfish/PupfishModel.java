@@ -2,17 +2,17 @@ package app.mathnek.talesofvarmithore.entity.pupfish;
 
 import app.mathnek.talesofvarmithore.TalesofVarmithore;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class PupfishModel extends AnimatedGeoModel<PupfishEntity> {
+public class PupfishModel extends GeoModel<PupfishEntity> {
 
     @Override
-    public ResourceLocation getModelLocation(PupfishEntity object) {
+    public ResourceLocation getModelResource(PupfishEntity object) {
         return new ResourceLocation(TalesofVarmithore.MOD_ID, "geo/pupfish.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(PupfishEntity object) {
+    public ResourceLocation getTextureResource(PupfishEntity object) {
         switch (object.getVariant()) {
             case 0:
             default:
@@ -35,7 +35,7 @@ public class PupfishModel extends AnimatedGeoModel<PupfishEntity> {
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(PupfishEntity animatable) {
+    public ResourceLocation getAnimationResource(PupfishEntity animatable) {
         return new ResourceLocation(TalesofVarmithore.MOD_ID, "animations/pupfish.animation.json");
     }
 }

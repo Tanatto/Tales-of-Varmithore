@@ -1,4 +1,5 @@
-package app.mathnek.talesofvarmithore.world;
+// TODO: Change to JSON Features due to the new Minecraft World Gen
+/** app.mathnek.talesofvarmithore.world;
 
 import app.mathnek.talesofvarmithore.TalesofVarmithore;
 import app.mathnek.talesofvarmithore.world.structures.Oasis;
@@ -19,14 +20,14 @@ public class ToVStructures {
      * HOWEVER, do note that Deferred Registries only work for anything that is a Forge Registry. This means that
      * configured structures and configured features need to be registered directly to BuiltinRegistries as there
      * is no Deferred Registry system for them.
-     */
+
     public static final DeferredRegister<StructureFeature<?>> STRUCTURES =
             DeferredRegister.create(ForgeRegistries.STRUCTURE_FEATURES, TalesofVarmithore.MOD_ID);
 
     /**
      * Registers the base structure itself and sets what its path is. In this case,
      * this base structure will have the resourcelocation of structure_tutorial:sky_structures.
-     */
+
     public static final RegistryObject<StructureFeature<?>> WILKOR_DEN =
             STRUCTURES.register("wilkor_den", WilkorDen::new);
 
@@ -41,4 +42,4 @@ public class ToVStructures {
     public static void register(IEventBus eventBus) {
         STRUCTURES.register(eventBus);
     }
-}
+}*/

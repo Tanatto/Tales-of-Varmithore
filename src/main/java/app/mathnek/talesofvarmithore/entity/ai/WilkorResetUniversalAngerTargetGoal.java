@@ -27,7 +27,7 @@ public class WilkorResetUniversalAngerTargetGoal<EntityWilkor extends Mob & Neut
      * method as well.
      */
     public boolean canUse() {
-        return this.mob.level.getGameRules().getBoolean(GameRules.RULE_UNIVERSAL_ANGER) && this.wasHurtByPlayer();
+        return this.mob.level().getGameRules().getBoolean(GameRules.RULE_UNIVERSAL_ANGER) && this.wasHurtByPlayer();
     }
 
     private boolean wasHurtByPlayer() {
@@ -54,6 +54,6 @@ public class WilkorResetUniversalAngerTargetGoal<EntityWilkor extends Mob & Neut
     private List<? extends Mob> getNearbyMobsOfSameType() {
         double d0 = this.mob.getAttributeValue(Attributes.FOLLOW_RANGE);
         AABB aabb = AABB.unitCubeFromLowerCorner(this.mob.position()).inflate(d0, 10.0D, d0);
-        return this.mob.level.getEntitiesOfClass(this.mob.getClass(), aabb, EntitySelector.NO_SPECTATORS);
+        return this.mob.level().getEntitiesOfClass(this.mob.getClass(), aabb, EntitySelector.NO_SPECTATORS);
     }
 }

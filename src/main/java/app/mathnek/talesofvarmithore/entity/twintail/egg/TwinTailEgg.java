@@ -31,7 +31,7 @@ public class TwinTailEgg extends DragonEggBase {
 
     @Override
     protected TwinTailEntity getDragonEggResult() {
-        return ToVEntityTypes.TWINTAIL.get().create(this.level);
+        return ToVEntityTypes.TWINTAIL.get().create(this.level());
     }
 
     @Override

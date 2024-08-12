@@ -9,16 +9,18 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.renderers.geo.GeoProjectilesRenderer;
+import software.bernie.geckolib.renderer.GeoObjectRenderer;
 
 import javax.annotation.Nullable;
 
-public class TwinTailEggRenderer extends GeoProjectilesRenderer<DragonEggBase> {
+public class TwinTailEggRenderer extends GeoObjectRenderer<DragonEggBase> {
 
     public TwinTailEggRenderer(EntityRendererProvider.Context renderManager) {
-        super(renderManager, new TwinTailEggModel());
+        super(new TwinTailEggModel());
     }
 
+    //TODO: Dont know how to Port this correctly, Sorry
+    /**
     @Override
     public void render(DragonEggBase entity, float yaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         super.render(entity, yaw, partialTicks, poseStack, buffer, packedLight);
@@ -35,9 +37,8 @@ public class TwinTailEggRenderer extends GeoProjectilesRenderer<DragonEggBase> {
             font.drawInBatch(text, centerOffset, -9, -1, false, poseStack.last().pose(), buffer, false, 0, packedLight);
             poseStack.popPose();
         }
-    }
+    }*/
 
-    @Override
     public RenderType getRenderType(DragonEggBase animatable, float partialTicks, PoseStack stack, @Nullable MultiBufferSource renderTypeBuffer, @Nullable VertexConsumer vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
         return RenderType.entityCutoutNoCull(textureLocation);
     }

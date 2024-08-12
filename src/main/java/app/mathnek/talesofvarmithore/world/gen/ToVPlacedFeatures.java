@@ -1,4 +1,5 @@
-package app.mathnek.talesofvarmithore.world.gen;
+// TODO: Change to JSON Features due to the new Minecraft World Gen
+/**package app.mathnek.talesofvarmithore.world.gen;
 
 import app.mathnek.talesofvarmithore.world.gen.ores.ToVOrePlacement;
 import net.minecraft.core.Holder;
@@ -14,4 +15,4 @@ public class ToVPlacedFeatures {
     public static final Holder<PlacedFeature> UNCIA_PLACED = PlacementUtils.register("uncia_placed",
             ToVConfiguredFeatures.UNCIA, RarityFilter.onAverageOnceEvery(6),
             InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome());
-}
+}*/

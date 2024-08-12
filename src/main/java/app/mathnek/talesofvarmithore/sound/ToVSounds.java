@@ -17,7 +17,8 @@ public class ToVSounds {
     public static RegistryObject<SoundEvent> WILKOR_DEATH = registerSoundEvent("wilkor_death");
 
     private static RegistryObject<SoundEvent> registerSoundEvent(String name) {
-        return SOUND_EVENTS.register(name, () -> new SoundEvent(new ResourceLocation(TalesofVarmithore.MOD_ID, name)));
+        //return SOUND_EVENTS.register(name, () -> new SoundEvent(new ResourceLocation(TalesofVarmithore.MOD_ID, name)));
+        return null;
     }
 
     public static void register(IEventBus eventBus) {

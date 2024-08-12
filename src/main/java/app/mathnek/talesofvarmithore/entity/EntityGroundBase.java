@@ -35,10 +35,6 @@ public abstract class EntityGroundBase extends BaseEntityClass implements Player
         return false;
     }
 
-    public void positionRider(Entity pPassenger) {
-        super.positionRider(pPassenger);
-    }
-
     public void onPlayerJump(int pJumpPower) {
         if (this.isVehicle()) {
             if (pJumpPower < 0) {
@@ -64,8 +60,8 @@ public abstract class EntityGroundBase extends BaseEntityClass implements Player
     }
 
     public boolean isOnJumpHeight() {
-        BlockPos solidPos = new BlockPos(this.position().x, this.position().y - 6.0, this.position().z);
-        return !this.level.getBlockState(solidPos).isAir();
+        BlockPos solidPos = new BlockPos((int) this.position().x, (int) (this.position().y - 6.0), (int) this.position().z);
+        return !this.level().getBlockState(solidPos).isAir();
     }
 
     public double getCustomJump() {
@@ -118,7 +114,7 @@ public abstract class EntityGroundBase extends BaseEntityClass implements Player
                     f1 *= 0.25F;
                 }
 
-                if (this.playerJumpPendingScale > 0.0F && !this.isJumping() && this.isOnGround()) {
+                if (this.playerJumpPendingScale > 0.0F && !this.isJumping() && this.isEntityOnGround()) {
                     double d0 = this.getCustomJump() * (double) this.playerJumpPendingScale * (double) this.getBlockJumpFactor();
                     double d1 = d0 + this.getJumpBoostPower();
                     Vec3 vec3 = this.getDeltaMovement();
@@ -135,7 +131,6 @@ public abstract class EntityGroundBase extends BaseEntityClass implements Player
                     this.playerJumpPendingScale = 0.0F;
                 }
 
-                this.flyingSpeed = this.getSpeed() * 0.1F;
                 if (this.isControlledByLocalInstance()) {
                     this.setSpeed((float) this.getAttributeValue(Attributes.MOVEMENT_SPEED));
                     super.travel(new Vec3((double) f, pTravelVector.y, (double) f1));
@@ -143,14 +138,13 @@ public abstract class EntityGroundBase extends BaseEntityClass implements Player
                     this.setDeltaMovement(Vec3.ZERO);
                 }
 
-                if (this.isOnGround()) {
+                if (this.isEntityOnGround()) {
                     this.playerJumpPendingScale = 0.0F;
                     this.setIsJumping(false);
                 }
 
                 this.tryCheckInsideBlocks();
             } else {
-                this.flyingSpeed = 0.02F;
                 super.travel(pTravelVector);
             }
         }
