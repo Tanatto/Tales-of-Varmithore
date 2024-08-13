@@ -11,6 +11,7 @@ import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.AnimationState;
@@ -20,13 +21,13 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class NewWilkor extends EntityGroundBase {
 
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
     public NewWilkor(EntityType animal, Level world) {
         super(animal, world);
     }
 
-    private PlayState predicate(AnimationState event) {
+    private PlayState predicate(AnimationState<NewWilkor> event) {
         if (event.isMoving()) {
             return event.setAndContinue(RawAnimation.begin().thenLoop("direwolf.walk"));
         }
