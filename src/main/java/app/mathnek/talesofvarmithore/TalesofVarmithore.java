@@ -10,6 +10,7 @@ import app.mathnek.talesofvarmithore.entity.twintail.egg.TwinTailEggRenderer;
 import app.mathnek.talesofvarmithore.entity.wilkor.RenderWilkor;
 import app.mathnek.talesofvarmithore.gui.EntityInventoryScreen;
 import app.mathnek.talesofvarmithore.gui.ToVContainers;
+import app.mathnek.talesofvarmithore.items.ToVCreativeModeTab;
 import app.mathnek.talesofvarmithore.items.ToVItems;
 import app.mathnek.talesofvarmithore.messages.ControlNetwork;
 import app.mathnek.talesofvarmithore.sound.ToVSounds;
@@ -51,6 +52,7 @@ public class TalesofVarmithore {
         ToVEntityTypes.register(eventBus);
         //ToVStructures.register(eventBus);
         ToVContainers.register(eventBus);
+        ToVCreativeModeTab.register(eventBus);
 
         eventBus.addListener(this::setup);
         eventBus.addListener(this::clientSetup);
