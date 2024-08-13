@@ -16,7 +16,7 @@ public class ToVCreativeModeTab {
     public static final RegistryObject<CreativeModeTab> TOV_TAB =
             REGISTRY.register("tov_tab",
                     () -> CreativeModeTab.builder()
-                            .title(Component.translatable("tov_tab"))
+                            .title(Component.literal("Tales of Varmithore Tab"))
                             .icon(() -> new ItemStack(ToVItems.TWINTAIL_SPAWN_EGG.get()))
                             .displayItems((parameters, tabData) -> {
                                 // List of Items in the Creative tab
@@ -53,6 +53,17 @@ public class ToVCreativeModeTab {
                                 tabData.accept(ToVItems.OBSAIDON_CHESTPLATE.get());
                                 tabData.accept(ToVItems.OBSAIDON_LEGGINGS.get());
                                 tabData.accept(ToVItems.OBSAIDON_BOOTS.get());
-                            })
-                            .build());
+
+                                tabData.accept(ToVBlocks.MIRCH_LEAVES.get());
+                                tabData.accept(ToVBlocks.MIRCH_LOG.get());
+                                tabData.accept(ToVBlocks.MIRCH_PLANKS.get());
+                                tabData.accept(ToVBlocks.MIRCH_STAIRS.get());
+                                tabData.accept(ToVBlocks.MIRCH_SLAB.get());
+                                tabData.accept(ToVBlocks.MIRCH_FENCE.get());
+                                tabData.accept(ToVBlocks.HARD_GLASS.get());
+                                tabData.accept(ToVBlocks.MAGMA_BRICK.get());
+                                tabData.accept(ToVBlocks.GRASS_BLOCK.get());
+                                tabData.accept(ToVBlocks.PERSILA.get());
+                                tabData.accept(ToVBlocks.UNCIA.get());
+                            }).build());
 }

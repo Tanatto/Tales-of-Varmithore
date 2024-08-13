@@ -3,9 +3,9 @@
 
 import app.mathnek.talesofvarmithore.blocks.ToVBlocks;
 import net.minecraft.core.Holder;
-import net.minecraft.data.worldgen.features.FeatureUtils;
-import net.minecraft.data.worldgen.features.OreFeatures;
-import net.minecraft.data.worldgen.placement.PlacementUtils;
+import net.minecraft.data.OldWorldGen.features.FeatureUtils;
+import net.minecraft.data.OldWorldGen.features.OreFeatures;
+import net.minecraft.data.OldWorldGen.placement.PlacementUtils;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;

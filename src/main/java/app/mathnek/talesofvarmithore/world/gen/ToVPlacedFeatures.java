@@ -3,7 +3,7 @@
 
 import app.mathnek.talesofvarmithore.world.gen.ores.ToVOrePlacement;
 import net.minecraft.core.Holder;
-import net.minecraft.data.worldgen.placement.PlacementUtils;
+import net.minecraft.data.OldWorldGen.placement.PlacementUtils;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.placement.*;
 
