@@ -278,8 +278,8 @@ public class TwinTailEntity extends EntitySaddleBase {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar data) {
-        data.add(new AnimationController(this, "controller", 5, this::movementPredicate));
-        data.add(new AnimationController(this, "controller", 5, this::attackPredicate));
+        data.add(new AnimationController<>(this, "movement", 5, this::movementPredicate));
+        data.add(new AnimationController<>(this, "attack", 5, this::attackPredicate));
     }
 
     @Override
@@ -322,11 +322,6 @@ public class TwinTailEntity extends EntitySaddleBase {
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.cache;
-    }
-
-    @Override
-    public double getTick(Object o) {
-        return 0;
     }
 
     @Override
@@ -390,7 +385,6 @@ public class TwinTailEntity extends EntitySaddleBase {
             if (TwinTailEntity.this.isAlive()) {
                 super.tick();
             }
-
         }
     }
 }

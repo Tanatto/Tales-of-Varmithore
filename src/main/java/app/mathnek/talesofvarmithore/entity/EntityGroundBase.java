@@ -97,7 +97,7 @@ public abstract class EntityGroundBase extends BaseEntityClass implements Player
     public void travel(@NotNull Vec3 pTravelVector) {
         if (this.isAlive()) {
             if (this.isVehicle() && this.canBeControlledByRider()) {
-                LivingEntity pilot = (LivingEntity) this.getControllingPassenger();
+                LivingEntity pilot = this.getControllingPassenger();
 
                 assert pilot != null;
 
@@ -125,7 +125,7 @@ public abstract class EntityGroundBase extends BaseEntityClass implements Player
                     if (f1 > 0.0F) {
                         float f2 = Mth.sin(this.getYRot() * 0.017453292F);
                         float f3 = Mth.cos(this.getYRot() * 0.017453292F);
-                        this.setDeltaMovement(this.getDeltaMovement().add((double) (-1.5F * f2 * this.playerJumpPendingScale), 0.0, (double) (1.5F * f3 * this.playerJumpPendingScale)));
+                        this.setDeltaMovement(this.getDeltaMovement().add(-1.5F * f2 * this.playerJumpPendingScale, 0.0, (double) (1.5F * f3 * this.playerJumpPendingScale)));
                     }
 
                     this.playerJumpPendingScale = 0.0F;
@@ -133,7 +133,7 @@ public abstract class EntityGroundBase extends BaseEntityClass implements Player
 
                 if (this.isControlledByLocalInstance()) {
                     this.setSpeed((float) this.getAttributeValue(Attributes.MOVEMENT_SPEED));
-                    super.travel(new Vec3((double) f, pTravelVector.y, (double) f1));
+                    super.travel(new Vec3(f, pTravelVector.y, f1));
                 } else if (pilot instanceof Player) {
                     this.setDeltaMovement(Vec3.ZERO);
                 }

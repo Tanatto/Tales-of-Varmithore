@@ -36,6 +36,7 @@ import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -45,7 +46,7 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class PupfishEntity extends TamableAnimal implements GeoAnimatable {
+public class PupfishEntity extends TamableAnimal implements GeoEntity {
 
     @javax.annotation.Nullable
     private PupfishEntity.PupfishAvoidEntityGoal<Player> pupfishAvoidPlayersGoal;
@@ -354,11 +355,6 @@ public class PupfishEntity extends TamableAnimal implements GeoAnimatable {
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.cache;
-    }
-
-    @Override
-    public double getTick(Object o) {
-        return 0;
     }
 
     static class PupfishMoveControl extends SmoothSwimmingMoveControl {

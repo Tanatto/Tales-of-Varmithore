@@ -38,28 +38,15 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-public class EntityWilkor extends TamableAnimal implements GeoAnimatable, GeoEntity {
+public class EntityWilkor extends TamableAnimal implements GeoEntity {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-
-    protected static final EntityDataAccessor<Boolean> SITTING =
-            SynchedEntityData.defineId(EntityWilkor.class, EntityDataSerializers.BOOLEAN);
-
-    protected static final EntityDataAccessor<Integer> COMMANDS =
-            SynchedEntityData.defineId(EntityWilkor.class, EntityDataSerializers.INT);
-
-    protected static final EntityDataAccessor<Integer> VARIANTS =
-            SynchedEntityData.defineId(EntityWilkor.class, EntityDataSerializers.INT);
-
-    protected static final EntityDataAccessor<Integer> DISTURB_TICKS =
-            SynchedEntityData.defineId(EntityWilkor.class, EntityDataSerializers.INT);
-
-    protected static final EntityDataAccessor<Boolean> SLEEPING =
-            SynchedEntityData.defineId(EntityWilkor.class, EntityDataSerializers.BOOLEAN);
-
-    protected static final EntityDataAccessor<Boolean> ON_GROUND =
-            SynchedEntityData.defineId(EntityWilkor.class, EntityDataSerializers.BOOLEAN);
-
-
+    protected static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(EntityWilkor.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Integer> COMMANDS = SynchedEntityData.defineId(EntityWilkor.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Integer> VARIANTS = SynchedEntityData.defineId(EntityWilkor.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Integer> DISTURB_TICKS = SynchedEntityData.defineId(EntityWilkor.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Boolean> SLEEPING = SynchedEntityData.defineId(EntityWilkor.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Boolean> ON_GROUND = SynchedEntityData.defineId(EntityWilkor.class, EntityDataSerializers.BOOLEAN);
+    
     public EntityWilkor(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         this.setMaxUpStep(1f);
@@ -485,10 +472,4 @@ public class EntityWilkor extends TamableAnimal implements GeoAnimatable, GeoEnt
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.cache;
     }
-
-    @Override
-    public double getTick(Object o) {
-        return 0;
-    }
-
 }

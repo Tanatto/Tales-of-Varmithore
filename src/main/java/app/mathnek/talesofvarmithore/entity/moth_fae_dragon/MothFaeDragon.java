@@ -34,6 +34,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -43,7 +44,7 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class MothFaeDragon extends AmbientCreature implements GeoAnimatable {
+public class MothFaeDragon extends AmbientCreature implements GeoEntity {
     protected static final EntityDataAccessor<Integer> VARIANTS = SynchedEntityData.defineId(MothFaeDragon.class, EntityDataSerializers.INT);
     public static final float FLAP_DEGREES_PER_TICK = 74.48451F;
     public static final int TICKS_PER_FLAP = Mth.ceil(2.4166098F);
@@ -320,10 +321,5 @@ public class MothFaeDragon extends AmbientCreature implements GeoAnimatable {
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.cache;
-    }
-
-    @Override
-    public double getTick(Object o) {
-        return 0;
     }
 }

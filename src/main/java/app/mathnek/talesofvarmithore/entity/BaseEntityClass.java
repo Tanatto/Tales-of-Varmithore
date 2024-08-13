@@ -34,6 +34,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
 import org.jetbrains.annotations.NotNull;
+import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 
 import javax.annotation.Nullable;
@@ -41,7 +42,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public abstract class BaseEntityClass extends TamableAnimal implements GeoAnimatable, Saddleable {
+public abstract class BaseEntityClass extends TamableAnimal implements GeoEntity, Saddleable {
 
     protected static final EntityDataAccessor<Boolean> SITTING =
             SynchedEntityData.defineId(BaseEntityClass.class, EntityDataSerializers.BOOLEAN);
