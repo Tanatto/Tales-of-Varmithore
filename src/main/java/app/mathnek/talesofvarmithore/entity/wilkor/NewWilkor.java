@@ -81,8 +81,5 @@ public class NewWilkor extends EntityGroundBase {
         return this.cache;
     }
 
-    @Override
-    public double getTick(Object o) {
-        return 0;
-    }
+
 }
